@@ -1,0 +1,6 @@
+[submodule "lib/imgui"]
+	path = lib/imgui
+	url = git@github.com:ocornut/imgui.git
+[submodule "lib/ImGuizmo"]
+	path = lib/ImGuizmo
+	url = git@github.com:khiner/ImGuizmo.git
