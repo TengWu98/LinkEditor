@@ -1,0 +1,4326 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiInputSource”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_internal.h"
+                },
+                "region": {
+                  "startLine": 1546,
+                  "startColumn": 9,
+                  "endLine": 1546,
+                  "endColumn": 26
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGuiContext::{ctor}",
+                  "decoratedName": "??0ImGuiContext@@QEAA@PEAUImFontAtlas@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiNavLayer”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_internal.h"
+                },
+                "region": {
+                  "startLine": 1568,
+                  "startColumn": 9,
+                  "endLine": 1568,
+                  "endColumn": 20
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGuiContext::{ctor}",
+                  "decoratedName": "??0ImGuiContext@@QEAA@PEAUImFontAtlas@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiNavForward”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_internal.h"
+                },
+                "region": {
+                  "startLine": 1581,
+                  "startColumn": 9,
+                  "endLine": 1581,
+                  "endColumn": 33
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGuiContext::{ctor}",
+                  "decoratedName": "??0ImGuiContext@@QEAA@PEAUImFontAtlas@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiLogType”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_internal.h"
+                },
+                "region": {
+                  "startLine": 1633,
+                  "startColumn": 9,
+                  "endLine": 1633,
+                  "endColumn": 19
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGuiContext::{ctor}",
+                  "decoratedName": "??0ImGuiContext@@QEAA@PEAUImFontAtlas@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiInputReadMode”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_internal.h"
+                },
+                "region": {
+                  "startLine": 2123,
+                  "startColumn": 29,
+                  "endLine": 2123,
+                  "endColumn": 29
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::IsNavInputTest",
+                  "decoratedName": "?IsNavInputTest@ImGui@@YA_NHW4ImGuiInputReadMode@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "未初始化变量 ImGuiColorMod::Col。始终初始化成员变量(type.6)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_internal.h"
+                },
+                "region": {
+                  "startLine": 819,
+                  "startColumn": 1,
+                  "endLine": 819,
+                  "endColumn": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGuiColorMod::{ctor}",
+                  "decoratedName": "??0ImGuiColorMod@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "ImGuiColorMod::Col"
+          }
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 * ，然后将结果转换到 8 字节值。在调用运算符 * 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 3635,
+                  "startColumn": 44,
+                  "endLine": 3635,
+                  "endColumn": 73
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::UpdateMouseInputs",
+                  "decoratedName": "?UpdateMouseInputs@ImGui@@YAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiCol_”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 4072,
+                  "startColumn": 46,
+                  "endLine": 4072,
+                  "endColumn": 75
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::UpdateDebugToolItemPicker",
+                  "decoratedName": "?UpdateDebugToolItemPicker@ImGui@@YAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C28182",
+          "message": {
+            "text": "取消对 NULL 指针的引用。“window”包含与“hovered_window”相同的 NULL 值。查看第 4627 行以找出可能会发生此情况的前一位置"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 4656,
+                  "startColumn": 13,
+                  "endLine": 4656,
+                  "endColumn": 118
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "FindHoveredWindow",
+                  "decoratedName": "?FindHoveredWindow@@YAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4610,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4613,
+                            "startColumn": 21
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4614,
+                            "startColumn": 10
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4615,
+                            "startColumn": 34
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4617,
+                            "startColumn": 18
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4618,
+                            "startColumn": 18
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4619,
+                            "startColumn": 24
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4622,
+                            "startColumn": 12
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4623,
+                            "startColumn": 12
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4624,
+                            "startColumn": 14
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4624,
+                            "startColumn": 40
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4626,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4627,
+                            "startColumn": 29
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4629,
+                            "startColumn": 27
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4631,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4632,
+                            "startColumn": 30
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4636,
+                            "startColumn": 16
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4637,
+                            "startColumn": 27
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4640,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4641,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4646,
+                            "startColumn": 39
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4654,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4655,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4656,
+                            "startColumn": 59
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4658,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4624,
+                            "startColumn": 47
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4624,
+                            "startColumn": 40
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4626,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4627,
+                            "startColumn": 29
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4629,
+                            "startColumn": 27
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4631,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4632,
+                            "startColumn": 30
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4636,
+                            "startColumn": 16
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4637,
+                            "startColumn": 27
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4640,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4641,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4646,
+                            "startColumn": 39
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4654,
+                            "startColumn": 28
+                          }
+                        },
+                        "message": {
+                          "text": "“window”可能为 NULL (进入此分支)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4655,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4656,
+                            "startColumn": 59
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 4656,
+                            "startColumn": 59
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“window”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "未初始化变量 ImGuiSizeCallbackData::UserData。始终初始化成员变量(type.6)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.h"
+                },
+                "region": {
+                  "startLine": 1764,
+                  "startColumn": 1,
+                  "endLine": 1764,
+                  "endColumn": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGuiSizeCallbackData::{ctor}",
+                  "decoratedName": "??0ImGuiSizeCallbackData@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "ImGuiSizeCallbackData::UserData"
+          }
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiMouseCursor_”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 5471,
+                  "startColumn": 30,
+                  "endLine": 5471,
+                  "endColumn": 81
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::UpdateWindowManualResize",
+                  "decoratedName": "?UpdateWindowManualResize@ImGui@@YA_NPEAUImGuiWindow@@AEBUImVec2@@PEAHHQEAIAEBUImRect@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImDrawCornerFlags_”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 5655,
+                  "startColumn": 150,
+                  "endLine": 5655,
+                  "endColumn": 213
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::RenderWindowDecorations",
+                  "decoratedName": "?RenderWindowDecorations@ImGui@@YAXPEAUImGuiWindow@@AEBUImRect@@_N2HQEBIM@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 - ，然后将结果转换到 8 字节值。在调用运算符 - 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 6723,
+                  "startColumn": 84,
+                  "endLine": 6723,
+                  "endColumn": 115
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::BringWindowToFocusFront",
+                  "decoratedName": "?BringWindowToFocusFront@ImGui@@YAXPEAUImGuiWindow@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 - ，然后将结果转换到 8 字节值。在调用运算符 - 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 6723,
+                  "startColumn": 84,
+                  "endLine": 6723,
+                  "endColumn": 111
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::BringWindowToFocusFront",
+                  "decoratedName": "?BringWindowToFocusFront@ImGui@@YAXPEAUImGuiWindow@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 - ，然后将结果转换到 8 字节值。在调用运算符 - 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 6738,
+                  "startColumn": 64,
+                  "endLine": 6738,
+                  "endColumn": 85
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::BringWindowToDisplayFront",
+                  "decoratedName": "?BringWindowToDisplayFront@ImGui@@YAXPEAUImGuiWindow@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 - ，然后将结果转换到 8 字节值。在调用运算符 - 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 6738,
+                  "startColumn": 64,
+                  "endLine": 6738,
+                  "endColumn": 81
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::BringWindowToDisplayFront",
+                  "decoratedName": "?BringWindowToDisplayFront@ImGui@@YAXPEAUImGuiWindow@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiPopupPositionPolicy”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 8691,
+                  "startColumn": 15,
+                  "endLine": 8691,
+                  "endColumn": 15
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::FindBestWindowPosForPopupEx",
+                  "decoratedName": "?FindBestWindowPosForPopupEx@ImGui@@YA?AUImVec2@@AEBU2@0PEAHAEBUImRect@@2W4ImGuiPopupPositionPolicy@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiDir_”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 8863,
+                  "startColumn": 17,
+                  "endLine": 8863,
+                  "endColumn": 47
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGetDirQuadrantFromDelta",
+                  "decoratedName": "?ImGetDirQuadrantFromDelta@@YAHMM@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6011",
+          "message": {
+            "text": "取消对 NULL 指针“window->Viewport”的引用。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 11383,
+                  "startColumn": 13,
+                  "endLine": 11383,
+                  "endColumn": 74
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::UpdateSelectWindowViewport",
+                  "decoratedName": "?UpdateSelectWindowViewport@ImGui@@YAXPEAUImGuiWindow@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11272,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11273,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11274,
+                            "startColumn": 48
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11277,
+                            "startColumn": 21
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11278,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11283,
+                            "startColumn": 27
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11286,
+                            "startColumn": 71
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11292,
+                            "startColumn": 73
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11307,
+                            "startColumn": 10
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11308,
+                            "startColumn": 32
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11315,
+                            "startColumn": 53
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11320,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11324,
+                            "startColumn": 44
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11328,
+                            "startColumn": 69
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11337,
+                            "startColumn": 14
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11338,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11343,
+                            "startColumn": 26
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11344,
+                            "startColumn": 26
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11347,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11349,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11361,
+                            "startColumn": 101
+                          }
+                        },
+                        "message": {
+                          "text": "“main_viewport”可能为 NULL (跳过此分支)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11379,
+                            "startColumn": 65
+                          }
+                        },
+                        "message": {
+                          "text": "进入此分支(假定“<分支条件>”)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11383,
+                            "startColumn": 56
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“main_viewport”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6011",
+          "message": {
+            "text": "取消对 NULL 指针“window”的引用。查看第 11273 行以找出可能会发生此情况的前一位置"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 11388,
+                  "startColumn": 5,
+                  "endLine": 11388,
+                  "endColumn": 56
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::UpdateSelectWindowViewport",
+                  "decoratedName": "?UpdateSelectWindowViewport@ImGui@@YAXPEAUImGuiWindow@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11272,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11273,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11274,
+                            "startColumn": 48
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11277,
+                            "startColumn": 21
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11278,
+                            "startColumn": 9
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11283,
+                            "startColumn": 27
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11286,
+                            "startColumn": 71
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11292,
+                            "startColumn": 73
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11307,
+                            "startColumn": 10
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11308,
+                            "startColumn": 32
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11315,
+                            "startColumn": 53
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11320,
+                            "startColumn": 20
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“flags”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11324,
+                            "startColumn": 44
+                          }
+                        },
+                        "message": {
+                          "text": "“window”是“ImGui::GetWindowAlwaysWantOwnViewport”的输入/输出参数(在第 891 行中声明)"
+                        }
+                      },
+                      "kinds": [
+                        "declaration"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11324,
+                            "startColumn": 44
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11328,
+                            "startColumn": 69
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11337,
+                            "startColumn": 14
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11338,
+                            "startColumn": 13
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11343,
+                            "startColumn": 26
+                          }
+                        },
+                        "message": {
+                          "text": "进入此分支(假定“window->Viewport==0”)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11344,
+                            "startColumn": 26
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11347,
+                            "startColumn": 9
+                          }
+                        },
+                        "message": {
+                          "text": "进入此分支(假定“!lock_viewport”)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11349,
+                            "startColumn": 19
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“flags”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11361,
+                            "startColumn": 101
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11379,
+                            "startColumn": 65
+                          }
+                        },
+                        "message": {
+                          "text": "进入此分支(假定“<分支条件>”)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11383,
+                            "startColumn": 56
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 11388,
+                            "startColumn": 27
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“window”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiDockRequestType”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 11688,
+                  "startColumn": 9,
+                  "endLine": 11688,
+                  "endColumn": 16
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGuiDockRequest::{ctor}",
+                  "decoratedName": "??0ImGuiDockRequest@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiAxis”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 12101,
+                  "startColumn": 9,
+                  "endLine": 12101,
+                  "endColumn": 46
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::DockContextBuildNodesFromSettings",
+                  "decoratedName": "?DockContextBuildNodesFromSettings@ImGui@@YAXPEAUImGuiContext@@PEAUImGuiDockNodeSettings@@H@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6011",
+          "message": {
+            "text": "取消对 NULL 指针“node”的引用。查看第 12222 行以找出可能会发生此情况的前一位置"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 12311,
+                  "startColumn": 9,
+                  "endLine": 12311,
+                  "endColumn": 40
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::DockContextProcessDock",
+                  "decoratedName": "?DockContextProcessDock@ImGui@@YAXPEAUImGuiContext@@PEAUImGuiDockRequest@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12184,
+                            "startColumn": 5
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12185,
+                            "startColumn": 5
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12187,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12188,
+                            "startColumn": 5
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12190,
+                            "startColumn": 18
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12191,
+                            "startColumn": 18
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12192,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12193,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12199,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12200,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12201,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12213,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12215,
+                            "startColumn": 31
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12219,
+                            "startColumn": 14
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12221,
+                            "startColumn": 14
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12222,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12223,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12224,
+                            "startColumn": 43
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12232,
+                            "startColumn": 14
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12233,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12244,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12246,
+                            "startColumn": 14
+                          }
+                        },
+                        "message": {
+                          "text": "“node”可能为 NULL (跳过此分支)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12311,
+                            "startColumn": 38
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“node”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiDockNodeState”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 12422,
+                  "startColumn": 5,
+                  "endLine": 12422,
+                  "endColumn": 13
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGuiDockNode::{ctor}",
+                  "decoratedName": "??0ImGuiDockNode@@QEAA@I@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6011",
+          "message": {
+            "text": "取消对 NULL 指针“node->TabBar”的引用。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 12498,
+                  "startColumn": 13,
+                  "endLine": 12498,
+                  "endColumn": 81
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::DockNodeAddWindow",
+                  "decoratedName": "?DockNodeAddWindow@ImGui@@YAXPEAUImGuiDockNode@@PEAUImGuiWindow@@_N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12455,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12455,
+                            "startColumn": 38
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12456,
+                            "startColumn": 15
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12462,
+                            "startColumn": 5
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12465,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12466,
+                            "startColumn": 34
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12467,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12468,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12469,
+                            "startColumn": 26
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12470,
+                            "startColumn": 30
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12474,
+                            "startColumn": 61
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12482,
+                            "startColumn": 34
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12493,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12495,
+                            "startColumn": 26
+                          }
+                        },
+                        "message": {
+                          "text": "“node->TabBar”可能为 NULL (进入此分支)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12497,
+                            "startColumn": 30
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12498,
+                            "startColumn": 41
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“node->TabBar”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C28182",
+          "message": {
+            "text": "取消对 NULL 指针的引用。“node”包含与“results->CentralNode”相同的 NULL 值。查看第 12663 行以找出可能会发生此情况的前一位置"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 12677,
+                  "startColumn": 9,
+                  "endLine": 12677,
+                  "endColumn": 27
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "DockNodeFindInfo",
+                  "decoratedName": "?DockNodeFindInfo@@YAXPEAUImGuiDockNode@@PEAUImGuiDockNodeFindInfoResults@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12663,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12669,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12671,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12672,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12673,
+                            "startColumn": 30
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12675,
+                            "startColumn": 44
+                          }
+                        },
+                        "message": {
+                          "text": "“node”可能为 NULL (跳过此分支)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12677,
+                            "startColumn": 27
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“node->ChildNodes[0]”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 12677,
+                            "startColumn": 27
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“node”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 - ，然后将结果转换到 8 字节值。在调用运算符 - 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 13254,
+                  "startColumn": 59,
+                  "endLine": 13254,
+                  "endColumn": 80
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::DockNodeUpdateTabBar",
+                  "decoratedName": "?DockNodeUpdateTabBar@ImGui@@YAXPEAUImGuiDockNode@@PEAUImGuiWindow@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6011",
+          "message": {
+            "text": "取消对 NULL 指针“merge_lead_child”的引用。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 13815,
+                  "startColumn": 5,
+                  "endLine": 13815,
+                  "endColumn": 50
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::DockNodeTreeMerge",
+                  "decoratedName": "?DockNodeTreeMerge@ImGui@@YAXPEAUImGuiContext@@PEAUImGuiDockNode@@1@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13790,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13791,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13792,
+                            "startColumn": 5
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13793,
+                            "startColumn": 5
+                          }
+                        },
+                        "message": {
+                          "text": "“merge_lead_child”可能为 NULL (进入此循环)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13794,
+                            "startColumn": 48
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13801,
+                            "startColumn": 12
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13802,
+                            "startColumn": 27
+                          }
+                        },
+                        "message": {
+                          "text": "“merge_lead_child”是“ImGui::DockNodeMoveChildNodes”的输入/输出参数(在第 11750 行中声明)"
+                        }
+                      },
+                      "kinds": [
+                        "declaration"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13803,
+                            "startColumn": 9
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“child_0”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13808,
+                            "startColumn": 9
+                          }
+                        },
+                        "message": {
+                          "text": "进入此分支(假定“child_1”)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13810,
+                            "startColumn": 28
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13811,
+                            "startColumn": 41
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13813,
+                            "startColumn": 34
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13814,
+                            "startColumn": 34
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 13815,
+                            "startColumn": 32
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“merge_lead_child”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiDockNodeFlagsPrivate_”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 13954,
+                  "startColumn": 57,
+                  "endLine": 13954,
+                  "endColumn": 111
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::DockNodeTreeUpdateSplitter",
+                  "decoratedName": "?DockNodeTreeUpdateSplitter@ImGui@@YAXPEAUImGuiDockNode@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C28182",
+          "message": {
+            "text": "取消对 NULL 指针的引用。“window->DockNode”包含与“node”相同的 NULL 值。查看第 14782 行以找出可能会发生此情况的前一位置"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 14851,
+                  "startColumn": 18,
+                  "endLine": 14851,
+                  "endColumn": 50
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::BeginDocked",
+                  "decoratedName": "?BeginDocked@ImGui@@YAXPEAUImGuiWindow@@PEA_N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14735,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14736,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14738,
+                            "startColumn": 16
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14739,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14750,
+                            "startColumn": 14
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14751,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14752,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14753,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14761,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14762,
+                            "startColumn": 14
+                          }
+                        },
+                        "message": {
+                          "text": "“node”可能为 NULL (跳过此分支)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14764,
+                            "startColumn": 29
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“window->DockId!=0&&node==0”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14782,
+                            "startColumn": 30
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14801,
+                            "startColumn": 26
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“node->HostWindow==0”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14809,
+                            "startColumn": 5
+                          }
+                        },
+                        "message": {
+                          "text": "进入此循环(假定“!!((node->HostWindow))”)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14810,
+                            "startColumn": 5
+                          }
+                        },
+                        "message": {
+                          "text": "进入此循环(假定“!!((node->IsLeafNode()))”)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14811,
+                            "startColumn": 5
+                          }
+                        },
+                        "message": {
+                          "text": "进入此循环(假定“<分支条件>”)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14812,
+                            "startColumn": 17
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14815,
+                            "startColumn": 41
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14822,
+                            "startColumn": 21
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14823,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14824,
+                            "startColumn": 32
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14825,
+                            "startColumn": 26
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14826,
+                            "startColumn": 30
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14827,
+                            "startColumn": 27
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“node->SharedFlags”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14831,
+                            "startColumn": 29
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14835,
+                            "startColumn": 5
+                          }
+                        },
+                        "message": {
+                          "text": "进入此循环(假定“<分支条件>”)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14836,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14837,
+                            "startColumn": 32
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14840,
+                            "startColumn": 23
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14844,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14847,
+                            "startColumn": 68
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14851,
+                            "startColumn": 18
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“node”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6011",
+          "message": {
+            "text": "取消对 NULL 指针“node”的引用。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 14782,
+                  "startColumn": 9,
+                  "endLine": 14782,
+                  "endColumn": 33
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::BeginDocked",
+                  "decoratedName": "?BeginDocked@ImGui@@YAXPEAUImGuiWindow@@PEA_N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14735,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14736,
+                            "startColumn": 19
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14738,
+                            "startColumn": 16
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14739,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14750,
+                            "startColumn": 14
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14751,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14752,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14753,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14761,
+                            "startColumn": 20
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14762,
+                            "startColumn": 14
+                          }
+                        },
+                        "message": {
+                          "text": "“node”可能为 NULL (跳过此分支)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14764,
+                            "startColumn": 29
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“window->DockId!=0&&node==0”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                          },
+                          "region": {
+                            "startLine": 14782,
+                            "startColumn": 30
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“node”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 - ，然后将结果转换到 8 字节值。在调用运算符 - 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 15570,
+                  "startColumn": 71,
+                  "endLine": 15570,
+                  "endColumn": 97
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::ShowMetricsWindow::Funcs::NodeColumns",
+                  "decoratedName": "?NodeColumns@Funcs@?1??ShowMetricsWindow@ImGui@@YAXPEA_N@Z@SAXPEBUImGuiColumns@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26812",
+          "message": {
+            "text": "枚举类型“ImGuiTreeNodeFlags_”未设定范围。相比于 \"enum\"，首选 \"enum class\" (Enum.3)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 15600,
+                  "startColumn": 51,
+                  "endLine": 15600,
+                  "endColumn": 106
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::ShowMetricsWindow::Funcs::NodeWindow",
+                  "decoratedName": "?NodeWindow@Funcs@?1??ShowMetricsWindow@ImGui@@YAXPEA_N@Z@SAXPEAUImGuiWindow@@PEBD@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 * ，然后将结果转换到 8 字节值。在调用运算符 * 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 15663,
+                  "startColumn": 48,
+                  "endLine": 15663,
+                  "endColumn": 69
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::ShowMetricsWindow::Funcs::NodeViewport",
+                  "decoratedName": "?NodeViewport@Funcs@?1??ShowMetricsWindow@ImGui@@YAXPEA_N@Z@SAXPEAUImGuiViewportP@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 * ，然后将结果转换到 8 字节值。在调用运算符 * 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 15823,
+                  "startColumn": 24,
+                  "endLine": 15823,
+                  "endColumn": 39
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::ShowMetricsWindow",
+                  "decoratedName": "?ShowMetricsWindow@ImGui@@YAXPEA_N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 + ，然后将结果转换到 8 字节值。在调用运算符 + 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 15824,
+                  "startColumn": 51,
+                  "endLine": 15824,
+                  "endColumn": 79
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::ShowMetricsWindow",
+                  "decoratedName": "?ShowMetricsWindow@ImGui@@YAXPEA_N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 + ，然后将结果转换到 8 字节值。在调用运算符 + 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 15824,
+                  "startColumn": 83,
+                  "endLine": 15824,
+                  "endColumn": 111
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::ShowMetricsWindow",
+                  "decoratedName": "?ShowMetricsWindow@ImGui@@YAXPEA_N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 + ，然后将结果转换到 8 字节值。在调用运算符 + 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 15825,
+                  "startColumn": 51,
+                  "endLine": 15825,
+                  "endColumn": 79
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::ShowMetricsWindow",
+                  "decoratedName": "?ShowMetricsWindow@ImGui@@YAXPEA_N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "算术溢出: 使用 4 字节值上的运算符 + ，然后将结果转换到 8 字节值。在调用运算符 + 之前将值强制转换为宽类型可避免溢出(io.2)。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+                },
+                "region": {
+                  "startLine": 15825,
+                  "startColumn": 83,
+                  "endLine": 15825,
+                  "endColumn": 111
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "ImGui::ShowMetricsWindow",
+                  "decoratedName": "?ShowMetricsWindow@ImGui@@YAXPEA_N@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.31.31106.2",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "commandLine": "\"D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Tools\\MSVC\\14.31.31103\\bin\\HostX64\\x64\\c1xx.dll\" -ACf{1F7B090C-16DB-4822-966A-A93D26ED4681} -ACpmspft140.dll -Alint -D_PREFAST_ -D_AST_FE_ -Analyze -zm0x00007FF601A49CC0 -il C:\\Users\\WT\\AppData\\Local\\Temp\\_CL_b4e7fedfast -typedil -f imgui.cpp -Ze -D_MSC_EXTENSIONS -Zp16 -pc \\:/ -D_MSC_VER=1931 -D_MSC_FULL_VER=193131106 -D_MSC_BUILD=2 -D_M_AMD64=100 -ZILP448 -D_M_X64=100 -D_WIN64 -D_WIN32 -GR -D_CPPRTTI -nologo -W 3 -diagnostics:column -Ot -DCODE_ANALYSIS -D_UNICODE -DUNICODE -EHs -D_CPPUNWIND -EHc -D__MSVC_RUNTIME_CHECKS -RTCs -RTCu -MTd -clrNoPureCRT -D_DEBUG -D_MT -GS -D_M_FP_PRECISE -Zc:wchar_t -Zc:forScope -std:c++17 -Fobin-int\\Debug-windows-x86_64\\ImGui\\imgui.obj -Fdbin\\Debug-windows-x86_64\\ImGui\\ImGui.pdb -external:W 3 -Gd -analyze:projectdirectory E:\\1_wuteng\\MyProjects\\TinyEngine\\MyTinyEngine\\MyTinyEngine\\TinyEngine\\vendor\\imgui -analyze:rulesetdirectory ;D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\Team Tools\\Static Analysis Tools\\\\Rule Sets; -analyze:ruleset D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\Team Tools\\Static Analysis Tools\\Rule Sets\\NativeRecommendedRules.ruleset -analyze:quiet -analyze:plugin D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Tools\\MSVC\\14.31.31103\\bin\\HostX64\\x64\\EspXEngine.dll -FC -errorreport:prompt -I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Tools\\MSVC\\14.31.31103\\include -I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Tools\\MSVC\\14.31.31103\\atlmfc\\include -I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Auxiliary\\VS\\include -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt -I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Auxiliary\\VS\\UnitTest\\include -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\um -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\shared -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\cppwinrt -I E:\\1_wuteng\\MyProjects\\TinyEngine\\MyTinyEngine\\MyTinyEngine\\TinyEngine\\vendor\\imgui\\Include\\um -external:I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Tools\\MSVC\\14.31.31103\\include -I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Tools\\MSVC\\14.31.31103\\include -external:I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Tools\\MSVC\\14.31.31103\\atlmfc\\include -I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Tools\\MSVC\\14.31.31103\\atlmfc\\include -external:I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Auxiliary\\VS\\include -I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Auxiliary\\VS\\include -external:I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\ucrt -external:I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Auxiliary\\VS\\UnitTest\\include -I D:\\1_wuteng\\Tools\\visual stdio 2022\\IDE\\VC\\Auxiliary\\VS\\UnitTest\\include -external:I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\um -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\um -external:I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\shared -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\shared -external:I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\winrt -external:I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\cppwinrt -I D:\\Windows Kits\\10\\Include\\10.0.19041.0\\cppwinrt -external:I E:\\1_wuteng\\MyProjects\\TinyEngine\\MyTinyEngine\\MyTinyEngine\\TinyEngine\\vendor\\imgui\\Include\\um -I E:\\1_wuteng\\MyProjects\\TinyEngine\\MyTinyEngine\\MyTinyEngine\\TinyEngine\\vendor\\imgui\\Include\\um",
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_internal.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "043aeb6888f3a7f428a8d8596cc687d5ea904b20e7a648d7d73a2478e46c2d2f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_widgets.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "4ff246341892277549f1fff2617075fae125c376d799255ed71c6345eab9d498"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imstb_textedit.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "a583359690fe9acca4158192a520b9c148f1d503c94266f194860da9562e2d70"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/1_wuteng/myprojects/tinyengine/mytinyengine/mytinyengine/tinyengine/vendor/imgui/imgui.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "31f28ba1ac6dfa4cd8e3b7f2e8806fc391719954a03c2561fb62cb31cf0bb253"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/1_wuteng/myprojects/tinyengine/mytinyengine/mytinyengine/tinyengine/vendor/imgui/imconfig.h"
+          },
+          "hashes": {
+            "sha-256": "c4b4fa924a7a720684b47bda75fd321f27baa655d296296ab2b729b55a7a1648"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imstb_truetype.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "80d0c57447b403617fdddccbffb8da509fa3f7d7db5b3aacd9b733061d5a3f67"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_draw.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "698b891e7fce74bf20377b93f99f8e48a4b0300f9c185e160726f42e806e93e0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///e:/1_wuteng/myprojects/tinyengine/mytinyengine/mytinyengine/tinyengine/vendor/imgui/imstb_rectpack.h"
+          },
+          "hashes": {
+            "sha-256": "61eb7950e45d4831faac6629a727ac464ddcfcf199eb27a7b47de02b898ab6ef"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui_demo.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "6970243149dfebcc93135f8843d35f0fc9479239756e49fe491fb42733f4d60c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///E:/1_wuteng/MyProjects/TinyEngine/MyTinyEngine/MyTinyEngine/TinyEngine/vendor/imgui/imgui.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "2e6764ac2fedd4bcf2e6b5b0f31b43f579e05825f6c886cf4cda5a8947fcbe01"
+          }
+        }
+      ]
+    }
+  ]
+}
