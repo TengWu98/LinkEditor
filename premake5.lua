@@ -44,7 +44,6 @@ project "MeshEditor"
     -- ImGui
     ImGuiDir = "lib/imgui"
 
-
     files
     {
         "src/**.h",
