@@ -10,10 +10,11 @@ workspace "MeshEditor"
 
     platforms
     {
-        'x64'
+        'Win64'
     }
 
-    filter "platforms:x64"
+    filter "platforms:Win64"
+        system "windows"
         architecture "x64"
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -53,8 +54,7 @@ project "MeshEditor"
     includedirs
     {
         "src",
-        "%{ImGuiDir}",
-        "%{ImGuiDir}/backends",
+        "%{ImGuiDir}/**",
     }
 
     links
@@ -73,11 +73,17 @@ project "MeshEditor"
         }
 
     filter "configurations:Debug"
-        defines "MESH_EDITOR_DEBUG"
+        defines
+        {
+            "MESH_EDITOR_DEBUG"
+        }
         runtime "Debug"
         symbols "on"
 
     filter "configurations:Release"
-        defines "MESH_EDITOR_RELEASE"
+        defines
+        {
+            "MESH_EDITOR_RELEASE"
+        }
         runtime "Release"
         optimize "on"
