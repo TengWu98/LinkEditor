@@ -1,3 +1,5 @@
+include "Dependencies.lua"
+
 workspace "MeshEditor"
 
     startproject "MeshEditor"
@@ -13,14 +15,20 @@ workspace "MeshEditor"
         'Win64'
     }
 
+    flags
+	{
+		"MultiProcessorCompile"
+	}
+
     filter "platforms:Win64"
         system "windows"
         architecture "x64"
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-    group "ThirdParty"
-        include "lib/imgui"
+    group "Dependencies"
+        include "lib/ImGui"
+        include "lib/GLFW"
     group ""
 
 
@@ -42,30 +50,43 @@ project "MeshEditor"
 
     pchsource "src/pch.cpp"
 
-    -- ImGui
-    ImGuiDir = "lib/imgui"
-
     files
     {
         "src/**.h",
         "src/**.cpp",
+
+        "%{IncludeDir.stb_image}/**.h",
+        "%{IncludeDir.stb_image}/**.cpp",
+
+        "%{IncludeDir.glm}/**.hpp",
+        "%{IncludeDir.glm}/**.inl",
+
+        "%{IncludeDir.ImGuizmo}/ImGuizmo.h",
+		"%{IncludeDir.ImGuizmo}/ImGuizmo.cpp"
     }
 
     includedirs
     {
         "src",
-        "%{ImGuiDir}/**",
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.ImGuizmo}",
+        "%{IncludeDir.stb_image}",
     }
 
     links
     {
         "ImGui",
+        "GLFW",
+        "opengl32",
     }
 
     flags { "NoPCH" }
 
     filter "system:windows"
         systemversion "latest"
+
         defines
         {
             "MESH_EDITOR_PLATFORM_WINDOWS",
@@ -77,6 +98,7 @@ project "MeshEditor"
         {
             "MESH_EDITOR_DEBUG"
         }
+
         runtime "Debug"
         symbols "on"
 
@@ -85,5 +107,6 @@ project "MeshEditor"
         {
             "MESH_EDITOR_RELEASE"
         }
+
         runtime "Release"
         optimize "on"
