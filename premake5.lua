@@ -73,6 +73,8 @@ project "MeshEditor"
         "%{IncludeDir.glm}",
         "%{IncludeDir.ImGuizmo}",
         "%{IncludeDir.stb_image}",
+        "%{IncludeDir.entt}",
+        "%{IncludeDir.OpenMesh}",
     }
 
     links
@@ -91,12 +93,20 @@ project "MeshEditor"
         {
             "MESH_EDITOR_PLATFORM_WINDOWS",
             "MESH_EDITOR_ENABLE_ASSERTS",
+
+            "_USE_MATH_DEFINES", -- OpenMesh
         }
 
     filter "configurations:Debug"
         defines
         {
             "MESH_EDITOR_DEBUG"
+        }
+
+        links
+        {
+            "lib/OpenMesh/lib/OpenMeshCored.lib",
+            "lib/OpenMesh/lib/OpenMeshToolsd.lib",
         }
 
         runtime "Debug"
@@ -106,6 +116,12 @@ project "MeshEditor"
         defines
         {
             "MESH_EDITOR_RELEASE"
+        }
+
+        links
+        {
+            "lib/OpenMesh/lib/OpenMeshCore.lib",
+            "lib/OpenMesh/lib/OpenMeshTools.lib",
         }
 
         runtime "Release"

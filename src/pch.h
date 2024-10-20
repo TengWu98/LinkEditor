@@ -1,6 +1,11 @@
 #pragma once
 
+#ifdef MESH_EDITOR_PLATFORM_WINDOWS
+#include <Windows.h>
+#endif
+
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include <memory>
 #include <utility>
@@ -16,3 +21,10 @@
 #include <list>
 #include <unordered_map>
 #include <unordered_set>
+
+// glm
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
+#include <glm/mat3x3.hpp>
+#include <glm/mat4x4.hpp>
