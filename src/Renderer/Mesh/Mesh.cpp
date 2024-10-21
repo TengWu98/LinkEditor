@@ -26,7 +26,7 @@ bool Mesh::Load(const fs::path& InMeshFilePath, PolyMesh& OutMesh)
 {
     OpenMesh::IO::Options ReadOptions;
     if (!OpenMesh::IO::read_mesh(OutMesh, InMeshFilePath.string(), ReadOptions)) {
-        std::cerr << "Error loading mesh: " << InMeshFilePath << std::endl;
+        std::cerr << "Error loading mesh: " << InMeshFilePath << "\n";
         return false;
     }
     return true;
@@ -40,22 +40,24 @@ struct VertexHash {
 
 Mesh::PolyMesh Mesh::DeduplicateVertices()
 {
-    PolyMesh deduped;
-    std::unordered_map<Point, VH, VertexHash> unique_vertices;
-
+    PolyMesh Deduped;
+    
+    std::unordered_map<Point, VH, VertexHash> UniqueVertices;
     // Add unique vertices.
-    for (auto v_it = M.vertices_begin(); v_it != M.vertices_end(); ++v_it) {
-        const auto p = M.point(*v_it);
-        if (auto [it, inserted] = unique_vertices.try_emplace(p, VH()); inserted) {
-            it->second = deduped.add_vertex(p);
+    for (auto VertexIter = M.vertices_begin(); VertexIter != M.vertices_end(); ++VertexIter) {
+        const auto Point = M.point(*VertexIter);
+        if (auto [Iter, bIsInserted] = UniqueVertices.try_emplace(Point, VH()); bIsInserted) {
+            Iter->second = Deduped.add_vertex(Point);
         }
     }
+    
     // Add faces.
-    for (const auto &fh : M.faces()) {
-        std::vector<VH> new_face;
-        new_face.reserve(M.valence(fh));
-        for (const auto &vh : M.fv_range(fh)) new_face.emplace_back(unique_vertices.at(M.point(vh)));
-        deduped.add_face(new_face);
+    for (const auto& FH : M.faces()) {
+        std::vector<VH> NewFace;
+        NewFace.reserve(M.valence(FH));
+        for (const auto& VH : M.fv_range(FH)) NewFace.emplace_back(UniqueVertices.at(M.point(VH)));
+        Deduped.add_face(NewFace);
     }
-    return deduped;
+    
+    return Deduped;
 }

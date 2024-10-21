@@ -5,8 +5,6 @@
 #include <OpenMesh/Core/IO/MeshIO.hh>
 #include <OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh>
 
-namespace fs = std::filesystem;
-
 namespace om {
     using PolyMesh = OpenMesh::PolyMesh_ArrayKernelT<>;
     using VH = OpenMesh::VertexHandle;
