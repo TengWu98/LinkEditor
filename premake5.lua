@@ -109,6 +109,7 @@ project "MeshEditor"
             "lib/OpenMesh/lib/OpenMeshToolsd.lib",
         }
 
+        staticruntime "off"
         runtime "Debug"
         symbols "on"
 
@@ -124,5 +125,6 @@ project "MeshEditor"
             "lib/OpenMesh/lib/OpenMeshTools.lib",
         }
 
+        staticruntime "off"
         runtime "Release"
         optimize "on"
