@@ -106,7 +106,9 @@ int main(int, char**)
     //IM_ASSERT(font != nullptr);
 
     // Our state
-    ImVec4 ClearColor = ImVec4(1.f, 0.f, 0.f, 1.00f);
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 ClearColor = ImVec4(1.f, 0.f, 0.f, 1.f);
 
     Application app;
 
@@ -131,6 +133,7 @@ int main(int, char**)
         ImGui::NewFrame();
 
         app.Run();
+        // ImGui::ShowDemoWindow(&show_demo_window);
 
         // Rendering
         ImGui::Render();
