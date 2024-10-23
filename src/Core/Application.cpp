@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 #include "imgui_internal.h"
+#include <nfd.h>
 
 static void ShowDockingDisabledMessage()
 {
@@ -35,15 +36,30 @@ void Application::RenderUI()
 {
     static bool bIsFullScreen = true;
     static bool bIsPadding = true;
+    static bool bIsShowLogWindow = false;
     
     // top main menu bar
     if (ImGui::BeginMainMenuBar())
     {
         if(ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Open"))
+            if (ImGui::MenuItem("Load Mesh"))
             {
-                // TODO(WT) 添加导入Mesh文件处理
+                static const std::vector<nfdfilteritem_t> Filters {
+                    {"Mesh object", "obj,off,ply,stl,om"}
+                };
+                nfdchar_t *NFDPath;
+                nfdresult_t Result = NFD_OpenDialog(&NFDPath, Filters.data(), Filters.size(), "");
+                if (Result == NFD_OKAY)
+                {
+                    const auto Path = fs::path(NFDPath);
+                    // MainScene->AddMesh(Path, {.Name = Path.filename().string()});
+                    NFD_FreePath(NFDPath);
+                }
+                else if (Result != NFD_CANCEL) {
+                    throw std::runtime_error(std::format("Error loading mesh file: {}", NFD_GetError()));
+                }
+                
                 // TODO(WT) 添加导入、保存标签文件的处理
             }
             
@@ -54,6 +70,7 @@ void Application::RenderUI()
         {
             ImGui::MenuItem("Fullscreen", nullptr, &bIsFullScreen);
             ImGui::MenuItem("Padding", nullptr, &bIsPadding);
+            ImGui::MenuItem("Show Log Window", nullptr, &bIsShowLogWindow);
             ImGui::EndMenu();
         }
     
@@ -135,7 +152,7 @@ void Application::RenderUI()
     // show control window
     static float FloatValue = 0.0f;
     static int Counter = 0;
-    ImVec4 ClearColor = ImVec4(1.f, 0.f, 0.f, 1.f);
+    static ImVec4 ClearColor = ImVec4(1.f, 0.f, 0.f, 1.f);
     
     ImGui::Begin("Basic Control");
     
@@ -155,4 +172,14 @@ void Application::RenderUI()
     ImGui::Begin("Viewport");
 
     ImGui::End();
+
+    // show log message
+    if(bIsShowLogWindow)
+    {
+        ImGui::Begin("Log");
+    
+        ImGui::End();
+    }
+    
+    ImGui::Render();
 }

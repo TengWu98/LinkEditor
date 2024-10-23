@@ -75,6 +75,7 @@ project "MeshEditor"
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.entt}",
         "%{IncludeDir.OpenMesh}",
+        "%{IncludeDir.nfd}",
     }
 
     links
@@ -82,6 +83,7 @@ project "MeshEditor"
         "ImGui",
         "GLFW",
         "opengl32",
+        "lib/nfd/lib/nfd.lib"
     }
 
     flags { "NoPCH" }
