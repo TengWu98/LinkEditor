@@ -88,8 +88,6 @@ int main(int, char**)
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    // Load Fonts
-
     // Our state
     ImVec4 ClearColor = ImVec4(1.f, 0.f, 0.f, 1.f);
 

@@ -1,8 +1,15 @@
 ﻿#include "Application.h"
+#include "Core/Window/Window.h"
+
+#include <nfd.h>
 
 #include "imgui.h"
 #include "imgui_internal.h"
-#include <nfd.h>
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+const char* glsl_version = "#version 130";
+static std::shared_ptr<Application> Instance = nullptr;
 
 static void ShowDockingDisabledMessage()
 {
@@ -16,23 +23,56 @@ static void ShowDockingDisabledMessage()
 
 Application::Application()
 {
+    AppWindow = std::make_unique<Window>();
+    NFD_Init();
+    SetupImGui();
 }
 
 Application::~Application()
 {
+    NFD_Quit();
+}
+
+std::shared_ptr<Application> Application::GetInstance()
+{
+    if(!Instance)
+    {
+        Instance = std::make_shared<Application>();
+    }
+
+    return Instance;
 }
 
 void Application::Run()
 {
-    RenderScene();
-    RenderUI();
+    while (!glfwWindowShouldClose(AppWindow->NativeWindow))
+    {
+        // Poll and handle events (inputs, window resize, etc.)
+        glfwPollEvents();
+        if (glfwGetWindowAttrib(AppWindow->NativeWindow, GLFW_ICONIFIED) != 0)
+        {
+            ImGui_ImplGlfw_Sleep(10);
+            continue;
+        }
+
+        // Start the Dear ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        
+        RenderImGUI();
+
+        
+    }
 }
 
-void Application::RenderScene()
+void Application::SetupImGui()
 {
+    ImGui_ImplGlfw_InitForOpenGL(AppWindow->NativeWindow, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
 }
 
-void Application::RenderUI()
+void Application::RenderImGUI()
 {
     static bool bIsFullScreen = true;
     static bool bIsPadding = true;
@@ -46,7 +86,7 @@ void Application::RenderUI()
             if (ImGui::MenuItem("Load Mesh"))
             {
                 static const std::vector<nfdfilteritem_t> Filters {
-                    {"Mesh object", "obj,off,ply,stl,om"}
+                    {"Mesh object", "obj, off, ply, stl, om"}
                 };
                 nfdchar_t *NFDPath;
                 nfdresult_t Result = NFD_OpenDialog(&NFDPath, Filters.data(), Filters.size(), "");
@@ -169,9 +209,9 @@ void Application::RenderUI()
     ImGui::End();
 
     // show viewport
-    ImGui::Begin("Viewport");
-
-    ImGui::End();
+    // ImGui::Begin("Viewport");
+    //
+    // ImGui::End();
 
     // show log message
     if(bIsShowLogWindow)
