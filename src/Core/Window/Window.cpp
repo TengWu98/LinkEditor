@@ -20,11 +20,22 @@ static void KeyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, i
     
 }
 
+static void GLFWErrorCallback(int Error, const char* Description)
+{
+    fprintf(stderr, "GLFW Error %d: %s\n", Error, Description);
+}
+
 Window::Window()
 {
+    glfwSetErrorCallback(GLFWErrorCallback);
+    
     // glfw: initialize and configure
     // ------------------------------
-    glfwInit();
+    if(!glfwInit())
+    {
+        glfwTerminate();
+    }
+    
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
