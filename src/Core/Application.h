@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <imgui.h>
+
 #include "pch.h"
 
 class Renderer;
@@ -24,4 +26,8 @@ private:
     std::unique_ptr<Scene> MainScene;
     
     static std::shared_ptr<Application> Instance;
+
+    bool bIsFirstTick = true;
+
+    ImGuiID DockSpaceId;
 };

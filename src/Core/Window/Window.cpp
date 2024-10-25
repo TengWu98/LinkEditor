@@ -25,7 +25,8 @@ static void GLFWErrorCallback(int Error, const char* Description)
     fprintf(stderr, "GLFW Error %d: %s\n", Error, Description);
 }
 
-Window::Window()
+Window::Window(std::shared_ptr<Camera> InCamera)
+    : RenderCamera(InCamera)
 {
     glfwSetErrorCallback(GLFWErrorCallback);
     

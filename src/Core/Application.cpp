@@ -1,6 +1,7 @@
 ﻿#include "Application.h"
 #include "Core/Window/Window.h"
 #include "Scene/Scene.h"
+#include "Renderer/Camera/Camera.h"
 
 #include <nfd.h>
 
@@ -9,7 +10,6 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-const char* glsl_version = "#version 130";
 std::shared_ptr<Application> Application::Instance = nullptr;
 
 static void ShowDockingDisabledMessage()
@@ -24,7 +24,9 @@ static void ShowDockingDisabledMessage()
 
 Application::Application()
 {
-    AppWindow = std::make_unique<Window>();
+    // Camera暂时写死
+    std::shared_ptr<Camera> RenderCamera = std::make_shared<Camera>(glm::vec3(0.0f, 20.0f, 30.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90, -40);
+    AppWindow = std::make_unique<Window>(RenderCamera);
     NFD_Init();
     SetupImGui();
 }
@@ -95,6 +97,8 @@ void Application::Run()
 
 void Application::SetupImGui()
 {
+    const char* glsl_version = "#version 130";
+    
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &IO = ImGui::GetIO();
@@ -121,68 +125,18 @@ void Application::SetupImGui()
 
 void Application::RenderImGUI()
 {
+    const float LeftSide = 250;
+    const float RightSide = 300;
+    // const float TopSide = 250;
+    const float BottomSide = 250;
+    
     static bool bIsFullScreen = true;
     static bool bIsPadding = true;
+
+    // for windows
+    static bool bIsShowControlWindow = true;
+    static bool bIsShowViewport = true;
     static bool bIsShowLogWindow = false;
-    
-    // top main menu bar
-    if (ImGui::BeginMainMenuBar())
-    {
-        if(ImGui::BeginMenu("File"))
-        {
-            if (ImGui::MenuItem("Load Mesh"))
-            {
-                static const std::vector<nfdfilteritem_t> Filters {
-                    {"Mesh object", "obj, off, ply, stl, om"}
-                };
-                nfdchar_t *NFDPath;
-                nfdresult_t Result = NFD_OpenDialog(&NFDPath, Filters.data(), Filters.size(), "");
-                if (Result == NFD_OKAY)
-                {
-                    const auto Path = fs::path(NFDPath);
-                    // MainScene->AddMesh(Path, {.Name = Path.filename().string()});
-                    NFD_FreePath(NFDPath);
-                }
-                else if (Result != NFD_CANCEL) {
-                    throw std::runtime_error(std::format("Error loading mesh file: {}", NFD_GetError()));
-                }
-                
-                // TODO(WT) 添加导入、保存标签文件的处理
-            }
-            
-            ImGui::EndMenu();
-        }
-        
-        if(ImGui::BeginMenu("Options"))
-        {
-            ImGui::MenuItem("Fullscreen", nullptr, &bIsFullScreen);
-            ImGui::MenuItem("Padding", nullptr, &bIsPadding);
-            ImGui::MenuItem("Show Log Window", nullptr, &bIsShowLogWindow);
-            ImGui::EndMenu();
-        }
-    
-        if(ImGui::BeginMenu("Themes"))
-        {
-            if(ImGui::MenuItem("Dark"))
-            {
-                ImGui::StyleColorsDark();
-            }
-    
-            if(ImGui::MenuItem("Light"))
-            {
-                ImGui::StyleColorsLight();
-            }
-    
-            if(ImGui::MenuItem("Classic"))
-            {
-                ImGui::StyleColorsClassic();
-            }
-    
-            ImGui::EndMenu();
-        }
-        
-        ImGui::EndMainMenuBar();
-    }
 
     const ImGuiViewport* Viewport = ImGui::GetMainViewport();
     if(!Viewport)
@@ -191,7 +145,7 @@ void Application::RenderImGUI()
     }
 
     static ImGuiDockNodeFlags DockSpaceFlags = ImGuiDockNodeFlags_None;
-    ImGuiWindowFlags WindowFlags = ImGuiWindowFlags_NoDocking;
+    ImGuiWindowFlags WindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus;
     
     if(bIsFullScreen)
     {
@@ -220,18 +174,89 @@ void Application::RenderImGUI()
         WindowFlags |= ImGuiWindowFlags_NoBackground;
     }
 
+    ImGuiIO& IO = ImGui::GetIO();
+
     // show docking space
     ImGui::Begin("Mesh Editor", nullptr, WindowFlags);
-    
-    ImGuiIO& IO = ImGui::GetIO();
+
     if(IO.ConfigFlags & ImGuiConfigFlags_DockingEnable)
     {
-        ImGuiID DockSpaceId = ImGui::GetID("MeshEditorDockSpace");
+        DockSpaceId = ImGui::GetID("MeshEditorDockSpace");
         ImGui::DockSpace(DockSpaceId, ImVec2(0.0f, 0.0f), DockSpaceFlags);
     }
     else
     {
         ShowDockingDisabledMessage();
+    }
+
+    // show status bar
+    ImGui::Text(" %.3f ms/frame (%.1f FPS)", 1000.0f / IO.Framerate, IO.Framerate);
+    
+    // top menu bar
+    if (ImGui::BeginMenuBar())
+    {
+        if(ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Load Mesh"))
+            {
+                static const std::vector<nfdfilteritem_t> Filters {
+                        {"Mesh object", "obj, off, ply, stl, om"}
+                };
+                nfdchar_t *NFDPath;
+                nfdresult_t Result = NFD_OpenDialog(&NFDPath, Filters.data(), Filters.size(), "");
+                if (Result == NFD_OKAY)
+                {
+                    const auto Path = fs::path(NFDPath);
+                    // MainScene->AddMesh(Path, {.Name = Path.filename().string()});
+                    NFD_FreePath(NFDPath);
+                }
+                else if (Result != NFD_CANCEL) {
+                    throw std::runtime_error(std::format("Error loading mesh file: {}", NFD_GetError()));
+                }
+                
+                // TODO(WT) 添加导入、保存标签文件的处理
+            }
+            
+            ImGui::EndMenu();
+        }
+        
+        if(ImGui::BeginMenu("Options"))
+        {
+            ImGui::MenuItem("Fullscreen", nullptr, &bIsFullScreen);
+            ImGui::MenuItem("Padding", nullptr, &bIsPadding);
+            ImGui::EndMenu();
+        }
+    
+        if(ImGui::BeginMenu("Themes"))
+        {
+            if(ImGui::MenuItem("Dark"))
+            {
+                ImGui::StyleColorsDark();
+            }
+    
+            if(ImGui::MenuItem("Light"))
+            {
+                ImGui::StyleColorsLight();
+            }
+    
+            if(ImGui::MenuItem("Classic"))
+            {
+                ImGui::StyleColorsClassic();
+            }
+    
+            ImGui::EndMenu();
+        }
+
+        if(ImGui::BeginMenu("Windows"))
+        {
+            ImGui::Checkbox("ControlPanel", &bIsShowControlWindow);
+            ImGui::Checkbox("Viewport", &bIsShowViewport);
+            ImGui::Checkbox("Log", &bIsShowLogWindow);
+    
+            ImGui::EndMenu();
+        }
+        
+        ImGui::EndMenuBar();
     }
     
     ImGui::End();
@@ -240,33 +265,45 @@ void Application::RenderImGUI()
     static float FloatValue = 0.0f;
     static int Counter = 0;
     static ImVec4 ClearColor = ImVec4(1.f, 0.f, 0.f, 1.f);
+
+    if(bIsShowControlWindow)
+    {
+        ImGui::Begin("Basic Control");
     
-    ImGui::Begin("Basic Control");
+        ImGui::SeparatorText("General Setting");
+        {
+            ImGui::SliderFloat("Camera Speed", &AppWindow->RenderCamera->MovementSpeed, 0.0f, 50.0f);
+        }
     
-    ImGui::SliderFloat("float", &FloatValue, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-    ImGui::ColorEdit3("clear color", (float*)&ClearColor); // Edit 3 floats representing a color
-        
-    if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-        Counter++;
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", Counter);
-        
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / IO.Framerate, IO.Framerate);
+        ImGui::SeparatorText("Rendering Setting");
+        {
+            ImGui::ColorEdit3("Clear Color", (float*)&AppWindow->ClearColor);
+        }
     
-    ImGui::End();
+        ImGui::End();
+    }
 
     // show viewport
-    ImGui::Begin("Viewport");
+    if(bIsShowViewport)
+    {
+        ImGui::Begin("Viewport");
     
-    ImGui::End();
+        ImGui::End();
+    }
 
     // show log message
-    // if(bIsShowLogWindow)
-    // {
-    //     ImGui::Begin("Log");
-    //
-    //     ImGui::End();
-    // }
+    if(bIsShowLogWindow)
+    {
+        ImGui::Begin("Log");
+    
+        ImGui::End();
+    }
     
     ImGui::Render();
+
+    {
+        // ImGui::DockBuilderRemoveNode(mainID); // Clear out existing layout
+        // ImGui::DockBuilderAddNode(mainID); // Add empty node
+        // ImGui::DockBuilderSetNodeSize(mainID, ImGui::GetMainViewport()->Size);
+    }
 }
