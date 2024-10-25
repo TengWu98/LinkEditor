@@ -36,6 +36,7 @@ Application::~Application()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    
     glfwDestroyWindow(AppWindow->NativeWindow);
     NFD_Quit();
 }
@@ -118,6 +119,14 @@ void Application::SetupImGui()
         Style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
 
+    // Fonts(TODO(WT) 当前字体只有windows系统能拿到)
+    const char* MSYHPath = "c:\\Windows\\Fonts\\msyh.ttc";
+    if (std::filesystem::exists(MSYHPath))
+    {
+        IO.Fonts->AddFontFromFileTTF(MSYHPath, 18.0f,nullptr,
+        IO.Fonts->GetGlyphRangesChineseFull());
+    }
+
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(AppWindow->NativeWindow, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
@@ -188,9 +197,6 @@ void Application::RenderImGUI()
     {
         ShowDockingDisabledMessage();
     }
-
-    // show status bar
-    ImGui::Text(" %.3f ms/frame (%.1f FPS)", 1000.0f / IO.Framerate, IO.Framerate);
     
     // top menu bar
     if (ImGui::BeginMenuBar())
@@ -272,12 +278,18 @@ void Application::RenderImGUI()
     
         ImGui::SeparatorText("General Setting");
         {
+            ImGui::Text("FPS : %.1f", IO.Framerate);
             ImGui::SliderFloat("Camera Speed", &AppWindow->RenderCamera->MovementSpeed, 0.0f, 50.0f);
         }
     
         ImGui::SeparatorText("Rendering Setting");
         {
             ImGui::ColorEdit3("Clear Color", (float*)&AppWindow->ClearColor);
+        }
+
+        ImGui::SeparatorText("Mesh Labeling");
+        {
+            
         }
     
         ImGui::End();
