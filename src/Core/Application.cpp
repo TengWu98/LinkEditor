@@ -1,5 +1,6 @@
 ﻿#include "Application.h"
 #include "Core/Window/Window.h"
+#include "Scene/Scene.h"
 
 #include <nfd.h>
 
@@ -9,7 +10,7 @@
 #include "imgui_impl_opengl3.h"
 
 const char* glsl_version = "#version 130";
-static std::shared_ptr<Application> Instance = nullptr;
+std::shared_ptr<Application> Application::Instance = nullptr;
 
 static void ShowDockingDisabledMessage()
 {
@@ -30,6 +31,10 @@ Application::Application()
 
 Application::~Application()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+    glfwDestroyWindow(AppWindow->NativeWindow);
     NFD_Quit();
 }
 
@@ -45,6 +50,8 @@ std::shared_ptr<Application> Application::GetInstance()
 
 void Application::Run()
 {
+    ImVec4 ClearColor = ImVec4(1.f, 0.f, 0.f, 1.f);
+    
     while (!glfwWindowShouldClose(AppWindow->NativeWindow))
     {
         // Poll and handle events (inputs, window resize, etc.)
@@ -59,15 +66,55 @@ void Application::Run()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        
+
+        // Render ImGui
         RenderImGUI();
 
+        // Render Scene
+        int display_w, display_h;
+        glfwGetFramebufferSize(AppWindow->NativeWindow, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+        glClearColor(ClearColor.x * ClearColor.w, ClearColor.y * ClearColor.w, ClearColor.z * ClearColor.w, ClearColor.w);
+        glClear(GL_COLOR_BUFFER_BIT);
         
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        
+        // Update and Render additional Platform Windows
+        ImGuiIO& IO = ImGui::GetIO();
+        if (IO.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            GLFWwindow* BackupCurrentContext = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(BackupCurrentContext);
+        }
+        
+        glfwSwapBuffers(AppWindow->NativeWindow);
     }
 }
 
 void Application::SetupImGui()
 {
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &IO = ImGui::GetIO();
+    (void)IO;
+    IO.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+    IO.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;        // Enable Gamepad Controls
+    IO.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+    IO.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+    // IO.ConfigViewportsNoAutoMerge = true;
+    // IO.ConfigViewportsNoTaskBarIcon = true;
+
+    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+    ImGuiStyle& Style = ImGui::GetStyle();
+    if (IO.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        Style.WindowRounding = 0.0f;
+        Style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+
+    // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(AppWindow->NativeWindow, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 }
@@ -209,17 +256,17 @@ void Application::RenderImGUI()
     ImGui::End();
 
     // show viewport
-    // ImGui::Begin("Viewport");
-    //
-    // ImGui::End();
+    ImGui::Begin("Viewport");
+    
+    ImGui::End();
 
     // show log message
-    if(bIsShowLogWindow)
-    {
-        ImGui::Begin("Log");
-    
-        ImGui::End();
-    }
+    // if(bIsShowLogWindow)
+    // {
+    //     ImGui::Begin("Log");
+    //
+    //     ImGui::End();
+    // }
     
     ImGui::Render();
 }

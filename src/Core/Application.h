@@ -4,6 +4,7 @@
 
 class Renderer;
 class Window;
+class Scene;
 
 class Application
 {
@@ -20,5 +21,7 @@ public:
 
 private:
     std::unique_ptr<Window> AppWindow;
+    std::unique_ptr<Scene> MainScene;
+    
     static std::shared_ptr<Application> Instance;
 };
