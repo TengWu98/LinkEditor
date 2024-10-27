@@ -29,6 +29,11 @@ struct SceneNode {
     std::unordered_map<entt::entity, unsigned int> ModelIndices;
 };
 
+enum class SelectionMode {
+    Object,  // Select objects
+    Element, // Select individual mesh elements (vertices, edges, faces)
+};
+
 struct MeshCreateInfo
 {
     std::string Name;
@@ -69,6 +74,7 @@ public:
 
     // std::unique_ptr<Gizmo> Gizmo;
 
+    SelectionMode SelectionMode = SelectionMode::Object;
     MeshElement SelectionMeshElement = MeshElement::Face;
     MeshElementIndex SelectedElement;
 };

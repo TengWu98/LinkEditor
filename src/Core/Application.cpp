@@ -273,6 +273,7 @@ void Application::RenderImGUI()
         ImGui::SeparatorText("Rendering Setting");
         {
             ImGui::ColorEdit3("BG Color", (float*)&MainScene->BackgroundColor);
+            ImGui::SeparatorText("Render Mode");
         }
 
         ImGui::SeparatorText("Mesh Labeling");

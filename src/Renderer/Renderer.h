@@ -5,10 +5,16 @@
 class Camera;
 class Shader;
 class VertexArray;
-class Scene;
+
+struct SceneData
+{
+    glm::mat4 ViewProjectionMatrix;
+};
 
 class Renderer
 {
 public:
-    void Render();
+    void Render(std::shared_ptr<Shader>& Shader, std::shared_ptr<VertexArray>& VertexArray);
+
+    static std::unique_ptr<SceneData> RendererSceneData;
 };
