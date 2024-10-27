@@ -1,6 +1,6 @@
 ﻿#include "Window.h"
 
-static void MouseCallback(GLFWwindow* Window, double XPos, double YPos)
+static void CursorPosCallback(GLFWwindow* Window, double XPos, double YPos)
 {
     
 }
@@ -10,7 +10,7 @@ static void ScrollCallback(GLFWwindow* Window, double XOffset, double YOffset)
     
 }
 
-static void MouseClickCallback(GLFWwindow* Window, int Button, int Action, int Mods)
+static void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int Mods)
 {
     
 }
@@ -20,21 +20,51 @@ static void KeyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, i
     
 }
 
-static void GLFWErrorCallback(int Error, const char* Description)
+static void CharCallback(GLFWwindow* Window, unsigned int Char)
 {
-    fprintf(stderr, "GLFW Error %d: %s\n", Error, Description);
+    
 }
 
-Window::Window(std::shared_ptr<Camera> InCamera)
-    : RenderCamera(InCamera)
+static void WindowSizeCallback(GLFWwindow* Window, int Width, int Height)
 {
+    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    WindowData.Width = Width;
+    WindowData.Height = Height;
+}
+
+static void WindowCloseCallback(GLFWwindow* Window)
+{
+    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+}
+
+static void GLFWErrorCallback(int Error, const char* Description)
+{
+    LOG_ERROR("GLFW Error {0}: {1}\n", Error, Description);
+}
+
+Window::Window(const WindowProps& Props)
+{
+    Init(Props);
+}
+
+Window::~Window()
+{
+    Shutdown();
+}
+
+void Window::Init(const WindowProps& Props)
+{
+    WindowData.Name = Props.Name;
+    WindowData.Width = Props.Width;
+    WindowData.Height = Props.Height;
+    
     glfwSetErrorCallback(GLFWErrorCallback);
     
     // glfw: initialize and configure
     // ------------------------------
     if(!glfwInit())
     {
-        glfwTerminate();
+        return;
     }
     
     // Decide GL+GLSL versions
@@ -52,31 +82,69 @@ Window::Window(std::shared_ptr<Camera> InCamera)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
 #else
-    // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 130";
+    // GL 3.3 + GLSL 150
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SAMPLES, 8);
+    // glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    // glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 #endif
 
     // Create window with graphics context
-    NativeWindow = glfwCreateWindow(1280, 720, "Mesh Editor", nullptr, nullptr);
+    NativeWindow = glfwCreateWindow(static_cast<int>(WindowData.Width), static_cast<int>(WindowData.Height), WindowData.Name.c_str(), nullptr, nullptr);
     if (!NativeWindow)
     {
-        std::cout << "Failed to create GLFW window \n";
+        LOG_ERROR("Failed to create GLFW window \n");
         glfwTerminate();
         return;
     }
-    
+     
     glfwMakeContextCurrent(NativeWindow);
     glfwSwapInterval(1); // Enable vsync
 
+    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    if (!status)
+    {
+        LOG_ERROR("Failed to initialize GLAD \n");
+        return;
+    }
+
+    LOG_INFO("OpenGL Info:");
+    LOG_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
+    LOG_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
+    LOG_INFO("  Version: {0}", glGetString(GL_VERSION));
+    
+    glfwSetWindowUserPointer(NativeWindow, &WindowData);
+
     // Set GLFW callback functions
-    glfwSetCursorPosCallback(NativeWindow, MouseCallback);
+    glfwSetWindowSizeCallback(NativeWindow, WindowSizeCallback);
+    glfwSetWindowCloseCallback(NativeWindow, WindowCloseCallback);
+    
+    glfwSetCursorPosCallback(NativeWindow, CursorPosCallback);
+    // glfwSetScrollCallback(NativeWindow, ScrollCallback);
+    // glfwSetMouseButtonCallback(NativeWindow, MouseButtonCallback);
+    //
+    // glfwSetKeyCallback(NativeWindow, KeyCallback);
+    // glfwSetCharCallback(NativeWindow, CharCallback);
 }
 
-Window::~Window()
+void Window::Shutdown()
 {
-    glfwTerminate();
+    glfwDestroyWindow(NativeWindow);
+}
+
+GLFWwindow* Window::GetNativeWindow() const
+{
+    return NativeWindow;
+}
+
+unsigned int Window::GetWidth() const
+{
+    return WindowData.Width;
+}
+
+unsigned int Window::GetHeight() const
+{
+    return WindowData.Height;
 }

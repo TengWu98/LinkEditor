@@ -33,3 +33,11 @@ namespace fs = std::filesystem;
 #include <glm/mat4x4.hpp>
 // #include <glm/gtc/matrix_transform.hpp>
 // #include <glm/gtx/quaternion.hpp>
+
+#include "Core/Macro.h"
+
+// Log
+#include "Core/Log/Log.h"
+
+// OpenGL
+#include <glad/glad.h>

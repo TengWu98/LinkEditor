@@ -29,6 +29,7 @@ workspace "MeshEditor"
     group "Dependencies"
         include "lib/ImGui"
         include "lib/GLFW"
+        include "lib/Glad"
     group ""
 
 
@@ -38,9 +39,9 @@ project "MeshEditor"
 
     language "C++"
 
-    cppdialect "C++20"
+    cppdialect "C++17"
 
-    staticruntime "on"
+    staticruntime "off"
 
     targetdir ("%{wks.location}/binaries/" .. outputdir .. "/%{prj.name}")
 
@@ -76,12 +77,15 @@ project "MeshEditor"
         "%{IncludeDir.entt}",
         "%{IncludeDir.OpenMesh}",
         "%{IncludeDir.nfd}",
+        "%{IncludeDir.spdlog}",
+        "%{IncludeDir.Glad}",
     }
 
     links
     {
         "ImGui",
         "GLFW",
+        "Glad",
         "opengl32",
         "lib/nfd/lib/nfd.lib"
     }
@@ -111,7 +115,6 @@ project "MeshEditor"
             "lib/OpenMesh/lib/OpenMeshToolsd.lib",
         }
 
-        staticruntime "off"
         runtime "Debug"
         symbols "on"
 
@@ -127,6 +130,5 @@ project "MeshEditor"
             "lib/OpenMesh/lib/OpenMeshTools.lib",
         }
 
-        staticruntime "off"
         runtime "Release"
         optimize "on"

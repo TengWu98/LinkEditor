@@ -24,9 +24,8 @@ static void ShowDockingDisabledMessage()
 
 Application::Application()
 {
-    // Camera暂时写死
-    std::shared_ptr<Camera> RenderCamera = std::make_shared<Camera>(glm::vec3(0.0f, 20.0f, 30.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90, -40);
-    AppWindow = std::make_unique<Window>(RenderCamera);
+    AppWindow = std::make_unique<Window>(WindowProps());
+    MainScene = std::make_unique<Scene>();
     NFD_Init();
     SetupImGui();
 }
@@ -36,8 +35,6 @@ Application::~Application()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    
-    glfwDestroyWindow(AppWindow->NativeWindow);
     NFD_Quit();
 }
 
@@ -53,13 +50,11 @@ std::shared_ptr<Application> Application::GetInstance()
 
 void Application::Run()
 {
-    ImVec4 ClearColor = ImVec4(1.f, 0.f, 0.f, 1.f);
-    
-    while (!glfwWindowShouldClose(AppWindow->NativeWindow))
+    while (!glfwWindowShouldClose(AppWindow->GetNativeWindow()))
     {
         // Poll and handle events (inputs, window resize, etc.)
         glfwPollEvents();
-        if (glfwGetWindowAttrib(AppWindow->NativeWindow, GLFW_ICONIFIED) != 0)
+        if (glfwGetWindowAttrib(AppWindow->GetNativeWindow(), GLFW_ICONIFIED) != 0)
         {
             ImGui_ImplGlfw_Sleep(10);
             continue;
@@ -75,9 +70,12 @@ void Application::Run()
 
         // Render Scene
         int display_w, display_h;
-        glfwGetFramebufferSize(AppWindow->NativeWindow, &display_w, &display_h);
+        glfwGetFramebufferSize(AppWindow->GetNativeWindow(), &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        glClearColor(ClearColor.x * ClearColor.w, ClearColor.y * ClearColor.w, ClearColor.z * ClearColor.w, ClearColor.w);
+        glClearColor(MainScene->BackgroundColor.x * MainScene->BackgroundColor.w,
+            MainScene->BackgroundColor.y * MainScene->BackgroundColor.w,
+            MainScene->BackgroundColor.z * MainScene->BackgroundColor.w,
+            MainScene->BackgroundColor.w);
         glClear(GL_COLOR_BUFFER_BIT);
         
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -92,14 +90,12 @@ void Application::Run()
             glfwMakeContextCurrent(BackupCurrentContext);
         }
         
-        glfwSwapBuffers(AppWindow->NativeWindow);
+        glfwSwapBuffers(AppWindow->GetNativeWindow());
     }
 }
 
 void Application::SetupImGui()
 {
-    const char* glsl_version = "#version 130";
-    
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &IO = ImGui::GetIO();
@@ -128,8 +124,8 @@ void Application::SetupImGui()
     }
 
     // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(AppWindow->NativeWindow, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
+    ImGui_ImplGlfw_InitForOpenGL(AppWindow->GetNativeWindow(), true);
+    ImGui_ImplOpenGL3_Init(AppWindow->glsl_version);
 }
 
 void Application::RenderImGUI()
@@ -140,7 +136,6 @@ void Application::RenderImGUI()
     const float BottomSide = 250;
     
     static bool bIsFullScreen = true;
-    static bool bIsPadding = true;
 
     // for windows
     static bool bIsShowControlWindow = true;
@@ -170,12 +165,6 @@ void Application::RenderImGUI()
     else
     {
         DockSpaceFlags &= ~ImGuiDockNodeFlags_PassthruCentralNode;   
-    }
-
-    if(!bIsPadding)
-    {
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-        ImGui::PopStyleVar();
     }
     
     if(DockSpaceFlags & ImGuiDockNodeFlags_PassthruCentralNode)
@@ -213,11 +202,15 @@ void Application::RenderImGUI()
                 if (Result == NFD_OKAY)
                 {
                     const auto Path = fs::path(NFDPath);
-                    // MainScene->AddMesh(Path, {.Name = Path.filename().string()});
+                    
+                    MeshCreateInfo MeshCreateInfo;
+                    MeshCreateInfo.Name = Path.filename().string();
+                    MainScene->AddMesh(Path, MeshCreateInfo);
+                    
                     NFD_FreePath(NFDPath);
                 }
                 else if (Result != NFD_CANCEL) {
-                    throw std::runtime_error(std::format("Error loading mesh file: {}", NFD_GetError()));
+                    LOG_ERROR("Error loading mesh file: {0}", NFD_GetError());
                 }
                 
                 // TODO(WT) 添加导入、保存标签文件的处理
@@ -229,7 +222,6 @@ void Application::RenderImGUI()
         if(ImGui::BeginMenu("Options"))
         {
             ImGui::MenuItem("Fullscreen", nullptr, &bIsFullScreen);
-            ImGui::MenuItem("Padding", nullptr, &bIsPadding);
             ImGui::EndMenu();
         }
     
@@ -255,7 +247,7 @@ void Application::RenderImGUI()
 
         if(ImGui::BeginMenu("Windows"))
         {
-            ImGui::Checkbox("ControlPanel", &bIsShowControlWindow);
+            ImGui::Checkbox("Control Panel", &bIsShowControlWindow);
             ImGui::Checkbox("Viewport", &bIsShowViewport);
             ImGui::Checkbox("Log", &bIsShowLogWindow);
     
@@ -268,23 +260,19 @@ void Application::RenderImGUI()
     ImGui::End();
 
     // show control window
-    static float FloatValue = 0.0f;
-    static int Counter = 0;
-    static ImVec4 ClearColor = ImVec4(1.f, 0.f, 0.f, 1.f);
-
     if(bIsShowControlWindow)
     {
-        ImGui::Begin("Basic Control");
+        ImGui::Begin("Control Panel");
     
         ImGui::SeparatorText("General Setting");
         {
             ImGui::Text("FPS : %.1f", IO.Framerate);
-            ImGui::SliderFloat("Camera Speed", &AppWindow->RenderCamera->MovementSpeed, 0.0f, 50.0f);
+            ImGui::SliderFloat("Camera Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f);
         }
     
         ImGui::SeparatorText("Rendering Setting");
         {
-            ImGui::ColorEdit3("Clear Color", (float*)&AppWindow->ClearColor);
+            ImGui::ColorEdit3("BG Color", (float*)&MainScene->BackgroundColor);
         }
 
         ImGui::SeparatorText("Mesh Labeling");
@@ -298,8 +286,48 @@ void Application::RenderImGUI()
     // show viewport
     if(bIsShowViewport)
     {
+        // unsigned int Width = AppWindow->GetWidth();
+        // unsigned int Height = AppWindow->GetHeight();
+        //
+        // ImGui::SetNextWindowSize(ImVec2(Width, Height), ImGuiCond_Always);
+        // ImGui::SetNextWindowPos(ImVec2(LeftSide, 0), ImGuiCond_Appearing);
+        //
+        // ImGuiWindowClass ViewportWindowClass;
+        // ViewportWindowClass.DockingAllowUnclassed = true;
+        // ViewportWindowClass.DockNodeFlagsOverrideSet |= ImGuiDockNodeFlags_NoCloseButton;
+        // ImGui::SetNextWindowClass(&ViewportWindowClass);
+        //
+        // ImGuiWindowFlags ViewportWindowFlags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
+        //
+        // ImGui::Begin("Viewport", nullptr, ViewportWindowFlags);
         ImGui::Begin("Viewport");
-    
+        //
+        // {
+        //     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+        //     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
+        //
+        //     ImVec2 UVMin = ImVec2(0.0f, 1.0f);      // Top-left
+        //     ImVec2 UVMax = ImVec2(1.0f, 0.0f);    // Lower-right
+        //
+        //     auto InitialCursorPos = ImGui::GetCursorPos();
+        //     auto WindowSize = ImGui::GetWindowSize();
+        //     auto CentralizedCursorPos = ImVec2((WindowSize.x - Width) * 0.5f, (WindowSize.y - Height + 20) * 0.5f);
+        //     ImGui::SetCursorPos(CentralizedCursorPos);
+        //
+        //     ImGui::PopStyleVar(2);
+        //
+        //     // ImGui::Image((GLuint *)scene->render_pipeline.postprocess_manager->output_rt->color_buffer, ImVec2(Width, Height), UVMin, UVMax, ImVec4(1,1,1,1), ImVec4(1,1,1,1));
+        //     // ImGui::SetItemUsingMouseWheel();
+        //     // if (ImGui::IsItemHovered())
+        //     // {
+        //     //     scene->window->render_camera->ProcessMouseScroll(0, ImGui::GetIO().MouseWheel);
+        //     // }
+        //     
+        //     // if (ImGui::IsWindowHovered()){
+        //     //     Input::processInputRenderPanel(window->Window, *window->render_camera, deltaTime);
+        //     // }
+        // }
+        
         ImGui::End();
     }
 
@@ -312,10 +340,4 @@ void Application::RenderImGUI()
     }
     
     ImGui::Render();
-
-    {
-        // ImGui::DockBuilderRemoveNode(mainID); // Clear out existing layout
-        // ImGui::DockBuilderAddNode(mainID); // Add empty node
-        // ImGui::DockBuilderSetNodeSize(mainID, ImGui::GetMainViewport()->Size);
-    }
 }
