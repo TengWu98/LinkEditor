@@ -1,9 +1,13 @@
 ﻿#include "Scene.h"
 #include "Renderer/Mesh/Mesh.h"
 
-Scene::Scene()
+Scene::Scene() :
+    Camera(CreateDefaultCamera()),
+    Registry(entt::registry()),
+    MeshGLData(std::make_unique<::MeshGLData>())
 {
-    Camera = CreateDefaultCamera();
+    TransformBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProj), 0);
+    ViewProjNearFarBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProjNearFar), 1);
 }
 
 Scene::~Scene()

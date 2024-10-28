@@ -4,6 +4,8 @@
 #include "Renderer/Camera/Camera.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Mesh/MeshElement.h"
+#include "Renderer/Buffers/VertexBuffer.h"
+#include "Renderer/Buffers/UniformBuffer.h"
 
 #include "entt.hpp"
 // #include "ImGuizmo.h"
@@ -19,6 +21,15 @@ struct Model {
     // `InvTransform` is the _transpose_ of the inverse of `Transform`.
     // Since this rarely changes, we precompute it and send it to the shader.
     glm::mat4 InvTransform{1};
+};
+
+struct ViewProj {
+    glm::mat4 View{1}, Projection{1};
+};
+
+struct ViewProjNearFar {
+    glm::mat4 View{1}, Projection{1};
+    float Near, Far;
 };
 
 struct SceneNode {
@@ -41,6 +52,13 @@ struct MeshCreateInfo
     bool bIsSelect = true;
     bool bIsVisible = true;
     bool bIsSubmit = true;
+};
+
+using MeshBuffers = std::unordered_map<MeshElement, VertexArray>;
+struct MeshGLData
+{
+    std::unordered_map<entt::entity, MeshBuffers> Main, NormalIndicators;
+    std::unordered_map<entt::entity, VertexBuffer> Models;
 };
 
 class Scene
@@ -77,4 +95,10 @@ public:
     SelectionMode SelectionMode = SelectionMode::Object;
     MeshElement SelectionMeshElement = MeshElement::Face;
     MeshElementIndex SelectedElement;
+
+    std::unique_ptr<MeshGLData> MeshGLData;
+
+    // buffers
+    std::unique_ptr<UniformBuffer> TransformBuffer;
+    std::unique_ptr<UniformBuffer> ViewProjNearFarBuffer;
 };
