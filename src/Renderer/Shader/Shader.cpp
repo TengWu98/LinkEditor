@@ -9,7 +9,7 @@ static GLenum ShaderTypeFromString(const std::string& Type)
     if (Type == "fragment" || Type == "pixel")
         return GL_FRAGMENT_SHADER;
 
-    MESH_EDITOR_CORE_ASSERT(false, "Unknown shader type!");
+    MESH_EDITOR_CORE_ASSERT(false, "Unknown shader type!")
     
     return 0;
 }
@@ -188,13 +188,13 @@ std::unordered_map<GLenum, std::string> Shader::PreProcess(const std::string& So
     while (Pos != std::string::npos)
     {
         size_t EOL = Source.find_first_of("\r\n", Pos); //End of shader type declaration line
-        MESH_EDITOR_CORE_ASSERT(EOL != std::string::npos, "Syntax error");
+        MESH_EDITOR_CORE_ASSERT(EOL != std::string::npos, "Syntax error")
         size_t Begin = Pos + TypeTokenLength + 1; //Start of shader type name (after "#type " keyword)
         std::string Type = Source.substr(Begin, EOL - Begin);
-        MESH_EDITOR_CORE_ASSERT(ShaderTypeFromString(Type), "Invalid shader type specified");
+        MESH_EDITOR_CORE_ASSERT(ShaderTypeFromString(Type), "Invalid shader type specified")
 
         size_t NextLinePos = Source.find_first_not_of("\r\n", EOL); //Start of shader code after shader type declaration line
-        MESH_EDITOR_CORE_ASSERT(NextLinePos != std::string::npos, "Syntax error");
+        MESH_EDITOR_CORE_ASSERT(NextLinePos != std::string::npos, "Syntax error")
         Pos = Source.find(TypeToken, NextLinePos); //Start of next shader type declaration line
 
         ShaderSources[ShaderTypeFromString(Type)] = (Pos == std::string::npos) ? Source.substr(NextLinePos) : Source.substr(NextLinePos, Pos - NextLinePos);

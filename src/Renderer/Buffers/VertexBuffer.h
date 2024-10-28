@@ -24,7 +24,7 @@ static uint32_t ShaderDataTypeSize(ShaderDataType type)
     case ShaderDataType::Bool:     return 1;
     }
 
-    MESH_EDITOR_CORE_ASSERT(false, "Unknown ShaderDataType!");
+    MESH_EDITOR_CORE_ASSERT(false, "Unknown ShaderDataType!")
     return 0;
 }
 
@@ -60,7 +60,7 @@ struct VertexBufferElement
         case ShaderDataType::Bool:    return 1;
         }
 
-        MESH_EDITOR_CORE_ASSERT(false, "Unknown ShaderDataType!");
+        MESH_EDITOR_CORE_ASSERT(false, "Unknown ShaderDataType!")
         return 0;
     }
 };

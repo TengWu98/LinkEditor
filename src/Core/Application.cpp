@@ -69,14 +69,7 @@ void Application::Run()
         RenderImGUI();
 
         // Render Scene
-        int display_w, display_h;
-        glfwGetFramebufferSize(AppWindow->GetNativeWindow(), &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-        glClearColor(MainScene->BackgroundColor.x * MainScene->BackgroundColor.w,
-            MainScene->BackgroundColor.y * MainScene->BackgroundColor.w,
-            MainScene->BackgroundColor.z * MainScene->BackgroundColor.w,
-            MainScene->BackgroundColor.w);
-        glClear(GL_COLOR_BUFFER_BIT);
+        Renderer::Render(MainScene.get(), AppWindow.get());
         
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
@@ -281,7 +274,9 @@ void Application::RenderImGUI()
         if(ImGui::CollapsingHeader("Selection"))
         {
             ImGui::Combo("Selection Mode", (int*)&MainScene->SelectionMode, "Object\0Element\0");
-            ImGui::Combo("Mesh Element", (int*)&MainScene->SelectedElement, "Vertex\0Edge\0Face\0");
+
+            int CurrentMeshElement = static_cast<int>(MainScene->SelectionMeshElement);
+            ImGui::Combo("Mesh Element", (int*)&MainScene->SelectionMeshElement, "None\0Face\0Vertex\0Edge\0");
         }
     
         ImGui::End();

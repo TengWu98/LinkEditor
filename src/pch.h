@@ -37,7 +37,7 @@ namespace fs = std::filesystem;
 #include "Core/Macro.h"
 
 // Log
-#include "Core/Log/Log.h"
+#include "Core/Logger/Logger.h"
 
 // OpenGL
 #include <glad/glad.h>

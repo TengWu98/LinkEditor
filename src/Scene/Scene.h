@@ -69,7 +69,7 @@ public:
     entt::registry Registry;
     entt::entity SelectedEntity = entt::null;
 
-    std::unique_ptr<Renderer> RenderPipeline;
+    std::unique_ptr<Renderer> MainRenderPipeline;
     glm::vec4 BackgroundColor = glm::vec4(0.22f, 0.22f, 0.22f, 1.f);
 
     // std::unique_ptr<Gizmo> Gizmo;

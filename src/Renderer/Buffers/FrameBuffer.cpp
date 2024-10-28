@@ -80,7 +80,7 @@ int FrameBuffer::ReadPixel(uint32_t AttachmentIndex, int X, int Y)
 
 void FrameBuffer::ClearAttendment(uint32_t AttachmentIndex, int Value)
 {
-    MESH_EDITOR_CORE_ASSERT(AttachmentIndex < ColorAttachments.size());
+    MESH_EDITOR_CORE_ASSERT(AttachmentIndex < ColorAttachments.size())
     
     auto& Spec = ColorAttachmentSpecifications[AttachmentIndex];
     
@@ -90,7 +90,7 @@ void FrameBuffer::ClearAttendment(uint32_t AttachmentIndex, int Value)
 
 uint32_t FrameBuffer::GetColorAttachmentRendererID(uint32_t Index) const
 {
-    MESH_EDITOR_CORE_ASSERT(Index < ColorAttachments.size());
+    MESH_EDITOR_CORE_ASSERT(Index < ColorAttachments.size())
     
     return ColorAttachments[Index];
 }

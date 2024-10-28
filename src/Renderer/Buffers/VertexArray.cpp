@@ -19,7 +19,7 @@ static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
     case ShaderDataType::Bool:     return GL_BOOL;
     }
 
-    MESH_EDITOR_CORE_ASSERT(false, "Unknown ShaderDataType!");
+    MESH_EDITOR_CORE_ASSERT(false, "Unknown ShaderDataType!")
     return 0;
 }
 
@@ -102,7 +102,7 @@ void VertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& InVertexB
                 break;
             }
         default:
-            MESH_EDITOR_CORE_ASSERT(false, "Unknown ShaderDataType!");
+            MESH_EDITOR_CORE_ASSERT(false, "Unknown ShaderDataType!")
         }
     }
 
