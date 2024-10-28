@@ -263,22 +263,25 @@ void Application::RenderImGUI()
     if(bIsShowControlWindow)
     {
         ImGui::Begin("Control Panel");
-    
-        ImGui::SeparatorText("General Setting");
+        ImGui::Text("FPS : %.1f", IO.Framerate);
+        if(ImGui::CollapsingHeader("General Setting"))
         {
-            ImGui::Text("FPS : %.1f", IO.Framerate);
+            
             ImGui::SliderFloat("Camera Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f);
         }
-    
-        ImGui::SeparatorText("Rendering Setting");
+
+        if(ImGui::CollapsingHeader("Rendering Setting"))
         {
-            ImGui::ColorEdit3("BG Color", (float*)&MainScene->BackgroundColor);
+            ImGui::SeparatorText("Background Color");
+            ImGui::ColorEdit3("Color", (float*)&MainScene->BackgroundColor);
+            
             ImGui::SeparatorText("Render Mode");
         }
 
-        ImGui::SeparatorText("Mesh Labeling");
+        if(ImGui::CollapsingHeader("Selection"))
         {
-            
+            ImGui::Combo("Selection Mode", (int*)&MainScene->SelectionMode, "Object\0Element\0");
+            ImGui::Combo("Mesh Element", (int*)&MainScene->SelectedElement, "Vertex\0Edge\0Face\0");
         }
     
         ImGui::End();
