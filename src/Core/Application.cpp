@@ -252,6 +252,8 @@ void Application::RenderImGUI()
     
     ImGui::End();
 
+    // ImGui::ShowDemoWindow();
+
     // show control window
     if(bIsShowControlWindow)
     {
@@ -259,8 +261,13 @@ void Application::RenderImGUI()
         ImGui::Text("FPS : %.1f", IO.Framerate);
         if(ImGui::CollapsingHeader("General Setting"))
         {
-            
-            ImGui::SliderFloat("Camera Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f);
+            if(ImGui::TreeNode("Camera"))
+            {
+                ImGui::SliderFloat("Camera Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f);
+
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
         }
 
         if(ImGui::CollapsingHeader("Rendering Setting"))

@@ -10,4 +10,5 @@ public:
     
 protected:
     glm::vec3 Intensity;
+    bool bIsEnabled;
 };

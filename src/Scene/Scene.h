@@ -6,6 +6,7 @@
 #include "Renderer/Mesh/MeshElement.h"
 #include "Renderer/Buffers/VertexBuffer.h"
 #include "Renderer/Buffers/UniformBuffer.h"
+#include "Renderer/Buffers/VertexArray.h"
 
 #include "entt.hpp"
 // #include "ImGuizmo.h"

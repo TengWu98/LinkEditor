@@ -6,8 +6,8 @@ Scene::Scene() :
     Registry(entt::registry()),
     MeshGLData(std::make_unique<::MeshGLData>())
 {
-    TransformBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProj), 0);
-    ViewProjNearFarBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProjNearFar), 1);
+    // TransformBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProj), 0);
+    // ViewProjNearFarBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProjNearFar), 1);
 }
 
 Scene::~Scene()
