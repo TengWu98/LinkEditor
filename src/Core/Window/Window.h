@@ -2,6 +2,7 @@
 
 #include "pch.h"
 #include "GLFW/glfw3.h"
+#include "Renderer/RenderContext/RenderContext.h"
 
 class Camera;
 
@@ -23,6 +24,7 @@ public:
 
     void Init(const WindowProps& Props);
     void Shutdown();
+    void Update();
 
     unsigned int GetWidth() const;
     unsigned int GetHeight() const;
@@ -35,5 +37,6 @@ public:
     
 private:
     GLFWwindow* NativeWindow = nullptr;
+    std::shared_ptr<RenderContext> Context;
     WindowProps WindowData;
 };

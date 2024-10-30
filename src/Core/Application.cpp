@@ -53,7 +53,6 @@ void Application::Run()
     while (!glfwWindowShouldClose(AppWindow->GetNativeWindow()))
     {
         // Poll and handle events (inputs, window resize, etc.)
-        glfwPollEvents();
         if (glfwGetWindowAttrib(AppWindow->GetNativeWindow(), GLFW_ICONIFIED) != 0)
         {
             ImGui_ImplGlfw_Sleep(10);
@@ -69,7 +68,7 @@ void Application::Run()
         RenderImGUI();
 
         // Render Scene
-        Renderer::Render(MainScene.get(), AppWindow.get());
+        MainScene->Render();
         
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
@@ -83,7 +82,7 @@ void Application::Run()
             glfwMakeContextCurrent(BackupCurrentContext);
         }
         
-        glfwSwapBuffers(AppWindow->GetNativeWindow());
+        AppWindow->Update();
     }
 }
 

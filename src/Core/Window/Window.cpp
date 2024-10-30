@@ -83,8 +83,8 @@ void Window::Init(const WindowProps& Props)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
 #else
     // GL 3.3 + GLSL 150
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_SAMPLES, 8);
     // glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -100,20 +100,8 @@ void Window::Init(const WindowProps& Props)
         return;
     }
      
-    glfwMakeContextCurrent(NativeWindow);
-    glfwSwapInterval(1); // Enable vsync
-
-    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    if (!status)
-    {
-        LOG_ERROR("Failed to initialize GLAD \n");
-        return;
-    }
-
-    LOG_INFO("OpenGL Info:");
-    LOG_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
-    LOG_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
-    LOG_INFO("  Version: {0}", glGetString(GL_VERSION));
+    Context = std::make_shared<RenderContext>(NativeWindow);
+    Context->Init();
     
     glfwSetWindowUserPointer(NativeWindow, &WindowData);
 
@@ -132,6 +120,16 @@ void Window::Init(const WindowProps& Props)
 void Window::Shutdown()
 {
     glfwDestroyWindow(NativeWindow);
+}
+
+void Window::Update()
+{
+    glfwPollEvents();
+    Context->SwapBuffers();
+}
+
+void Window::ResizeWindow()
+{
 }
 
 GLFWwindow* Window::GetNativeWindow() const

@@ -6,12 +6,15 @@ Scene::Scene() :
     Registry(entt::registry()),
     MeshGLData(std::make_unique<::MeshGLData>())
 {
-    // TransformBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProj), 0);
-    // ViewProjNearFarBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProjNearFar), 1);
+    MainRenderPipeline = std::make_unique<Renderer>();
+    
+    TransformBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProj), 0);
+    ViewProjNearFarBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProjNearFar), 1);
 }
 
 Scene::~Scene()
 {
+    
 }
 
 entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
@@ -39,6 +42,9 @@ entt::entity Scene::AddMesh(const fs::path& MeshFilePath, MeshCreateInfo InMeshC
 
 void Scene::Render()
 {
+    MainRenderPipeline->SetViewport(0, 0, 1280, 720);
+    MainRenderPipeline->SetClearColor(BackgroundColor);
+    MainRenderPipeline->Clear();
 }
 
 void Scene::RenderGizmos()
