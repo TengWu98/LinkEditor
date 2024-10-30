@@ -7,9 +7,13 @@ Scene::Scene() :
     MeshGLData(std::make_unique<::MeshGLData>())
 {
     MainRenderPipeline = std::make_unique<Renderer>();
-    
+
+    // Initialize Uniform buffers
     TransformBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProj), 0);
     ViewProjNearFarBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProjNearFar), 1);
+    // TODO(WT) Lights buffer
+
+    // 编译Shader
 }
 
 Scene::~Scene()
@@ -48,6 +52,10 @@ void Scene::Render()
 }
 
 void Scene::RenderGizmos()
+{
+}
+
+void Scene::UpdateTransformBuffers()
 {
 }
 

@@ -79,6 +79,8 @@ public:
     void Render();
     void RenderGizmos();
 
+    void UpdateTransformBuffers();
+
 public:
     Camera Camera;
 
@@ -102,4 +104,5 @@ public:
     // buffers
     std::unique_ptr<UniformBuffer> TransformBuffer;
     std::unique_ptr<UniformBuffer> ViewProjNearFarBuffer;
+    std::unique_ptr<UniformBuffer> LightsBuffer;
 };
