@@ -68,6 +68,10 @@ public:
     Scene();
     ~Scene();
 
+    void SetViewportSize(uint32_t Width, uint32_t Height);
+    uint32_t GetViewportWidth() const { return ViewportWidth; }
+    uint32_t GetViewportHeight() const { return ViewportHeight; }
+
     entt::entity AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo = {});
     entt::entity AddMesh(const fs::path& MeshFilePath, MeshCreateInfo InMeshCreateInfo = {});
     entt::entity GetSelectedEntity() const;
@@ -83,6 +87,8 @@ public:
     void UpdateTransformBuffers();
 
 public:
+    uint32_t ViewportWidth = 0, ViewportHeight = 0;
+    
     Camera Camera;
 
     glm::vec4 EdgeColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);        // Used for line mode.

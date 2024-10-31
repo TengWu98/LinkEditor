@@ -10,10 +10,16 @@ class Scene;
 class VertexArray;
 class Window;
 
+struct RenderSpecification
+{
+    uint32_t ViewportWidth = 0;
+    uint32_t ViewportHeight = 0;
+};
+
 class Renderer
 {
 public:
-    Renderer();
+    Renderer(RenderSpecification InSpecification = RenderSpecification());
     ~Renderer();
 
     void Init();
@@ -29,6 +35,15 @@ public:
 
     void CompileShaders();
 
+    uint32_t GetViewportWidth() const { return ViewportWidth; }
+    uint32_t GetViewportHeight() const { return ViewportHeight; }
+
 private:
+    RenderSpecification Specification;
+    
     std::unique_ptr<FrameBuffer> FBO;
+    std::unordered_map<std::string, std::shared_ptr<Shader>> Shaders;
+
+    uint32_t ViewportWidth = 0;
+    uint32_t ViewportHeight = 0;
 };

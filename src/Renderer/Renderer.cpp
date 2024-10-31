@@ -3,8 +3,10 @@
 #include "Core/Window/Window.h"
 #include "Renderer/Buffers/VertexArray.h"
 #include "Renderer/Buffers/IndexBuffer.h"
+#include "Renderer/Shader/Shader.h"
 
-Renderer::Renderer()
+Renderer::Renderer(RenderSpecification InSpecification)
+    : Specification(InSpecification)
 {
     Init();
 }
@@ -21,8 +23,23 @@ void Renderer::Init()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LINE_SMOOTH);
 
-    FBO = std::make_unique<FrameBuffer>(FramebufferSpecification());
+    ViewportWidth = Specification.ViewportWidth;
+    ViewportHeight = Specification.ViewportHeight;
+
+    // Frame buffer
+    FramebufferSpecification Spec;
+    Spec.Width = ViewportWidth;
+    Spec.Height = ViewportHeight;
+    Spec.Attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth};
+    FBO = std::make_unique<FrameBuffer>(Spec);
     FBO->Bind();
+
+    // Set the viewport
+    SetViewport(0, 0, ViewportWidth, ViewportHeight);
+
+    // TODO(WT) Shader Library
+    // Shaders["Fill"] = std::make_shared<Shader>("", "");
+    
 }
 
 void Renderer::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)

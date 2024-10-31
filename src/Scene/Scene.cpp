@@ -6,19 +6,28 @@ Scene::Scene() :
     Registry(entt::registry()),
     MeshGLData(std::make_unique<::MeshGLData>())
 {
-    MainRenderPipeline = std::make_unique<Renderer>();
+    // Initialize Render pipeline
+    RenderSpecification Spec;
+    Spec.ViewportWidth = ViewportWidth;
+    Spec.ViewportHeight = ViewportHeight;
+    MainRenderPipeline = std::make_unique<Renderer>(Spec);
 
     // Initialize Uniform buffers
     TransformBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProj), 0);
     ViewProjNearFarBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProjNearFar), 1);
     // TODO(WT) Lights buffer
 
-    // 编译Shader
-    CompileShaders();
+    
 }
 
 Scene::~Scene()
 {
+}
+
+void Scene::SetViewportSize(uint32_t Width, uint32_t Height)
+{
+    ViewportWidth = Width;
+    ViewportHeight = Height;
 }
 
 entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
@@ -29,10 +38,19 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     Registry.emplace<Model>(Entity, glm::mat4(InMeshCreateInfo.Transform));
     Registry.emplace<std::string>(Entity, InMeshCreateInfo.Name);
 
+    MeshGLData->Models.emplace(Entity, VertexBuffer(sizeof(Model)));
     SetEntityVisible(Entity, true);
     if(!InMeshCreateInfo.bIsVisible)
     {
         SetEntityVisible(Entity, false);
+    }
+
+    MeshBuffers Buffers{};
+    for(auto Element : AllElements)
+    {
+        auto VertexBuffer = std::make_shared<VertexBuffer>(Element);
+        auto IndexBuffer = std::make_shared<IndexBuffer>(Element);
+        Buffers.emplace(Element, )
     }
 
     
@@ -46,7 +64,6 @@ entt::entity Scene::AddMesh(const fs::path& MeshFilePath, MeshCreateInfo InMeshC
 
 void Scene::Render()
 {
-    MainRenderPipeline->SetViewport(0, 0, 1280, 720);
     MainRenderPipeline->SetClearColor(BackgroundColor);
     MainRenderPipeline->Clear();
 }

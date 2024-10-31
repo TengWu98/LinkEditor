@@ -14,6 +14,19 @@ static GLenum ShaderTypeFromString(const std::string& Type)
     return 0;
 }
 
+static std::string ShaderTypeToString(GLenum Type)
+{
+    switch (Type)
+    {
+        case GL_VERTEX_SHADER: return "GL_VERTEX_SHADER";
+        case GL_FRAGMENT_SHADER: return "GL_FRAGMENT_SHADER";
+    }
+
+    MESH_EDITOR_CORE_ASSERT(false, "Unknown shader type!")
+    
+    return "";
+}
+
 // TODO(WT) 增加Shader预编译
 // static const char* GetCacheDirectory()
 // {
@@ -30,7 +43,7 @@ static GLenum ShaderTypeFromString(const std::string& Type)
 Shader::Shader(const std::string& FilePath)
 {
     const std::string Source = ReadFile(FilePath);
-    auto ShaderSources = PreProcess(Source);
+    OpenGLSourceCodes = PreProcess(Source);
     
     Compile();
     CreateProgram();
@@ -42,12 +55,25 @@ Shader::Shader(const std::string& FilePath)
     ShaderName = FilePath.substr(LastSlash, Count);
 }
 
+Shader::Shader(const std::string& Name, std::unordered_map<GLenum, std::string> FilePaths)
+    : ShaderName(Name)
+{
+    for(auto [Type, Path] : FilePaths)
+    {
+        const std::string Source = ReadFile(FilePath);
+        OpenGLSourceCodes[Type] = Source;
+    }
+    
+    Compile();
+    CreateProgram();
+}
+
 Shader::Shader(const std::string& Name, const std::string& VertexSrc, const std::string& FragmentSrc)
     : ShaderName(Name)
 {
     std::unordered_map<GLenum, std::string> Sources;
-    Sources[GL_VERTEX_SHADER] = VertexSrc;
-    Sources[GL_FRAGMENT_SHADER] = FragmentSrc;
+    OpenGLSourceCodes[GL_VERTEX_SHADER] = VertexSrc;
+    OpenGLSourceCodes[GL_FRAGMENT_SHADER] = FragmentSrc;
 
     Compile();
     CreateProgram();
@@ -205,14 +231,46 @@ std::unordered_map<GLenum, std::string> Shader::PreProcess(const std::string& So
 
 void Shader::Compile()
 {
-    
+    for (const auto& [ShaderType, Source] : OpenGLSourceCodes) {
+        GLuint Shader = glCreateShader(ShaderType);
+        const char* SourceCStr = Source.c_str();
+        glShaderSource(Shader, 1, &SourceCStr, nullptr);
+
+        glCompileShader(Shader);
+
+        // Check the compile status
+        GLint Success;
+        glGetShaderiv(Shader, GL_COMPILE_STATUS, &Success);
+        if (!Success) {
+            GLchar InfoLog[1024];
+            glGetShaderInfoLog(Shader, 1024, nullptr, InfoLog);
+            LOG_ERROR("ERROR::SHADER_COMPILATION_ERROR of type: {0}\n{1}", ShaderTypeToString(ShaderType), InfoLog);
+            continue;
+        }
+
+        OpenGLShaders[ShaderType] = Shader;
+    }
 }
 
 void Shader::CreateProgram()
 {
     GLuint Program = glCreateProgram();
-}
 
-void Shader::Reflect(GLenum Stage, const std::vector<uint32_t>& ShaderData)
-{
+    for (const auto& [ShaderType, Shader] : OpenGLShaders) {
+        glAttachShader(Program, Shader);
+    }
+
+    glLinkProgram(Program);
+
+    // Check the link status
+    GLint Success;
+    glGetProgramiv(Program, GL_LINK_STATUS, &Success);
+    if (!Success) {
+        GLchar InfoLog[1024];
+        glGetProgramInfoLog(Program, 1024, nullptr, InfoLog);
+        LOG_ERROR("ERROR::PROGRAM_LINKING_ERROR\n{0}", InfoLog);
+        glDeleteProgram(Program);
+    }
+
+    RendererID = Program;
 }

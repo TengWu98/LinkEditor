@@ -6,6 +6,7 @@ class Shader
 {
 public:
     Shader(const std::string& FilePath);
+    Shader(const std::string& Name, std::unordered_map<GLenum, std::string> FilePaths);
     Shader(const std::string& Name, const std::string& VertexSrc, const std::string& FragmentSrc);
     ~Shader();
 
@@ -40,11 +41,11 @@ private:
     
     void Compile();
     void CreateProgram();
-    void Reflect(GLenum Stage, const std::vector<uint32_t>& ShaderData);
 
 private:
     uint32_t RendererID;
     std::string ShaderName;
     std::string FilePath;
-    std::unordered_map<GLenum, std::string> OpenGLSourceCode;
+    std::unordered_map<GLenum, std::string> OpenGLSourceCodes;
+    std::unordered_map<GLenum, GLuint> OpenGLShaders;
 };
