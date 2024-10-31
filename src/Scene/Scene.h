@@ -79,6 +79,7 @@ public:
     void Render();
     void RenderGizmos();
 
+    void CompileShaders();
     void UpdateTransformBuffers();
 
 public:

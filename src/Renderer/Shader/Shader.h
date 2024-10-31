@@ -20,7 +20,7 @@ public:
     void SetFloat4(const std::string& Name, const glm::vec4& Value);
     void SetMat4(const std::string& Name, const glm::mat4& Value);
 
-    virtual const std::string& GetName() const { return Name; }
+    virtual const std::string& GetName() const { return ShaderName; }
 
     void UploadUniformInt(const std::string& Name, int Value);
     void UploadUniformIntArray(const std::string& Name, int* Values, uint32_t Count);
@@ -38,15 +38,13 @@ private:
 
     std::unordered_map<GLenum, std::string> PreProcess(const std::string& Source);
     
-    void CompileOrGetOpenGLBinaries();
+    void Compile();
     void CreateProgram();
     void Reflect(GLenum Stage, const std::vector<uint32_t>& ShaderData);
 
 private:
     uint32_t RendererID;
-    std::string Name;
+    std::string ShaderName;
     std::string FilePath;
-
-    std::unordered_map<GLenum, std::vector<uint32_t>> OpenGLSPIRV;
     std::unordered_map<GLenum, std::string> OpenGLSourceCode;
 };

@@ -27,6 +27,8 @@ public:
     void DrawLines(const std::shared_ptr<VertexArray>& VertexArray, uint32_t VertexCount);
     void SetLineWidth(float Width);
 
+    void CompileShaders();
+
 private:
     std::unique_ptr<FrameBuffer> FBO;
 };

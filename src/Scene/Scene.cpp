@@ -14,11 +14,11 @@ Scene::Scene() :
     // TODO(WT) Lights buffer
 
     // 编译Shader
+    CompileShaders();
 }
 
 Scene::~Scene()
 {
-    
 }
 
 entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
@@ -53,6 +53,11 @@ void Scene::Render()
 
 void Scene::RenderGizmos()
 {
+}
+
+void Scene::CompileShaders()
+{
+    MainRenderPipeline->CompileShaders();
 }
 
 void Scene::UpdateTransformBuffers()

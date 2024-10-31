@@ -14,42 +14,42 @@ static GLenum ShaderTypeFromString(const std::string& Type)
     return 0;
 }
 
-static const char* GetCacheDirectory()
-{
-    return "Cache/Shader/OpenGL";
-}
-
-static void CreateCacheDirectoryIfNeeded()
-{
-    std::string CacheDirectory = GetCacheDirectory();
-    if (!std::filesystem::exists(CacheDirectory))
-        std::filesystem::create_directories(CacheDirectory);
-}
+// TODO(WT) 增加Shader预编译
+// static const char* GetCacheDirectory()
+// {
+//     return "Cache/Shader/OpenGL";
+// }
+//
+// static void CreateCacheDirectoryIfNeeded()
+// {
+//     std::string CacheDirectory = GetCacheDirectory();
+//     if (!std::filesystem::exists(CacheDirectory))
+//         std::filesystem::create_directories(CacheDirectory);
+// }
 
 Shader::Shader(const std::string& FilePath)
 {
-    CreateCacheDirectoryIfNeeded();
-    
-    std::string Source = ReadFile(FilePath);
+    const std::string Source = ReadFile(FilePath);
     auto ShaderSources = PreProcess(Source);
     
-    CompileOrGetOpenGLBinaries();
+    Compile();
     CreateProgram();
 
     auto LastSlash = FilePath.find_last_of("/\\");
     LastSlash = LastSlash == std::string::npos ? 0 : LastSlash + 1;
-    auto LastDot = FilePath.rfind('.');
-    auto Count = LastDot == std::string::npos ? FilePath.size() - LastSlash : LastDot - LastSlash;
-    Name = FilePath.substr(LastSlash, Count);
+    const auto LastDot = FilePath.rfind('.');
+    const auto Count = LastDot == std::string::npos ? FilePath.size() - LastSlash : LastDot - LastSlash;
+    ShaderName = FilePath.substr(LastSlash, Count);
 }
 
 Shader::Shader(const std::string& Name, const std::string& VertexSrc, const std::string& FragmentSrc)
+    : ShaderName(Name)
 {
     std::unordered_map<GLenum, std::string> Sources;
     Sources[GL_VERTEX_SHADER] = VertexSrc;
     Sources[GL_FRAGMENT_SHADER] = FragmentSrc;
 
-    CompileOrGetOpenGLBinaries();
+    Compile();
     CreateProgram();
 }
 
@@ -158,7 +158,7 @@ std::string Shader::ReadFile(const std::string& InFilePath)
     if (InFile)
     {
         InFile.seekg(0, std::ios::end);
-        size_t Size = InFile.tellg();
+        const size_t Size = InFile.tellg();
         if (Size != -1)
         {
             Result.resize(Size);
@@ -183,27 +183,27 @@ std::unordered_map<GLenum, std::string> Shader::PreProcess(const std::string& So
     std::unordered_map<GLenum, std::string> ShaderSources;
 
     const char* TypeToken = "#type";
-    size_t TypeTokenLength = strlen(TypeToken);
+    const size_t TypeTokenLength = strlen(TypeToken);
     size_t Pos = Source.find(TypeToken, 0); //Start of shader type declaration line
     while (Pos != std::string::npos)
     {
-        size_t EOL = Source.find_first_of("\r\n", Pos); //End of shader type declaration line
+        const size_t EOL = Source.find_first_of("\r\n", Pos); //End of shader type declaration line
         MESH_EDITOR_CORE_ASSERT(EOL != std::string::npos, "Syntax error")
-        size_t Begin = Pos + TypeTokenLength + 1; //Start of shader type name (after "#type " keyword)
+        const size_t Begin = Pos + TypeTokenLength + 1; //Start of shader type name (after "#type " keyword)
         std::string Type = Source.substr(Begin, EOL - Begin);
         MESH_EDITOR_CORE_ASSERT(ShaderTypeFromString(Type), "Invalid shader type specified")
 
-        size_t NextLinePos = Source.find_first_not_of("\r\n", EOL); //Start of shader code after shader type declaration line
+        const size_t NextLinePos = Source.find_first_not_of("\r\n", EOL); //Start of shader code after shader type declaration line
         MESH_EDITOR_CORE_ASSERT(NextLinePos != std::string::npos, "Syntax error")
         Pos = Source.find(TypeToken, NextLinePos); //Start of next shader type declaration line
 
-        ShaderSources[ShaderTypeFromString(Type)] = (Pos == std::string::npos) ? Source.substr(NextLinePos) : Source.substr(NextLinePos, Pos - NextLinePos);
+        ShaderSources[ShaderTypeFromString(Type)] = Pos == std::string::npos ? Source.substr(NextLinePos) : Source.substr(NextLinePos, Pos - NextLinePos);
     }
 
     return ShaderSources;
 }
 
-void Shader::CompileOrGetOpenGLBinaries()
+void Shader::Compile()
 {
     
 }
