@@ -33,7 +33,8 @@ bool Mesh::Load(const fs::path& InMeshFilePath, PolyMesh& OutMesh)
 }
 
 struct VertexHash {
-    size_t operator()(const Point& p) const {
+    size_t operator()(const Point& p) const
+    {
         return std::hash<float>{}(p[0]) ^ std::hash<float>{}(p[1]) ^ std::hash<float>{}(p[2]);
     }
 };
@@ -53,14 +54,14 @@ Mesh::PolyMesh Mesh::DeduplicateVertices()
     }
     
     // Add faces.
-    for (const auto& FH : M.faces())
+    for (const auto& FaceHandle : M.faces())
     {
         std::vector<VH> NewFace;
         
-        NewFace.reserve(M.valence(FH));
-        for (const auto& VH : M.fv_range(FH))
+        NewFace.reserve(M.valence(FaceHandle));
+        for (const auto& VertexHandle : M.fv_range(FaceHandle))
         {
-            NewFace.emplace_back(UniqueVertices.at(M.point(VH)));
+            NewFace.emplace_back(UniqueVertices.at(M.point(VertexHandle)));
         }
         
         Deduped.add_face(NewFace);
