@@ -10,7 +10,8 @@ enum class MeshElement
     Edge,   // Vertices are duplicated. Each vertex uses the vertex normal.
 };
 
-struct MeshElementIndex {
+struct MeshElementIndex
+{
 public:
     MeshElementIndex() : Element(MeshElement::None), Index(-1) {}
     MeshElementIndex(MeshElement Element, int Index) : Element(Element), Index(Index) {}
@@ -29,4 +30,12 @@ public:
 public:
     MeshElement Element;
     int Index;
+};
+
+struct MeshElementIndexHash
+{
+    size_t operator()(const MeshElementIndex& InMeshElementIndex) const
+    {
+        return std::hash<int>{}(static_cast<int>(InMeshElementIndex.Element)) ^ (std::hash<int>{}(InMeshElementIndex.Index) << 1);
+    }
 };

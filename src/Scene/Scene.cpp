@@ -47,10 +47,10 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
 
     MeshBufferMap MeshBuffers;
     VertexArray VAO;
-    VertexBuffer VBO(sizeof(float) * InMesh.GetVertices().size());
-    VBO.SetData(InMesh.GetVertices().data(), sizeof(float) * InMesh.GetVertices().size());
-
-    MeshBuffers[/* 填充相应的MeshElement*/] = std::move(VAO);
+    // VertexBuffer VBO(sizeof(float) * InMesh.GetVertices().size());
+    // VBO.SetData(InMesh.GetVertices().data(), sizeof(float) * InMesh.GetVertices().size());
+    //
+    // MeshBuffers[/* 填充相应的MeshElement*/] = std::move(VAO);
 
     
     return Entity;

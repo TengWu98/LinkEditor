@@ -2,6 +2,7 @@
 #include "Core/Window/Window.h"
 #include "Scene/Scene.h"
 #include "Renderer/Camera/Camera.h"
+#include "Renderer/Mesh/Mesh.h"
 
 #include <nfd.h>
 
@@ -260,19 +261,39 @@ void Application::RenderImGUI()
         ImGui::Text("FPS : %.1f", IO.Framerate);
         if(ImGui::CollapsingHeader("General Setting"))
         {
-            if(ImGui::TreeNode("Camera"))
-            {
-                ImGui::SliderFloat("Camera Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f);
-
-                ImGui::TreePop();
-                ImGui::Spacing();
-            }
+            
         }
 
         if(ImGui::CollapsingHeader("Rendering Setting"))
         {
-            ImGui::SeparatorText("Background Color");
-            ImGui::ColorEdit3("Color", (float*)&MainScene->BackgroundColor);
+            if(ImGui::TreeNode("Camera"))
+            {
+                ImGui::SliderFloat("Camera Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f, "%.3f", ImGuiSliderFlags_None);
+
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
+
+            if(ImGui::TreeNode("Colors"))
+            {
+                ImGui::SeparatorText("Background Color");
+                ImGui::ColorEdit4("Background Color", (float*)&MainScene->BackgroundColor, ImGuiColorEditFlags_NoLabel);
+
+                ImGui::SeparatorText("HighLight Color");
+                ImGui::ColorEdit4("HighLight Color", (float*)&Mesh::HighlightColor, ImGuiColorEditFlags_NoLabel);
+
+                ImGui::SeparatorText("Face Color");
+                ImGui::ColorEdit4("Face Color", (float*)&Mesh::FaceColor, ImGuiColorEditFlags_NoLabel);
+
+                ImGui::SeparatorText("Vertex Color");
+                ImGui::ColorEdit4("Vertex Color", (float*)&Mesh::VertexColor, ImGuiColorEditFlags_NoLabel);
+
+                ImGui::SeparatorText("Edge Color");
+                ImGui::ColorEdit4("Edge Color", (float*)&Mesh::EdgeColor, ImGuiColorEditFlags_NoLabel);
+
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
             
             ImGui::SeparatorText("Render Mode");
         }
