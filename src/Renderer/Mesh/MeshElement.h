@@ -2,7 +2,7 @@
 
 #include "pch.h"
 
-enum class MeshElement
+enum class MeshElementType
 {
     None,
     Face,   // Vertices are duplicated for each face. Each vertex uses the face normal.
@@ -10,16 +10,18 @@ enum class MeshElement
     Edge,   // Vertices are duplicated. Each vertex uses the vertex normal.
 };
 
+inline const std::vector AllMeshElementTypes{MeshElementType::Vertex, MeshElementType::Edge, MeshElementType::Face};
+
 struct MeshElementIndex
 {
 public:
-    MeshElementIndex() : Element(MeshElement::None), Index(-1) {}
-    MeshElementIndex(MeshElement Element, int Index) : Element(Element), Index(Index) {}
+    MeshElementIndex() : ElementType(MeshElementType::None), Index(-1) {}
+    MeshElementIndex(MeshElementType ElementType, int Index) : ElementType(ElementType), Index(Index) {}
 
     auto operator <(const MeshElementIndex &Other) const
     {
-        if (Element != Other.Element) {
-            return Element < Other.Element;
+        if (ElementType != Other.ElementType) {
+            return ElementType < Other.ElementType;
         }
         return Index < Other.Index;
     }
@@ -28,7 +30,7 @@ public:
     int Idx() const { return Index; }
 
 public:
-    MeshElement Element;
+    MeshElementType ElementType;
     int Index;
 };
 
@@ -36,6 +38,6 @@ struct MeshElementIndexHash
 {
     size_t operator()(const MeshElementIndex& InMeshElementIndex) const
     {
-        return std::hash<int>{}(static_cast<int>(InMeshElementIndex.Element)) ^ (std::hash<int>{}(InMeshElementIndex.Index) << 1);
+        return std::hash<int>{}(static_cast<int>(InMeshElementIndex.ElementType)) ^ (std::hash<int>{}(InMeshElementIndex.Index) << 1);
     }
 };

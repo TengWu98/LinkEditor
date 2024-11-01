@@ -75,11 +75,11 @@ struct VerticesHandle {
     std::vector<Mesh::VH> VHs;
 };
 
-std::vector<Vertex3D> Mesh::CreateVertices(MeshElement RenderElement, const ElementIndex& Highlight) const
+std::vector<Vertex3D> Mesh::CreateVertices(MeshElementType RenderElementType, const ElementIndex& Highlight) const
 {
     std::vector<VerticesHandle> Handles;
     
-    if (RenderElement == MeshElement::Vertex)
+    if (RenderElementType == MeshElementType::Vertex)
     {
         Handles.reserve(M.n_vertices());
         for (const auto& VertexHandle : M.vertices())
@@ -88,7 +88,7 @@ std::vector<Vertex3D> Mesh::CreateVertices(MeshElement RenderElement, const Elem
             Handles.emplace_back(VerticesHandle);
         }
     }
-    else if (RenderElement == MeshElement::Edge)
+    else if (RenderElementType == MeshElementType::Edge)
     {
         Handles.reserve(M.n_edges() * 2);
         for (const auto& EdgeHandle : M.edges())
@@ -98,7 +98,7 @@ std::vector<Vertex3D> Mesh::CreateVertices(MeshElement RenderElement, const Elem
             Handles.emplace_back(VerticesHandle);
         }
     }
-    else if (RenderElement == MeshElement::Face)
+    else if (RenderElementType == MeshElementType::Face)
     {
         Handles.reserve(M.n_faces() * 3); // Lower bound assuming all faces are triangles.
         for (const auto& FaceHandle : M.faces())
@@ -117,11 +117,10 @@ std::vector<Vertex3D> Mesh::CreateVertices(MeshElement RenderElement, const Elem
     AllHighlights.emplace(Highlight);
 
     std::vector<Vertex3D> Vertices;
-
     for (const auto& Handle : Handles)
     {
         const auto& Parent = Handle.Parent;
-        const auto Normal = ToGlm(RenderElement == MeshElement::Vertex || RenderElement == MeshElement::Edge ? M.normal(Handle.VHs[0]) : M.normal(FH(Handle.Parent)));
+        const auto Normal = ToGlm(RenderElementType == MeshElementType::Vertex || RenderElementType == MeshElementType::Edge ? M.normal(Handle.VHs[0]) : M.normal(FH(Handle.Parent)));
         
         for(const auto& VertexHandle : Handle.VHs)
         {
@@ -134,17 +133,18 @@ std::vector<Vertex3D> Mesh::CreateVertices(MeshElement RenderElement, const Elem
             }
             else
             {
-                if(RenderElement == MeshElement::Vertex)
+                if(RenderElementType == MeshElementType::Vertex)
                 {
                     Color = VertexColor;
                 }
-                else if(RenderElement == MeshElement::Edge)
+                else if(RenderElementType == MeshElementType::Edge)
                 {
                     Color = EdgeColor;
                 }
                 else
                 {
-                    ToGlm(M.color(FH(Parent)));
+                    // ToGlm(M.color(FH(Parent)));
+                    Color = FaceColor;
                 }
             }
             
@@ -156,13 +156,13 @@ std::vector<Vertex3D> Mesh::CreateVertices(MeshElement RenderElement, const Elem
     return Vertices;
 }
 
-std::vector<uint> Mesh::CreateIndices(MeshElement InMeshElement) const
+std::vector<uint> Mesh::CreateIndices(MeshElementType RenderElementType) const
 {
-    switch (InMeshElement) {
-    case MeshElement::Face: return CreateTriangulatedFaceIndices();
-    case MeshElement::Vertex: return CreateTriangleIndices();
-    case MeshElement::Edge: return CreateEdgeIndices();
-    case MeshElement::None: return {};
+    switch (RenderElementType) {
+    case MeshElementType::Face: return CreateTriangulatedFaceIndices();
+    case MeshElementType::Vertex: return CreateTriangleIndices();
+    case MeshElementType::Edge: return CreateEdgeIndices();
+    case MeshElementType::None: return {};
     }
 }
 

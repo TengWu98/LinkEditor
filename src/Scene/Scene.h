@@ -18,19 +18,23 @@ struct Model {
     Model(glm::mat4 &&InTransform)
         : Transform{std::move(InTransform)}, InvTransform{glm::transpose(glm::inverse(Transform))} {}
 
-    glm::mat4 Transform{1};
+    glm::mat4 Transform = glm::mat4(1);
     // `InvTransform` is the _transpose_ of the inverse of `Transform`.
     // Since this rarely changes, we precompute it and send it to the shader.
-    glm::mat4 InvTransform{1};
+    glm::mat4 InvTransform = glm::mat4(1);
 };
 
 struct ViewProj {
-    glm::mat4 View{1}, Projection{1};
+    glm::mat4 ViewMatrix = glm::mat4(1);
+    glm::mat4 ProjectionMatrix = glm::mat4(1);
 };
 
 struct ViewProjNearFar {
-    glm::mat4 View{1}, Projection{1};
-    float Near, Far;
+    glm::mat4 ViewMatrix = glm::mat4(1);
+    glm::mat4 ProjectionMatrix = glm::mat4(1);
+    
+    float Near;
+    float Far;
 };
 
 struct SceneNode {
@@ -49,18 +53,18 @@ enum class SelectionMode {
 struct MeshCreateInfo
 {
     std::string Name;
-    glm::mat4 Transform {1};
+    glm::mat4 Transform = glm::mat4(1);
     bool bIsSelect = true;
     bool bIsVisible = true;
     bool bIsSubmit = true;
 };
 
-using MeshBufferMap = std::unordered_map<MeshElement, VertexArray>;
+using MeshBufferMap = std::unordered_map<MeshElementType, VertexArray>;
 struct MeshGLData
 {
-    std::unordered_map<entt::entity, MeshBufferMap> Main;
-    std::unordered_map<entt::entity, MeshBufferMap> NormalIndicators;
-    std::unordered_map<entt::entity, VertexBuffer> Models;
+    std::unordered_map<entt::entity, MeshBufferMap> PrimaryMeshs;
+    std::unordered_map<entt::entity, VertexBuffer> ModelMatrices;
+    // std::unordered_map<entt::entity, MeshBufferMap> NormalIndicators;
 };
 
 class Scene
@@ -104,7 +108,7 @@ public:
     // std::unique_ptr<Gizmo> Gizmo;
 
     SelectionMode SelectionMode = SelectionMode::Object;
-    MeshElement SelectionMeshElement = MeshElement::Face;
+    MeshElementType SelectionMeshElementType = MeshElementType::Face;
     MeshElementIndex SelectedElement;
 
     std::unique_ptr<MeshGLData> MeshGLData;

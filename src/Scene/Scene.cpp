@@ -1,4 +1,6 @@
 ﻿#include "Scene.h"
+
+#include "Renderer/Buffers/IndexBuffer.h"
 #include "Renderer/Mesh/Mesh.h"
 
 Scene::Scene() :
@@ -38,7 +40,7 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     Registry.emplace<Model>(Entity, glm::mat4(InMeshCreateInfo.Transform));
     Registry.emplace<std::string>(Entity, InMeshCreateInfo.Name);
 
-    MeshGLData->Models.emplace(Entity, VertexBuffer(sizeof(Model)));
+    MeshGLData->ModelMatrices.emplace(Entity, VertexBuffer(sizeof(Model)));
     SetEntityVisible(Entity, true);
     if(!InMeshCreateInfo.bIsVisible)
     {
@@ -46,12 +48,37 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     }
 
     MeshBufferMap MeshBuffers;
-    VertexArray VAO;
-    // VertexBuffer VBO(sizeof(float) * InMesh.GetVertices().size());
-    // VBO.SetData(InMesh.GetVertices().data(), sizeof(float) * InMesh.GetVertices().size());
-    //
-    // MeshBuffers[/* 填充相应的MeshElement*/] = std::move(VAO);
+    for (auto ElementType : AllMeshElementTypes)
+    {
+        VertexArray VertexArrayBuffer;
+        std::vector<Vertex3D> Vertices = InMesh.CreateVertices(ElementType);
+        std::vector<uint> Indices = InMesh.CreateIndices(ElementType);
 
+        auto VertexBufferObject = std::make_shared<VertexBuffer>(Vertices.size() * sizeof(Vertex3D));
+        VertexBufferObject->SetLayout({
+            {ShaderDataType::Float3, "a_Position"},
+            {ShaderDataType::Float3, "a_Normal"},
+            {ShaderDataType::Float4, "a_Color"}
+        });
+        VertexBufferObject->SetData(Vertices.data(), Vertices.size() * sizeof(Vertex3D));
+        VertexArrayBuffer.AddVertexBuffer(VertexBufferObject);
+
+        auto IndexBufferObject = std::make_shared<IndexBuffer>(Indices.data(), Indices.size());
+        VertexArrayBuffer.SetIndexBuffer(IndexBufferObject);
+        MeshBuffers.emplace(ElementType, VertexArrayBuffer);
+    }
+
+    Registry.emplace<Mesh>(Entity, std::move(InMesh));
+    
+    if(InMeshCreateInfo.bIsSelect)
+    {
+        // SelecteEntity(Entity, false);
+    }
+
+    if(InMeshCreateInfo.bIsSubmit)
+    {
+        
+    }
     
     return Entity;
 }

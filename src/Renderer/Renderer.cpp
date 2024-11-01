@@ -38,7 +38,7 @@ void Renderer::Init()
     SetViewport(0, 0, ViewportWidth, ViewportHeight);
 
     // Shader Library
-    Shaders["Fill"] = std::make_shared<Shader>(fs::absolute(fs::path("src/Renderer/ShaderLibrary/Fill.glsl")).string());
+    Shaders["VertexColor"] = std::make_shared<Shader>(fs::absolute(fs::path("src/Renderer/Shader/ShaderLibrary/VertexColor.glsl")).string());
 }
 
 void Renderer::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)

@@ -302,8 +302,8 @@ void Application::RenderImGUI()
         {
             ImGui::Combo("Selection Mode", (int*)&MainScene->SelectionMode, "Object\0Element\0");
 
-            int CurrentMeshElement = static_cast<int>(MainScene->SelectionMeshElement);
-            ImGui::Combo("Mesh Element", (int*)&MainScene->SelectionMeshElement, "None\0Face\0Vertex\0Edge\0");
+            int CurrentMeshElementType = static_cast<int>(MainScene->SelectionMeshElementType);
+            ImGui::Combo("Mesh Element Type", (int*)&MainScene->SelectionMeshElementType, "None\0Face\0Vertex\0Edge\0");
         }
     
         ImGui::End();

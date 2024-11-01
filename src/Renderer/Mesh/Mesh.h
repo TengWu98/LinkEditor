@@ -45,20 +45,20 @@ public:
     struct ElementIndex : MeshElementIndex {
         using MeshElementIndex::MeshElementIndex;
         ElementIndex(const MeshElementIndex &other) : MeshElementIndex(other) {}
-        ElementIndex(VH vh) : MeshElementIndex(MeshElement::Vertex, vh.idx()) {}
-        ElementIndex(EH eh) : MeshElementIndex(MeshElement::Edge, eh.idx()) {}
-        ElementIndex(FH fh) : MeshElementIndex(MeshElement::Face, fh.idx()) {}
+        ElementIndex(VH vh) : MeshElementIndex(MeshElementType::Vertex, vh.idx()) {}
+        ElementIndex(EH eh) : MeshElementIndex(MeshElementType::Edge, eh.idx()) {}
+        ElementIndex(FH fh) : MeshElementIndex(MeshElementType::Face, fh.idx()) {}
 
-        bool operator==(ElementIndex other) const { return Element == other.Element && Index == other.Index; }
+        bool operator==(ElementIndex other) const { return ElementType == other.ElementType && Index == other.Index; }
 
-        bool operator==(VH vh) const { return Element == MeshElement::Vertex && Index == vh.idx(); }
-        bool operator==(EH eh) const { return Element == MeshElement::Edge && Index == eh.idx(); }
-        bool operator==(FH fh) const { return Element == MeshElement::Face && Index == fh.idx(); }
+        bool operator==(VH vh) const { return ElementType == MeshElementType::Vertex && Index == vh.idx(); }
+        bool operator==(EH eh) const { return ElementType == MeshElementType::Edge && Index == eh.idx(); }
+        bool operator==(FH fh) const { return ElementType == MeshElementType::Face && Index == fh.idx(); }
 
         // Implicit conversion to OpenMesh handles.
-        operator VH() const { return Element == MeshElement::Vertex ? VH(Index) : VH(-1); }
-        operator EH() const { return Element == MeshElement::Edge ? EH(Index) : EH(-1); }
-        operator FH() const { return Element == MeshElement::Face ? FH(Index) : FH(-1); }
+        operator VH() const { return ElementType == MeshElementType::Vertex ? VH(Index) : VH(-1); }
+        operator EH() const { return ElementType == MeshElementType::Edge ? EH(Index) : EH(-1); }
+        operator FH() const { return ElementType == MeshElementType::Face ? FH(Index) : FH(-1); }
     };
     
 public:
@@ -81,8 +81,8 @@ public:
         for (const auto& FH : M.faces()) SetFaceColor(FH, Color);
     }
 
-    std::vector<Vertex3D> CreateVertices(MeshElement RenderElement, const ElementIndex& Highlight = {}) const;
-    std::vector<uint> CreateIndices(MeshElement InMeshElement) const;
+    std::vector<Vertex3D> CreateVertices(MeshElementType RenderElementType, const ElementIndex& Highlight = {}) const;
+    std::vector<uint> CreateIndices(MeshElementType RenderElementType) const;
 
     std::vector<uint> CreateTriangleIndices() const; // Triangulated face indices.
     std::vector<uint> CreateTriangulatedFaceIndices() const; // Triangle fan for each face.
