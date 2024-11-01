@@ -46,12 +46,12 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     }
 
     MeshBuffers Buffers{};
-    for(auto Element : AllElements)
-    {
-        auto VertexBuffer = std::make_shared<VertexBuffer>(Element);
-        auto IndexBuffer = std::make_shared<IndexBuffer>(Element);
-        Buffers.emplace(Element, )
-    }
+    // for(auto Element : AllElements)
+    // {
+    //     auto VertexBuffer = std::make_shared<VertexBuffer>(Element);
+    //     auto IndexBuffer = std::make_shared<IndexBuffer>(Element);
+    //     // Buffers.emplace(Element, )
+    // }
 
     
     return Entity;

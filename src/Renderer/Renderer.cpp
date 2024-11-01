@@ -37,9 +37,8 @@ void Renderer::Init()
     // Set the viewport
     SetViewport(0, 0, ViewportWidth, ViewportHeight);
 
-    // TODO(WT) Shader Library
-    // Shaders["Fill"] = std::make_shared<Shader>("", "");
-    
+    // Shader Library
+    Shaders["Fill"] = std::make_shared<Shader>(fs::absolute(fs::path("src/Renderer/ShaderLibrary/Fill.glsl")).string());
 }
 
 void Renderer::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)

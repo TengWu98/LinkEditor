@@ -55,19 +55,6 @@ Shader::Shader(const std::string& FilePath)
     ShaderName = FilePath.substr(LastSlash, Count);
 }
 
-Shader::Shader(const std::string& Name, std::unordered_map<GLenum, std::string> FilePaths)
-    : ShaderName(Name)
-{
-    for(auto [Type, Path] : FilePaths)
-    {
-        const std::string Source = ReadFile(FilePath);
-        OpenGLSourceCodes[Type] = Source;
-    }
-    
-    Compile();
-    CreateProgram();
-}
-
 Shader::Shader(const std::string& Name, const std::string& VertexSrc, const std::string& FragmentSrc)
     : ShaderName(Name)
 {
@@ -254,7 +241,7 @@ void Shader::Compile()
 
 void Shader::CreateProgram()
 {
-    GLuint Program = glCreateProgram();
+    const GLuint Program = glCreateProgram();
 
     for (const auto& [ShaderType, Shader] : OpenGLShaders) {
         glAttachShader(Program, Shader);

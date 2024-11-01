@@ -6,7 +6,6 @@ class Shader
 {
 public:
     Shader(const std::string& FilePath);
-    Shader(const std::string& Name, std::unordered_map<GLenum, std::string> FilePaths);
     Shader(const std::string& Name, const std::string& VertexSrc, const std::string& FragmentSrc);
     ~Shader();
 
