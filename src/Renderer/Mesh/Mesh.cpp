@@ -61,3 +61,17 @@ Mesh::PolyMesh Mesh::DeduplicateVertices()
     
     return Deduped;
 }
+
+std::vector<Vertex3D> Mesh::CreateVertices(MeshElement InMeshElement, const ElementIndex& Highlight) const
+{
+    switch (InMeshElement) {
+    case MeshElement::Face: return CreateTriangulatedFaceIndices();
+    case MeshElement::Vertex: return CreateTriangleIndices();
+    case MeshElement::Edge: return CreateEdgeIndices();
+    case MeshElement::None: return {};
+    }
+}
+
+std::vector<uint> Mesh::CreateIndices(MeshElement InMeshElement) const
+{
+}

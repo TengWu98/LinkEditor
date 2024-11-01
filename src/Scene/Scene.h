@@ -55,10 +55,11 @@ struct MeshCreateInfo
     bool bIsSubmit = true;
 };
 
-using MeshBuffers = std::unordered_map<MeshElement, VertexArray>;
+using MeshBufferMap = std::unordered_map<MeshElement, VertexArray>;
 struct MeshGLData
 {
-    std::unordered_map<entt::entity, MeshBuffers> Main, NormalIndicators;
+    std::unordered_map<entt::entity, MeshBufferMap> Main;
+    std::unordered_map<entt::entity, MeshBufferMap> NormalIndicators;
     std::unordered_map<entt::entity, VertexBuffer> Models;
 };
 

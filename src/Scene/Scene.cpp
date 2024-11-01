@@ -45,13 +45,12 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
         SetEntityVisible(Entity, false);
     }
 
-    MeshBuffers Buffers{};
-    // for(auto Element : AllElements)
-    // {
-    //     auto VertexBuffer = std::make_shared<VertexBuffer>(Element);
-    //     auto IndexBuffer = std::make_shared<IndexBuffer>(Element);
-    //     // Buffers.emplace(Element, )
-    // }
+    MeshBufferMap MeshBuffers;
+    VertexArray VAO;
+    VertexBuffer VBO(sizeof(float) * InMesh.GetVertices().size());
+    VBO.SetData(InMesh.GetVertices().data(), sizeof(float) * InMesh.GetVertices().size());
+
+    MeshBuffers[/* 填充相应的MeshElement*/] = std::move(VAO);
 
     
     return Entity;

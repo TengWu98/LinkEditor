@@ -5,6 +5,9 @@
 #include <OpenMesh/Core/IO/MeshIO.hh>
 #include <OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh>
 
+#include "Vertex/Vertex.h"
+#include "MeshElement.h"
+
 namespace om {
     using PolyMesh = OpenMesh::PolyMesh_ArrayKernelT<>;
     using VH = OpenMesh::VertexHandle;
@@ -28,6 +31,26 @@ class Mesh
     using EH = om::EH;
     using HH = om::HH;
     using Point = om::Point;
+
+    // Adds OpenMesh handle comparison/conversion to `MeshElementIndex`.
+    struct ElementIndex : MeshElementIndex {
+        using MeshElementIndex::MeshElementIndex;
+        ElementIndex(const MeshElementIndex &other) : MeshElementIndex(other) {}
+        ElementIndex(VH vh) : MeshElementIndex(MeshElement::Vertex, vh.idx()) {}
+        ElementIndex(EH eh) : MeshElementIndex(MeshElement::Edge, eh.idx()) {}
+        ElementIndex(FH fh) : MeshElementIndex(MeshElement::Face, fh.idx()) {}
+
+        bool operator==(ElementIndex other) const { return Element == other.Element && Index == other.Index; }
+
+        bool operator==(VH vh) const { return Element == MeshElement::Vertex && Index == vh.idx(); }
+        bool operator==(EH eh) const { return Element == MeshElement::Edge && Index == eh.idx(); }
+        bool operator==(FH fh) const { return Element == MeshElement::Face && Index == fh.idx(); }
+
+        // Implicit conversion to OpenMesh handles.
+        operator VH() const { return Element == MeshElement::Vertex ? VH(Index) : VH(-1); }
+        operator EH() const { return Element == MeshElement::Edge ? EH(Index) : EH(-1); }
+        operator FH() const { return Element == MeshElement::Face ? FH(Index) : FH(-1); }
+    };
     
 public:
     static constexpr glm::vec4 DefaultFaceColor = {0.7, 0.7, 0.7, 1};
@@ -48,6 +71,9 @@ public:
     void SetFaceColor(glm::vec4 Color) {
         for (const auto& FH : M.faces()) SetFaceColor(FH, Color);
     }
+
+    std::vector<Vertex3D> CreateVertices(MeshElement InMeshElement, const ElementIndex& Highlight = {}) const;
+    std::vector<uint> CreateIndices(MeshElement InMeshElement) const;
 
 private:
     PolyMesh M;
