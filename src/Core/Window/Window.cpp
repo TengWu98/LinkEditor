@@ -1,28 +1,74 @@
 ﻿#include "Window.h"
+#include "Core/Event/Event.h"
+#include "Core/Event/KeyEvent.h"
+#include "Core/Event/MouseEvent.h"
+#include "Core/Event/ApplicationEvent.h"
 
 static void CursorPosCallback(GLFWwindow* Window, double XPos, double YPos)
 {
-    
+    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    MouseMovedEvent Event(static_cast<float>(XPos), static_cast<float>(YPos));
+    WindowData.EventCallback(Event);
 }
 
 static void ScrollCallback(GLFWwindow* Window, double XOffset, double YOffset)
 {
-    
+    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    MouseScrolledEvent Event(static_cast<float>(XOffset), static_cast<float>(YOffset));
+    WindowData.EventCallback(Event);
 }
 
 static void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int Mods)
 {
-    
+    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    switch (Action)
+    {
+        case GLFW_PRESS:
+        {
+            MouseButtonPressedEvent Event(static_cast<MouseCode>(Button));
+            WindowData.EventCallback(Event);
+            break;
+        }
+        case GLFW_RELEASE:
+        {
+            MouseButtonReleasedEvent Event(static_cast<MouseCode>(Button));
+            WindowData.EventCallback(Event);
+            break;
+        }
+    }
 }
 
 static void KeyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods)
 {
-    
+    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    switch (Action)
+    {
+        case GLFW_PRESS:
+        {
+            KeyPressedEvent Event(static_cast<KeyCode>(Key), 0);
+            WindowData.EventCallback(Event);
+            break;
+        }
+        case GLFW_RELEASE:
+        {
+            KeyReleasedEvent Event(static_cast<KeyCode>(Key));
+            WindowData.EventCallback(Event);
+            break;
+        }
+        case GLFW_REPEAT:
+        {
+            KeyPressedEvent Event(static_cast<KeyCode>(Key), true);
+            WindowData.EventCallback(Event);
+            break;
+        }
+    }
 }
 
 static void CharCallback(GLFWwindow* Window, unsigned int Char)
 {
-    
+    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    KeyTypedEvent Event(static_cast<KeyCode>(Char));
+    WindowData.EventCallback(Event);
 }
 
 static void WindowSizeCallback(GLFWwindow* Window, int Width, int Height)
@@ -30,11 +76,16 @@ static void WindowSizeCallback(GLFWwindow* Window, int Width, int Height)
     WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
     WindowData.Width = Width;
     WindowData.Height = Height;
+
+    WindowResizeEvent Event(Width, Height);
+    WindowData.EventCallback(Event);
 }
 
 static void WindowCloseCallback(GLFWwindow* Window)
 {
     WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    WindowCloseEvent Event;
+    WindowData.EventCallback(Event);
 }
 
 static void GLFWErrorCallback(int Error, const char* Description)
@@ -67,30 +118,14 @@ void Window::Init(const WindowProps& Props)
         return;
     }
     
-    // Decide GL+GLSL versions
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-    // GL ES 2.0 + GLSL 100
-    const char* glsl_version = "#version 100";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-#elif defined(__APPLE__)
-    // GL 3.2 + GLSL 150
-    const char* glsl_version = "#version 150";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
-#else
-    // GL 3.3 + GLSL 150
+    // for windows: GL 4.5 + GLSL 150
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_SAMPLES, 8);
     // glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     // glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-#endif
-
+    
     // Create window with graphics context
     NativeWindow = glfwCreateWindow(static_cast<int>(WindowData.Width), static_cast<int>(WindowData.Height), WindowData.Name.c_str(), nullptr, nullptr);
     if (!NativeWindow)
@@ -108,13 +143,11 @@ void Window::Init(const WindowProps& Props)
     // Set GLFW callback functions
     glfwSetWindowSizeCallback(NativeWindow, WindowSizeCallback);
     glfwSetWindowCloseCallback(NativeWindow, WindowCloseCallback);
-    
     glfwSetCursorPosCallback(NativeWindow, CursorPosCallback);
-    // glfwSetScrollCallback(NativeWindow, ScrollCallback);
-    // glfwSetMouseButtonCallback(NativeWindow, MouseButtonCallback);
-    //
-    // glfwSetKeyCallback(NativeWindow, KeyCallback);
-    // glfwSetCharCallback(NativeWindow, CharCallback);
+    glfwSetScrollCallback(NativeWindow, ScrollCallback);
+    glfwSetMouseButtonCallback(NativeWindow, MouseButtonCallback);
+    glfwSetKeyCallback(NativeWindow, KeyCallback);
+    glfwSetCharCallback(NativeWindow, CharCallback);
 }
 
 void Window::Shutdown()
@@ -130,6 +163,11 @@ void Window::Update()
 
 void Window::ResizeWindow()
 {
+}
+
+void Window::SetEventCallback(const EventCallbackFn& Callback)
+{
+    WindowData.EventCallback = Callback;
 }
 
 GLFWwindow* Window::GetNativeWindow() const

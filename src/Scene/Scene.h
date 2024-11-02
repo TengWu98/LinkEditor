@@ -59,11 +59,11 @@ struct MeshCreateInfo
     bool bIsSubmit = true;
 };
 
-using MeshBufferMap = std::unordered_map<MeshElementType, VertexArray>;
+using MeshBufferMap = std::unordered_map<MeshElementType, std::shared_ptr<VertexArray>>;
 struct MeshGLData
 {
     std::unordered_map<entt::entity, MeshBufferMap> PrimaryMeshs;
-    std::unordered_map<entt::entity, VertexBuffer> ModelMatrices;
+    std::unordered_map<entt::entity, std::shared_ptr<VertexBuffer>> ModelMatrices;
     // std::unordered_map<entt::entity, MeshBufferMap> NormalIndicators;
 };
 
@@ -83,21 +83,23 @@ public:
     entt::entity GetParentEntity(entt::entity Entity) const;
 
     void SetEntityVisible(entt::entity Entity, bool bIsVisible);
-
-    Camera CreateDefaultCamera() const;
+    
     void Render();
     void RenderGizmos();
-
     void CompileShaders();
+
+    Camera CreateDefaultCamera() const;
+    VertexBufferLayout CreateDefaultVertexLayout();
+
+    std::optional<unsigned int> GetModelBufferIndex(entt::entity Entity);
+    void UpdateModelBuffer(entt::entity Entity);
+
     void UpdateTransformBuffers();
 
 public:
     uint32_t ViewportWidth = 0, ViewportHeight = 0;
     
     Camera Camera;
-
-    glm::vec4 EdgeColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);        // Used for line mode.
-    glm::vec4 MeshEdgeColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);  // Used for faces mode.
     
     entt::registry Registry;
     entt::entity SelectedEntity = entt::null;

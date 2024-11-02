@@ -1,15 +1,12 @@
 ﻿#include "Camera.h"
 
+#include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
-Camera::Camera(glm::vec3 InPosition, glm::vec3 InUp, float InYaw, float InPitch)
-    : Position(InPosition), WorldUp(InUp), Yaw(InYaw), Pitch(InPitch), Front(glm::vec3(0.f, 0.f, -1.f)), MovementSpeed(10.f), MouseSensiticity(0.1f), Zoom(45.f)
-{
-    UpdateCameraVectors();
-}
-
-Camera::Camera(float PosX, float PosY, float PosZ, float UpX, float UpY, float UpZ, float InYaw, float InPitch)
-    : Position(glm::vec3(PosX, PosY, PosZ)), WorldUp(glm::vec3(UpX, UpY, UpZ)), Yaw(InYaw), Pitch(InPitch), Front(glm::vec3(0.f, 0.f, -1.f)), MovementSpeed(10.f), MouseSensiticity(0.1f), Zoom(45.f)
+Camera::Camera(glm::vec3 InPosition, glm::vec3 InUp, float InFieldOfView, float InNearClip, float InFarClip, float InYaw, float InPitch) :
+    Position(InPosition), WorldUp(InUp),
+    FieldOfView(InFieldOfView), NearClip(InNearClip), FarClip(InFarClip),
+    Yaw(InYaw), Pitch(InPitch)
 {
     UpdateCameraVectors();
 }
@@ -17,6 +14,21 @@ Camera::Camera(float PosX, float PosY, float PosZ, float UpX, float UpY, float U
 glm::mat4 Camera::GetViewMatrix()
 {
     return glm::lookAt(Position, Position + Front, Up);
+}
+
+glm::mat4 Camera::GetProjectionMatrix(float AspectRatio)
+{
+    return glm::perspective(glm::radians(FieldOfView), AspectRatio, NearClip, FarClip);
+}
+
+glm::mat4 Camera::GetViewProjectionMatrix(float AspectRatio)
+{
+    return GetProjectionMatrix(AspectRatio) * GetViewMatrix();
+}
+
+glm::mat4 Camera::GetInvViewProjectionMatrix(float AspectRatio)
+{
+    return glm::inverse(GetViewProjectionMatrix(AspectRatio));
 }
 
 void Camera::ProcessKeyboard(CameraMovement Direction, float DeltaTime)
@@ -38,8 +50,8 @@ void Camera::ProcessKeyboard(CameraMovement Direction, float DeltaTime)
 
 void Camera::ProcessMouseMovement(float XOffset, float YOffset, bool ConstrainPitch)
 {
-    XOffset *= MouseSensiticity;
-    YOffset *= MouseSensiticity;
+    XOffset *= MouseSensitivity;
+    YOffset *= MouseSensitivity;
 
     Yaw += XOffset;
     Pitch += YOffset;
@@ -57,11 +69,11 @@ void Camera::ProcessMouseMovement(float XOffset, float YOffset, bool ConstrainPi
 
 void Camera::ProcessMouseScroll(float YOffset)
 {
-    Zoom -= static_cast<float>(YOffset);
-    if (Zoom < 1.0f)
-        Zoom = 1.0f;
-    if (Zoom > 45.0f)
-        Zoom = 45.0f;
+    ZoomLevel -= static_cast<float>(YOffset);
+    if (ZoomLevel < 1.0f)
+        ZoomLevel = 1.0f;
+    if (ZoomLevel > 45.0f)
+        ZoomLevel = 45.0f;
 }
 
 void Camera::UpdateCameraVectors()

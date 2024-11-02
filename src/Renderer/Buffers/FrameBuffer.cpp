@@ -7,6 +7,9 @@ static bool IsDepthFormat(FramebufferTextureFormat Format)
     switch (Format)
     {
     case FramebufferTextureFormat::DEPTH24STENCIL8:  return true;
+    default:
+        LOG_ERROR("Not a depth format!");
+        break;
     }
 
     return false;
@@ -18,6 +21,9 @@ static GLenum FrameBufferTextureFormatToGL(FramebufferTextureFormat Format)
     {
     case FramebufferTextureFormat::RGBA8:       return GL_RGBA8;
     case FramebufferTextureFormat::RED_INTEGER: return GL_RED_INTEGER;
+    default:
+        LOG_ERROR("Unknown FramebufferTextureFormat!");
+        break;
     }
     
     return 0;
@@ -28,7 +34,7 @@ FrameBuffer::FrameBuffer(const FramebufferSpecification& Spec)
 {
     for(auto Attachment : Specification.Attachments.Attachments)
     {
-        if(IsDepthFormat(Attachment.TextureFormat))
+        if(!IsDepthFormat(Attachment.TextureFormat))
         {
             ColorAttachmentSpecifications.emplace_back(Attachment);
         }

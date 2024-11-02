@@ -6,11 +6,15 @@
 
 class Camera;
 
+using EventCallbackFn = std::function<void(Event&)>;
+
 struct WindowProps
 {
     std::string Name;
     unsigned int Width;
     unsigned int Height;
+
+    EventCallbackFn EventCallback;
 
     WindowProps(const std::string& InName = "Mesh Editor", unsigned int InWidth = 1280, unsigned int InHeight = 720)
         : Name(InName), Width(InWidth), Height(InHeight) {}
@@ -29,6 +33,8 @@ public:
     unsigned int GetWidth() const;
     unsigned int GetHeight() const;
     void ResizeWindow();
+
+    void SetEventCallback(const EventCallbackFn& Callback);
 
     GLFWwindow* GetNativeWindow() const;
 

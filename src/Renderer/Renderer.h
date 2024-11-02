@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "pch.h"
+#include "Buffers/VertexBuffer.h"
 #include "Renderer/RenderContext/RenderContext.h"
 #include "Renderer/Buffers/FrameBuffer.h"
 
@@ -10,10 +11,13 @@ class Scene;
 class VertexArray;
 class Window;
 
+enum class ShaderPipelineType {
+    Flat,
+    VertexColor,
+};
+
 struct RenderSpecification
 {
-    uint32_t ViewportWidth = 0;
-    uint32_t ViewportHeight = 0;
 };
 
 class Renderer
@@ -28,22 +32,22 @@ public:
 
     void SetClearColor(const glm::vec4& Color);
     void Clear();
-
-    void DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount);
+    
     void DrawLines(const std::shared_ptr<VertexArray>& VertexArray, uint32_t VertexCount);
     void SetLineWidth(float Width);
+    void DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount = 0);
+    void DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount, uint32_t InstanceCount);
 
     void CompileShaders();
 
-    uint32_t GetViewportWidth() const { return ViewportWidth; }
-    uint32_t GetViewportHeight() const { return ViewportHeight; }
+    void Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<VertexBuffer> ModelMatrix, uint32_t IndexCount = 0);
+
+public:
+    inline static ShaderPipelineType CurrentShaderPipeline = ShaderPipelineType::Flat;
 
 private:
     RenderSpecification Specification;
     
     std::unique_ptr<FrameBuffer> FBO;
-    std::unordered_map<std::string, std::shared_ptr<Shader>> Shaders;
-
-    uint32_t ViewportWidth = 0;
-    uint32_t ViewportHeight = 0;
+    std::unordered_map<ShaderPipelineType, std::shared_ptr<Shader>> ShaderLibrary;
 };

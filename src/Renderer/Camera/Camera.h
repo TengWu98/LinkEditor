@@ -15,10 +15,12 @@ enum CameraMovement
 class Camera
 {
 public:
-    Camera(glm::vec3 InPosition = glm::vec3(0.f, 0.f, 0.f), glm::vec3 InUp = glm::vec3(0.f, 0.f, 0.f), float InYaw = -90.f, float InPitch = 0.f);
-    Camera(float PosX, float PosY, float PosZ, float UpX, float UpY, float UpZ, float InYaw, float InPitch);
+    Camera(glm::vec3 InPosition, glm::vec3 InUp, float InFieldOfView, float InNearClip, float InFarClip, float InYaw, float InPitch);
 
     glm::mat4 GetViewMatrix();
+    glm::mat4 GetProjectionMatrix(float AspectRatio);
+    glm::mat4 GetViewProjectionMatrix(float AspectRatio);
+    glm::mat4 GetInvViewProjectionMatrix(float AspectRatio);
 
     void ProcessKeyboard(CameraMovement Direction, float DeltaTime);
     void ProcessMouseMovement(float XOffset, float YOffset, bool ConstrainPitch = true);
@@ -28,18 +30,22 @@ private:
     
 public:
     // Camera Attributes
+    glm::vec3 Front = glm::vec3(0.f, 0.f, -1.f);
     glm::vec3 Position;
-    glm::vec3 Front;
     glm::vec3 Up;
     glm::vec3 Right;
     glm::vec3 WorldUp;
+
+    float FieldOfView;
+    float NearClip;
+    float FarClip;
 
     // Euler Angles
     float Yaw;
     float Pitch;
 
     // Camera Options
-    float MovementSpeed;
-    float MouseSensiticity;
-    float Zoom;
+    float MovementSpeed = 10.f;
+    float MouseSensitivity = 0.1f;
+    float ZoomLevel = 45.f;
 };

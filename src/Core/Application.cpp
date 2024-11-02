@@ -3,6 +3,7 @@
 #include "Scene/Scene.h"
 #include "Renderer/Camera/Camera.h"
 #include "Renderer/Mesh/Mesh.h"
+#include "Renderer/Renderer.h"
 
 #include <nfd.h>
 
@@ -26,6 +27,7 @@ static void ShowDockingDisabledMessage()
 Application::Application()
 {
     AppWindow = std::make_unique<Window>(WindowProps());
+    AppWindow->SetEventCallback(MESH_EDITOR_BIND_EVENT_FN(Application::OnEvent));
     MainScene = std::make_unique<Scene>();
     NFD_Init();
     SetupImGui();
@@ -49,6 +51,30 @@ std::shared_ptr<Application> Application::GetInstance()
     return Instance;
 }
 
+Scene& Application::GetMainScene() const
+{
+    return *MainScene;
+}
+
+Window& Application::GetWindow() const
+{
+    return *AppWindow;
+}
+
+void Application::OnEvent(Event& InEvent)
+{
+    EventDispatcher Dispatcher(InEvent);
+    Dispatcher.Dispatch<WindowCloseEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnWindowClose));
+    Dispatcher.Dispatch<WindowResizeEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnWindowResize));
+    Dispatcher.Dispatch<MouseButtonPressedEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnMouseButtonPressedEvent));
+    Dispatcher.Dispatch<MouseButtonReleasedEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnMouseButtonReleasedEvent));
+    Dispatcher.Dispatch<MouseMovedEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnMouseMovedEvent));
+    Dispatcher.Dispatch<MouseScrolledEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnMouseScrolledEvent));
+    Dispatcher.Dispatch<KeyPressedEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnKeyPressedEvent));
+    Dispatcher.Dispatch<KeyReleasedEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnKeyReleasedEvent));
+    Dispatcher.Dispatch<KeyTypedEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnKyeTypedEvent));
+}
+
 void Application::Run()
 {
     while (!glfwWindowShouldClose(AppWindow->GetNativeWindow()))
@@ -69,6 +95,7 @@ void Application::Run()
         RenderImGUI();
 
         // Render Scene
+        MainScene->SetViewportSize(AppWindow->GetWidth(), AppWindow->GetHeight());
         MainScene->Render();
         
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -188,7 +215,7 @@ void Application::RenderImGUI()
             if (ImGui::MenuItem("Load Mesh"))
             {
                 static const std::vector<nfdfilteritem_t> Filters {
-                        {"Mesh object", "obj, off, ply, stl, om"}
+                        {"Mesh object", "obj,off,ply,stl,om"}
                 };
                 nfdchar_t *NFDPath;
                 nfdresult_t Result = NFD_OpenDialog(&NFDPath, Filters.data(), Filters.size(), "");
@@ -268,7 +295,7 @@ void Application::RenderImGUI()
         {
             if(ImGui::TreeNode("Camera"))
             {
-                ImGui::SliderFloat("Camera Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f, "%.3f", ImGuiSliderFlags_None);
+                ImGui::SliderFloat("Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f, "%.3f", ImGuiSliderFlags_None);
 
                 ImGui::TreePop();
                 ImGui::Spacing();
@@ -291,6 +318,15 @@ void Application::RenderImGUI()
                 ImGui::SeparatorText("Edge Color");
                 ImGui::ColorEdit4("Edge Color", (float*)&Mesh::EdgeColor, ImGuiColorEditFlags_NoLabel);
 
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
+
+            if(ImGui::TreeNode("Shader"))
+            {
+                int CurrentShaderPipelineType = static_cast<int>(Renderer::CurrentShaderPipeline);
+                ImGui::Combo("Shader Type", (int*)&Renderer::CurrentShaderPipeline, "Flat\0VertexColor\0");
+                
                 ImGui::TreePop();
                 ImGui::Spacing();
             }
@@ -366,4 +402,55 @@ void Application::RenderImGUI()
     }
     
     ImGui::Render();
+}
+
+bool Application::OnWindowClose(WindowCloseEvent& InEvent)
+{
+    bIsRunning = false;
+    return true;
+}
+
+bool Application::OnWindowResize(WindowResizeEvent& InEvent)
+{
+    if (InEvent.GetWidth() == 0 || InEvent.GetHeight() == 0)
+    {
+        bIsMinimized = true;
+        return false;
+    }
+
+    bIsMinimized = false;
+    MainScene->SetViewportSize(InEvent.GetWidth(), InEvent.GetHeight());
+    return false;
+}
+
+bool Application::OnMouseButtonPressedEvent(MouseButtonPressedEvent& InEvent)
+{
+    
+}
+
+bool Application::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& InEvent)
+{
+}
+
+bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
+{
+}
+
+bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
+{
+    MainScene->Camera.ProcessMouseScroll(InEvent.GetYOffset());
+    return false;
+}
+
+bool Application::OnKeyPressedEvent(KeyPressedEvent& InEvent)
+{
+}
+
+bool Application::OnKeyReleasedEvent(KeyReleasedEvent& InEvent)
+{
+}
+
+bool Application::OnKyeTypedEvent(KeyEvent& InEvent)
+{
+    
 }

@@ -25,6 +25,7 @@ workspace "MeshEditor"
         architecture "x64"
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+    resourcesdir = "%{wks.location}/resources"
 
     group "Dependencies"
         include "lib/ImGui"
@@ -63,7 +64,9 @@ project "MeshEditor"
         "%{IncludeDir.glm}/**.inl",
 
         "%{IncludeDir.ImGuizmo}/ImGuizmo.h",
-		"%{IncludeDir.ImGuizmo}/ImGuizmo.cpp"
+		"%{IncludeDir.ImGuizmo}/ImGuizmo.cpp",
+
+        "resources/shaders/**.glsl"
     }
 
     includedirs
@@ -115,6 +118,11 @@ project "MeshEditor"
             "lib/OpenMesh/lib/OpenMeshToolsd.lib",
         }
 
+        postbuildcommands
+        {
+            '{COPYDIR} "%{resourcesdir}" "%{wks.location}/binaries/%{outputdir}/%{prj.name}/resources"',       
+        }
+
         runtime "Debug"
         symbols "on"
 
@@ -128,6 +136,12 @@ project "MeshEditor"
         {
             "lib/OpenMesh/lib/OpenMeshCore.lib",
             "lib/OpenMesh/lib/OpenMeshTools.lib",
+        }
+
+        postbuildcommands
+        {
+            '{COPYDIR} "%{resourcesdir}" "%{wks.location}/binaries/%{outputdir}/%{prj.name}/resources"',
+            '{COPYDIR} "%{wks.location}/binaries/%{outputdir}/%{prj.name}" "%{wks.location}/MeshEditorRelease"'
         }
 
         runtime "Release"

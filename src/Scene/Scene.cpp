@@ -10,16 +10,12 @@ Scene::Scene() :
 {
     // Initialize Render pipeline
     RenderSpecification Spec;
-    Spec.ViewportWidth = ViewportWidth;
-    Spec.ViewportHeight = ViewportHeight;
     MainRenderPipeline = std::make_unique<Renderer>(Spec);
 
     // Initialize Uniform buffers
     TransformBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProj), 0);
     ViewProjNearFarBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProjNearFar), 1);
     // TODO(WT) Lights buffer
-
-    
 }
 
 Scene::~Scene()
@@ -40,7 +36,7 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     Registry.emplace<Model>(Entity, glm::mat4(InMeshCreateInfo.Transform));
     Registry.emplace<std::string>(Entity, InMeshCreateInfo.Name);
 
-    MeshGLData->ModelMatrices.emplace(Entity, VertexBuffer(sizeof(Model)));
+    MeshGLData->ModelMatrices.emplace(Entity, std::make_shared<VertexBuffer>(sizeof(Model)));
     SetEntityVisible(Entity, true);
     if(!InMeshCreateInfo.bIsVisible)
     {
@@ -50,29 +46,27 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     MeshBufferMap MeshBuffers;
     for (auto ElementType : AllMeshElementTypes)
     {
-        VertexArray VertexArrayBuffer;
+        auto VertexArrayBuffer = std::make_shared<VertexArray>();
         std::vector<Vertex3D> Vertices = InMesh.CreateVertices(ElementType);
         std::vector<uint> Indices = InMesh.CreateIndices(ElementType);
 
         auto VertexBufferObject = std::make_shared<VertexBuffer>(Vertices.size() * sizeof(Vertex3D));
-        VertexBufferObject->SetLayout({
-            {ShaderDataType::Float3, "a_Position"},
-            {ShaderDataType::Float3, "a_Normal"},
-            {ShaderDataType::Float4, "a_Color"}
-        });
+        VertexBufferObject->SetLayout(CreateDefaultVertexLayout());
         VertexBufferObject->SetData(Vertices.data(), Vertices.size() * sizeof(Vertex3D));
-        VertexArrayBuffer.AddVertexBuffer(VertexBufferObject);
+        VertexArrayBuffer->AddVertexBuffer(VertexBufferObject);
 
         auto IndexBufferObject = std::make_shared<IndexBuffer>(Indices.data(), Indices.size());
-        VertexArrayBuffer.SetIndexBuffer(IndexBufferObject);
+        VertexArrayBuffer->SetIndexBuffer(IndexBufferObject);
         MeshBuffers.emplace(ElementType, VertexArrayBuffer);
     }
+    
+    MeshGLData->PrimaryMeshs.emplace(Entity, MeshBuffers);
 
     Registry.emplace<Mesh>(Entity, std::move(InMesh));
     
     if(InMeshCreateInfo.bIsSelect)
     {
-        // SelecteEntity(Entity, false);
+
     }
 
     if(InMeshCreateInfo.bIsSubmit)
@@ -90,8 +84,23 @@ entt::entity Scene::AddMesh(const fs::path& MeshFilePath, MeshCreateInfo InMeshC
 
 void Scene::Render()
 {
+    if(ViewportWidth == 0 || ViewportHeight == 0)
+    {
+        return;
+    }
+    
+    MainRenderPipeline->SetViewport(0, 0, ViewportWidth, ViewportHeight);
     MainRenderPipeline->SetClearColor(BackgroundColor);
     MainRenderPipeline->Clear();
+
+    // Render Meshs
+    for(auto PrimaryMesh : MeshGLData->PrimaryMeshs)
+    {
+        auto Entity = PrimaryMesh.first;
+        auto ModelMatrix = MeshGLData->ModelMatrices.at(Entity);
+        auto MeshVertexArrayBuffer = PrimaryMesh.second.at(SelectionMeshElementType);
+        MainRenderPipeline->Render(MeshVertexArrayBuffer, ModelMatrix);
+    }
 }
 
 void Scene::RenderGizmos()
@@ -105,11 +114,56 @@ void Scene::CompileShaders()
 
 void Scene::UpdateTransformBuffers()
 {
+    const float AspectRatio = ViewportWidth == 0 || ViewportHeight == 0 ? 1.f : static_cast<float>(ViewportWidth) / static_cast<float>(ViewportHeight);
+    const ViewProj ViewProjMat = {Camera.GetViewMatrix(), Camera.GetProjectionMatrix(AspectRatio)};
+}
+
+VertexBufferLayout Scene::CreateDefaultVertexLayout()
+{
+    return {
+        {ShaderDataType::Float3, "a_Position"},
+        {ShaderDataType::Float3, "a_WorldNormal"},
+        {ShaderDataType::Float4, "a_Color"},
+        {ShaderDataType::Mat4, "ModelMatrix"},
+        {ShaderDataType::Mat4, "InverseModelMatrix"}
+    };
+}
+
+std::optional<unsigned> Scene::GetModelBufferIndex(entt::entity Entity)
+{
+    if(Entity == entt::null)
+    {
+        return std::nullopt;
+    }
+
+    const auto& ModelIndices = Registry.get<SceneNode>(GetParentEntity(Entity)).ModelIndices;
+    const auto Iter = ModelIndices.find(Entity);
+    if(Iter != ModelIndices.end())
+    {
+        return Iter->second;
+    }
+
+    return std::nullopt;
+}
+
+void Scene::UpdateModelBuffer(entt::entity Entity)
+{
+    const auto BufferIndex = GetModelBufferIndex(Entity);
+    if(BufferIndex)
+    {
+        const auto& ModelStruct = Registry.get<Model>(GetParentEntity(Entity));
+        const auto& ModelMatrixBuffer = MeshGLData->ModelMatrices.at(Entity);
+
+        if(ModelMatrixBuffer)
+        {
+            ModelMatrixBuffer->SetData(&ModelStruct, sizeof(ModelStruct));
+        }
+    }
 }
 
 Camera Scene::CreateDefaultCamera() const
 {
-    return {glm::vec3(0.0f, 20.0f, 30.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90, -40};
+    return {glm::vec3(0, 0, 2), glm::vec3(0, 1, 0), 60, 0.01, 100, -90, -40};
 }
 
 entt::entity Scene::GetSelectedEntity() const

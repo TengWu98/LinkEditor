@@ -34,10 +34,14 @@ namespace fs = std::filesystem;
 // #include <glm/gtc/matrix_transform.hpp>
 // #include <glm/gtx/quaternion.hpp>
 
+// Common Macros
 #include "Core/Macro.h"
 
 // Log
 #include "Core/Logger/Logger.h"
+
+// Input
+#include "Core/Input/Input.h"
 
 // OpenGL
 #include <glad/glad.h>

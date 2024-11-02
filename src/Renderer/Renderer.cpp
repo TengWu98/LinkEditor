@@ -17,28 +17,22 @@ Renderer::~Renderer()
 
 void Renderer::Init()
 {
+    glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LINE_SMOOTH);
 
-    ViewportWidth = Specification.ViewportWidth;
-    ViewportHeight = Specification.ViewportHeight;
-
     // Frame buffer
     FramebufferSpecification Spec;
-    Spec.Width = ViewportWidth;
-    Spec.Height = ViewportHeight;
     Spec.Attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth};
     FBO = std::make_unique<FrameBuffer>(Spec);
     FBO->Bind();
 
-    // Set the viewport
-    SetViewport(0, 0, ViewportWidth, ViewportHeight);
-
     // Shader Library
-    Shaders["VertexColor"] = std::make_shared<Shader>(fs::absolute(fs::path("src/Renderer/Shader/ShaderLibrary/VertexColor.glsl")).string());
+    ShaderLibrary[ShaderPipelineType::Flat] = std::make_shared<Shader>("resources/shaders/Flat.glsl");
+    ShaderLibrary[ShaderPipelineType::VertexColor] = std::make_shared<Shader>("resources/shaders/VertexColor.glsl");
 }
 
 void Renderer::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)
@@ -61,11 +55,24 @@ void Renderer::CompileShaders()
     
 }
 
+void Renderer::Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<VertexBuffer> ModelMatrix, uint32_t IndexCount)
+{
+    auto Shader = ShaderLibrary[CurrentShaderPipeline];
+    Shader->Bind();
+    DrawIndexed(VertexArray, IndexCount);
+}
+
 void Renderer::DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount)
 {
     VertexArray->Bind();
     uint32_t Count = IndexCount ? IndexCount : VertexArray->GetIndexBuffer()->GetCount();
     glDrawElements(GL_TRIANGLES, Count, GL_UNSIGNED_INT, nullptr);
+}
+
+void Renderer::DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount,
+    uint32_t InstanceCount)
+{
+    // TODO(WT) Implement this
 }
 
 void Renderer::DrawLines(const std::shared_ptr<VertexArray>& VertexArray, uint32_t VertexCount)

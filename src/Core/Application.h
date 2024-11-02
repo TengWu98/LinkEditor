@@ -1,8 +1,11 @@
 ﻿#pragma once
 
-#include <imgui.h>
-
 #include "pch.h"
+#include "Core/Event/Event.h"
+#include "Core/Event/KeyEvent.h"
+#include "Core/Event/MouseEvent.h"
+#include "Core/Event/ApplicationEvent.h"
+#include <imgui.h>
 
 class Renderer;
 class Window;
@@ -27,11 +30,28 @@ public:
     ~Application();
 
     static std::shared_ptr<Application> GetInstance();
+    Scene& GetMainScene() const;
+    Window& GetWindow() const;
+
+    void OnEvent(Event& InEvent);
     
     void Run();
 
     void SetupImGui();
     void RenderImGUI();
+
+    // Events
+    bool OnWindowClose(WindowCloseEvent& InEvent);
+    bool OnWindowResize(WindowResizeEvent& InEvent);
+    
+    bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& InEvent);
+    bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& InEvent);
+    bool OnMouseMovedEvent(MouseMovedEvent& InEvent);
+    bool OnMouseScrolledEvent(MouseScrolledEvent& InEvent);
+
+    bool OnKeyPressedEvent(KeyPressedEvent& InEvent);
+    bool OnKeyReleasedEvent(KeyReleasedEvent& InEvent);
+    bool OnKyeTypedEvent(KeyEvent& InEvent);
 
 private:
     ApplicationCommandLineArgs CommandLineArgs;
@@ -42,6 +62,8 @@ private:
     static std::shared_ptr<Application> Instance;
 
     bool bIsFirstTick = true;
+    bool bIsRunning = true;
+    bool bIsMinimized = false;
 
     ImGuiID DockSpaceId;
 };
