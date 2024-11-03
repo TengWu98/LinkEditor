@@ -14,6 +14,10 @@
 // struct Gizmo;
 class Mesh;
 
+struct Visible
+{
+};
+
 struct Model {
     Model(glm::mat4 &&InTransform)
         : Transform{std::move(InTransform)}, InvTransform{glm::transpose(glm::inverse(Transform))} {}
@@ -94,7 +98,7 @@ public:
     std::optional<unsigned int> GetModelBufferIndex(entt::entity Entity);
     void UpdateModelBuffer(entt::entity Entity);
 
-    void UpdateTransformBuffers();
+    void UpdateViewProjBuffers();
 
 public:
     uint32_t ViewportWidth = 0, ViewportHeight = 0;
@@ -116,7 +120,7 @@ public:
     std::unique_ptr<MeshGLData> MeshGLData;
 
     // buffers
-    std::unique_ptr<UniformBuffer> TransformBuffer;
+    std::unique_ptr<UniformBuffer> ViewProjBuffer;
     std::unique_ptr<UniformBuffer> ViewProjNearFarBuffer;
     std::unique_ptr<UniformBuffer> LightsBuffer;
 };

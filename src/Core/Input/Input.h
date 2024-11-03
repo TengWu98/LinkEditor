@@ -4,7 +4,7 @@
 #include "Codes/KeyCodes.h"
 #include "Codes/MouseCodes.h"
 
-#include "GLFW/glfw3.h"
+struct GLFWwindow;
 
 class Input
 {

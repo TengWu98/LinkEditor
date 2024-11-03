@@ -55,6 +55,29 @@ void Renderer::CompileShaders()
     
 }
 
+void Renderer::UpdateShaderData(std::vector<ShaderBindingDescriptor>&& Descriptors)
+{
+    for (const auto& Descriptor : Descriptors)
+    {
+        const auto& Shader = ShaderLibrary.at(CurrentShaderPipeline);
+        if (Shader)
+        {
+            if (Descriptor.ScalarData.has_value())
+            {
+                Shader->UploadUniformFloat(Descriptor.BindingName, Descriptor.ScalarData.value());
+            }
+            else if (Descriptor.VectorData.has_value())
+            {
+                Shader->UploadUniformFloat4(Descriptor.BindingName, Descriptor.VectorData.value());
+            }
+            else if (Descriptor.MatrixData.has_value())
+            {
+                Shader->UploadUniformMat4(Descriptor.BindingName, Descriptor.MatrixData.value());
+            }
+        }
+    }
+}
+
 void Renderer::Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<VertexBuffer> ModelMatrix, uint32_t IndexCount)
 {
     auto Shader = ShaderLibrary[CurrentShaderPipeline];

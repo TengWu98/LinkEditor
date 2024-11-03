@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+class UniformBuffer;
+
 class Shader
 {
 public:

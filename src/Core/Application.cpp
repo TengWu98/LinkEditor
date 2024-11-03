@@ -420,37 +420,68 @@ bool Application::OnWindowResize(WindowResizeEvent& InEvent)
 
     bIsMinimized = false;
     MainScene->SetViewportSize(InEvent.GetWidth(), InEvent.GetHeight());
-    return false;
+    return true;
 }
 
 bool Application::OnMouseButtonPressedEvent(MouseButtonPressedEvent& InEvent)
 {
-    
+    return true;
 }
 
 bool Application::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& InEvent)
 {
+    return true;
 }
 
 bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
 {
+    return true;
 }
 
 bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
 {
-    MainScene->Camera.ProcessMouseScroll(InEvent.GetYOffset());
-    return false;
+    MainScene->Camera.ZoomLevel -= InEvent.GetYOffset();
+    if (MainScene->Camera.ZoomLevel < 1.0f)
+        MainScene->Camera.ZoomLevel = 1.0f;
+    if (MainScene->Camera.ZoomLevel > 45.0f)
+        MainScene->Camera.ZoomLevel = 45.0f;
+    
+    return true;
 }
 
 bool Application::OnKeyPressedEvent(KeyPressedEvent& InEvent)
 {
+    return true;
 }
 
 bool Application::OnKeyReleasedEvent(KeyReleasedEvent& InEvent)
 {
+    return true;
 }
 
 bool Application::OnKyeTypedEvent(KeyEvent& InEvent)
 {
+    KeyCode EventKeyCode = InEvent.GetKeyCode();
+
+    if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Left)
+    {
+        
+    }
+
+    if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Right)
+    {
+        
+    }
+
+    if(EventKeyCode == KeyCode::A || EventKeyCode == KeyCode::Up)
+    {
+        
+    }
+
+    if(EventKeyCode == KeyCode::D || EventKeyCode == KeyCode::Down)
+    {
+        
+    }
     
+    return true;
 }

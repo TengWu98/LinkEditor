@@ -1,6 +1,6 @@
 ﻿#include "Input.h"
 
-#include "imgui.h"
+#include "GLFW/glfw3.h"
 
 bool Input::IsKeyPressed(GLFWwindow* Window, KeyCode KeyCode)
 {

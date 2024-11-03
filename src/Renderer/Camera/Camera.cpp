@@ -67,15 +67,6 @@ void Camera::ProcessMouseMovement(float XOffset, float YOffset, bool ConstrainPi
     UpdateCameraVectors();
 }
 
-void Camera::ProcessMouseScroll(float YOffset)
-{
-    ZoomLevel -= static_cast<float>(YOffset);
-    if (ZoomLevel < 1.0f)
-        ZoomLevel = 1.0f;
-    if (ZoomLevel > 45.0f)
-        ZoomLevel = 45.0f;
-}
-
 void Camera::UpdateCameraVectors()
 {
     glm::vec3 NewFront;

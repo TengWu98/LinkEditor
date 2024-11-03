@@ -13,8 +13,8 @@ layout(binding = 0) uniform ViewProjectionUBO {
 
 void main()
 { 
-    // ViewProj.ProjMatrix * ViewProj.ViewMatrix * 
-    gl_Position = ModelMatrix * vec4(a_Position, 1.0);
+    // ViewProj.ProjMatrix * ViewProj.ViewMatrix * ModelMatrix *
+    gl_Position = ViewProj.ProjMatrix * ViewProj.ViewMatrix * ModelMatrix * vec4(a_Position, 1.0);
 }
 
 #type fragment

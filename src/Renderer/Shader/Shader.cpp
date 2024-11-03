@@ -1,5 +1,5 @@
 ﻿#include "Shader.h"
-
+#include "Renderer/Buffers/UniformBuffer.h"
 #include <glm/gtc/type_ptr.hpp>
 
 static GLenum ShaderTypeFromString(const std::string& Type)

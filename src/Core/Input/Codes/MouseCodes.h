@@ -2,7 +2,7 @@
 
 #include "pch.h"
 
-enum class MouseCode : uint16_t
+enum MouseCode : uint16_t
 {
     Button0                = 0,
     Button1                = 1,
