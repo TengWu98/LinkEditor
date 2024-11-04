@@ -11,6 +11,7 @@ class Shader;
 class Scene;
 class VertexArray;
 class Window;
+class Model;
 
 enum class ShaderPipelineType {
     Flat,
@@ -21,9 +22,9 @@ struct ShaderBindingDescriptor
 {
     ShaderPipelineType PipelineType;
     std::string BindingName;
-    std::optional<float> ScalarData;
-    std::optional<glm::vec4> VectorData;
-    std::optional<glm::mat4> MatrixData;
+    std::optional<float> ScalarData = std::nullopt;
+    std::optional<glm::vec4> VectorData = std::nullopt;
+    std::optional<glm::mat4> MatrixData = std::nullopt;
 };
 
 struct RenderSpecification
@@ -50,10 +51,10 @@ public:
     
     void UpdateShaderData(std::vector<ShaderBindingDescriptor>&& Descriptors);
 
-    void Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<VertexBuffer> ModelMatrix, std::optional<uint32_t> ModelIndex = 0);
+    void Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<Model> ModelMatrix, std::optional<uint32_t> ModelIndex = 0);
 
 public:
-    inline static ShaderPipelineType CurrentShaderPipeline = ShaderPipelineType::Flat;
+    ShaderPipelineType CurrentShaderPipeline = ShaderPipelineType::Flat;
 
 private:
     RenderSpecification Specification;

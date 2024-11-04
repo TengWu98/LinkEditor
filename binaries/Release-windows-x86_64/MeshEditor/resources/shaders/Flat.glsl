@@ -25,5 +25,5 @@ layout(location = 0) out vec4 Color;
 
 void main()
 {
-    Color = u_Color;
+    Color = vec4(1, 0, 0, 1);
 }

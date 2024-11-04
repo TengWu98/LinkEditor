@@ -18,6 +18,8 @@ Scene::Scene() :
     UpdateViewProjBuffers();
     
     // TODO(WT) Lights buffer
+
+    UpdateShaderData();
 }
 
 Scene::~Scene()
@@ -35,10 +37,9 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     const auto Entity = Registry.create();
 
     auto Node = Registry.emplace<SceneNode>(Entity);
-    Registry.emplace<Model>(Entity, glm::mat4(InMeshCreateInfo.Transform));
     Registry.emplace<std::string>(Entity, InMeshCreateInfo.Name);
-
-    MeshGLData->ModelMatrices.emplace(Entity, std::make_shared<VertexBuffer>(sizeof(Model)));
+    MeshGLData->ModelMatrices.emplace(Entity, std::make_shared<Model>(InMeshCreateInfo.Transform));
+    
     SetEntityVisible(Entity, true);
     if(!InMeshCreateInfo.bIsVisible)
     {
@@ -101,20 +102,20 @@ void Scene::Render()
     for(auto PrimaryMesh : MeshGLData->PrimaryMeshs)
     {
         auto Entity = PrimaryMesh.first;
-        auto ModelMatrix = MeshGLData->ModelMatrices.at(Entity);
+        auto ModelStruct = MeshGLData->ModelMatrices.at(Entity);
         auto MeshVertexArrayBuffer = PrimaryMesh.second.at(SelectionMeshElementType);
-        MainRenderPipeline->Render(MeshVertexArrayBuffer, ModelMatrix);
+        
+        MainRenderPipeline->UpdateShaderData({
+            ShaderBindingDescriptor{ShaderPipelineType::Flat, "ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
+            ShaderBindingDescriptor{ShaderPipelineType::VertexColor, "ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform}
+        });
+        
+        MainRenderPipeline->Render(MeshVertexArrayBuffer, ModelStruct);
     }
 }
 
 void Scene::RenderGizmos()
 {
-}
-
-void Scene::UpdateShaderData()
-{
-    MainRenderPipeline->UpdateShaderData({
-    });
 }
 
 void Scene::UpdateViewProjBuffers()
@@ -133,8 +134,6 @@ VertexBufferLayout Scene::CreateDefaultVertexLayout()
         {ShaderDataType::Float3, "a_Position"},
         {ShaderDataType::Float3, "a_WorldNormal"},
         {ShaderDataType::Float4, "a_Color"},
-        {ShaderDataType::Mat4, "ModelMatrix"},
-        {ShaderDataType::Mat4, "InverseModelMatrix"}
     };
 }
 
@@ -160,12 +159,11 @@ void Scene::UpdateModelBuffer(entt::entity Entity)
     const auto BufferIndex = GetModelBufferIndex(Entity);
     if(BufferIndex)
     {
-        const auto& ModelStruct = Registry.get<Model>(GetParentEntity(Entity));
-        const auto& ModelMatrixBuffer = MeshGLData->ModelMatrices.at(Entity);
+        const auto& ModelStruct = MeshGLData->ModelMatrices.at(Entity);
 
-        if(ModelMatrixBuffer)
+        if(ModelStruct)
         {
-            ModelMatrixBuffer->SetData(&ModelStruct, sizeof(ModelStruct));
+            // ModelMatrixBuffer->SetData(&ModelStruct, sizeof(ModelStruct));
         }
     }
 }

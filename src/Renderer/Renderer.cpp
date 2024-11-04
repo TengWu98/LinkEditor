@@ -73,7 +73,7 @@ void Renderer::UpdateShaderData(std::vector<ShaderBindingDescriptor>&& Descripto
     }
 }
 
-void Renderer::Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<VertexBuffer> ModelMatrix, std::optional<uint32_t> ModelIndex)
+void Renderer::Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<Model> ModelMatrix, std::optional<uint32_t> ModelIndex)
 {
     auto Shader = ShaderLibrary[CurrentShaderPipeline];
     Shader->Bind();

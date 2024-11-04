@@ -86,16 +86,16 @@ void VertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& InVertexB
         case ShaderDataType::Mat3:
         case ShaderDataType::Mat4:
             {
-                uint8_t count = Element.GetComponentCount();
-                for (uint8_t i = 0; i < count; i++)
+                uint8_t Count = Element.GetComponentCount();
+                for (uint8_t i = 0; i < Count; i++)
                 {
                     glEnableVertexAttribArray(VertexBufferIndex);
                     glVertexAttribPointer(VertexBufferIndex,
-                        count,
+                        Count,
                         ShaderDataTypeToOpenGLBaseType(Element.Type),
                         Element.Normalized ? GL_TRUE : GL_FALSE,
                         Layout.GetStride(),
-                        (const void*)(Element.Offset + sizeof(float) * count * i));
+                        (const void*)(Element.Offset + sizeof(float) * Count * i));
                     glVertexAttribDivisor(VertexBufferIndex, 1);
                     VertexBufferIndex++;
                 }

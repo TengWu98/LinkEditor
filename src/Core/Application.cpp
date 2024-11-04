@@ -324,8 +324,8 @@ void Application::RenderImGUI()
 
             if(ImGui::TreeNode("Shader"))
             {
-                int CurrentShaderPipelineType = static_cast<int>(Renderer::CurrentShaderPipeline);
-                ImGui::Combo("Shader Type", (int*)&Renderer::CurrentShaderPipeline, "Flat\0VertexColor\0");
+                int CurrentShaderPipelineType = static_cast<int>(MainScene->MainRenderPipeline->CurrentShaderPipeline);
+                ImGui::Combo("Shader Type", (int*)&MainScene->MainRenderPipeline->CurrentShaderPipeline, "Flat\0VertexColor\0");
                 
                 ImGui::TreePop();
                 ImGui::Spacing();

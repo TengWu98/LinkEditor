@@ -19,8 +19,8 @@ struct Visible
 };
 
 struct Model {
-    Model(glm::mat4 &&InTransform)
-        : Transform{std::move(InTransform)}, InvTransform{glm::transpose(glm::inverse(Transform))} {}
+    Model(const glm::mat4& InTransform)
+        : Transform{InTransform}, InvTransform{glm::transpose(glm::inverse(Transform))} {}
 
     glm::mat4 Transform = glm::mat4(1);
     // `InvTransform` is the _transpose_ of the inverse of `Transform`.
@@ -67,7 +67,7 @@ using MeshBufferMap = std::unordered_map<MeshElementType, std::shared_ptr<Vertex
 struct MeshGLData
 {
     std::unordered_map<entt::entity, MeshBufferMap> PrimaryMeshs;
-    std::unordered_map<entt::entity, std::shared_ptr<VertexBuffer>> ModelMatrices;
+    std::unordered_map<entt::entity, std::shared_ptr<Model>> ModelMatrices;
     // std::unordered_map<entt::entity, MeshBufferMap> NormalIndicators;
 };
 
@@ -90,7 +90,6 @@ public:
     
     void Render();
     void RenderGizmos();
-    void UpdateShaderData();
 
     Camera CreateDefaultCamera() const;
     VertexBufferLayout CreateDefaultVertexLayout();
