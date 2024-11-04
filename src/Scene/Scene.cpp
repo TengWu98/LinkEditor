@@ -18,8 +18,6 @@ Scene::Scene() :
     UpdateViewProjBuffers();
     
     // TODO(WT) Lights buffer
-
-    UpdateShaderData();
 }
 
 Scene::~Scene()
