@@ -46,12 +46,11 @@ public:
     void DrawLines(const std::shared_ptr<VertexArray>& VertexArray, uint32_t VertexCount);
     void SetLineWidth(float Width);
     void DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount = 0);
-    void DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount, uint32_t InstanceCount);
-
-    void CompileShaders();
+    void DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount = 0, uint32_t InstanceCount = 0);
+    
     void UpdateShaderData(std::vector<ShaderBindingDescriptor>&& Descriptors);
 
-    void Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<VertexBuffer> ModelMatrix, uint32_t IndexCount = 0);
+    void Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<VertexBuffer> ModelMatrix, std::optional<uint32_t> ModelIndex = 0);
 
 public:
     inline static ShaderPipelineType CurrentShaderPipeline = ShaderPipelineType::Flat;

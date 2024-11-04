@@ -18,10 +18,6 @@ Scene::Scene() :
     UpdateViewProjBuffers();
     
     // TODO(WT) Lights buffer
-
-    MainRenderPipeline->UpdateShaderData({
-
-    });
 }
 
 Scene::~Scene()
@@ -99,6 +95,8 @@ void Scene::Render()
     MainRenderPipeline->SetClearColor(BackgroundColor);
     MainRenderPipeline->Clear();
 
+    UpdateViewProjBuffers();
+
     // Render Meshs
     for(auto PrimaryMesh : MeshGLData->PrimaryMeshs)
     {
@@ -113,9 +111,10 @@ void Scene::RenderGizmos()
 {
 }
 
-void Scene::CompileShaders()
+void Scene::UpdateShaderData()
 {
-    MainRenderPipeline->CompileShaders();
+    MainRenderPipeline->UpdateShaderData({
+    });
 }
 
 void Scene::UpdateViewProjBuffers()

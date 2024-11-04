@@ -90,7 +90,7 @@ public:
     
     void Render();
     void RenderGizmos();
-    void CompileShaders();
+    void UpdateShaderData();
 
     Camera CreateDefaultCamera() const;
     VertexBufferLayout CreateDefaultVertexLayout();

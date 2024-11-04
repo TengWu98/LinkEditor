@@ -50,11 +50,6 @@ void Renderer::SetLineWidth(float Width)
     glLineWidth(Width);
 }
 
-void Renderer::CompileShaders()
-{
-    
-}
-
 void Renderer::UpdateShaderData(std::vector<ShaderBindingDescriptor>&& Descriptors)
 {
     for (const auto& Descriptor : Descriptors)
@@ -78,24 +73,27 @@ void Renderer::UpdateShaderData(std::vector<ShaderBindingDescriptor>&& Descripto
     }
 }
 
-void Renderer::Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<VertexBuffer> ModelMatrix, uint32_t IndexCount)
+void Renderer::Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<VertexBuffer> ModelMatrix, std::optional<uint32_t> ModelIndex)
 {
     auto Shader = ShaderLibrary[CurrentShaderPipeline];
     Shader->Bind();
-    DrawIndexed(VertexArray, IndexCount);
+
+    const uint32_t IndexCount = VertexArray->GetIndexBuffer()->GetCount();
+    const uint32_t InstanceCount = ModelIndex.has_value() ? 1 : 0;
+    DrawIndexInstanced(VertexArray, IndexCount, InstanceCount);
 }
 
 void Renderer::DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount)
 {
     VertexArray->Bind();
-    uint32_t Count = IndexCount ? IndexCount : VertexArray->GetIndexBuffer()->GetCount();
-    glDrawElements(GL_TRIANGLES, Count, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr);
 }
 
 void Renderer::DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount,
     uint32_t InstanceCount)
 {
-    // TODO(WT) Implement this
+    VertexArray->Bind();
+    glDrawElementsInstanced(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
 }
 
 void Renderer::DrawLines(const std::shared_ptr<VertexArray>& VertexArray, uint32_t VertexCount)
