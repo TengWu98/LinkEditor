@@ -95,7 +95,6 @@ public:
     VertexBufferLayout CreateDefaultVertexLayout();
 
     std::optional<unsigned int> GetModelBufferIndex(entt::entity Entity);
-    void UpdateModelBuffer(entt::entity Entity);
 
     void UpdateViewProjBuffers();
 

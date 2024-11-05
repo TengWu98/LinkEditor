@@ -104,8 +104,8 @@ void Scene::Render()
         auto MeshVertexArrayBuffer = PrimaryMesh.second.at(SelectionMeshElementType);
         
         MainRenderPipeline->UpdateShaderData({
-            ShaderBindingDescriptor{ShaderPipelineType::Flat, "ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
-            ShaderBindingDescriptor{ShaderPipelineType::VertexColor, "ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform}
+            ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
+            ShaderBindingDescriptor{ShaderPipelineType::VertexColor, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform}
         });
         
         MainRenderPipeline->Render(MeshVertexArrayBuffer, ModelStruct);
@@ -152,23 +152,9 @@ std::optional<unsigned> Scene::GetModelBufferIndex(entt::entity Entity)
     return std::nullopt;
 }
 
-void Scene::UpdateModelBuffer(entt::entity Entity)
-{
-    const auto BufferIndex = GetModelBufferIndex(Entity);
-    if(BufferIndex)
-    {
-        const auto& ModelStruct = MeshGLData->ModelMatrices.at(Entity);
-
-        if(ModelStruct)
-        {
-            // ModelMatrixBuffer->SetData(&ModelStruct, sizeof(ModelStruct));
-        }
-    }
-}
-
 Camera Scene::CreateDefaultCamera() const
 {
-    return {glm::vec3(0, 0, 2), glm::vec3(0, 1, 0), 60, 0.01, 100, -90, -40};
+    return {glm::vec3(0, 0, 2), glm::vec3(0, 1, 0), glm::vec3(0, 0, 0), 60, 0.01, 100};
 }
 
 entt::entity Scene::GetSelectedEntity() const
@@ -210,7 +196,6 @@ void Scene::SetEntityVisible(entt::entity Entity, bool bIsVisible)
             }
         }
         ModelIndices.emplace(Entity, NewModelIndex);
-        UpdateModelBuffer(Entity);
     }
     else
     {

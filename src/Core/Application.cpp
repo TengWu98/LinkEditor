@@ -440,13 +440,12 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
 
 bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
 {
-    MainScene->Camera.ZoomLevel -= InEvent.GetYOffset();
+    MainScene->Camera.ZoomLevel -= InEvent.GetYOffset() * 20;
     if (MainScene->Camera.ZoomLevel < 1.0f)
         MainScene->Camera.ZoomLevel = 1.0f;
     if (MainScene->Camera.ZoomLevel > 45.0f)
         MainScene->Camera.ZoomLevel = 45.0f;
-
-    MainScene->Camera.UpdateCameraVectors();
+    
     
     return true;
 }
@@ -467,7 +466,6 @@ bool Application::OnKyeTypedEvent(KeyEvent& InEvent)
 
     if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Left)
     {
-        MainScene->Camera.ProcessKeyboard(CameraMovement::FORWARD, 0.1f);
     }
 
     if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Right)

@@ -6,21 +6,21 @@
 
 static void CursorPosCallback(GLFWwindow* Window, double XPos, double YPos)
 {
-    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    const WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
     MouseMovedEvent Event(static_cast<float>(XPos), static_cast<float>(YPos));
     WindowData.EventCallback(Event);
 }
 
 static void ScrollCallback(GLFWwindow* Window, double XOffset, double YOffset)
 {
-    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    const WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
     MouseScrolledEvent Event(static_cast<float>(XOffset), static_cast<float>(YOffset));
     WindowData.EventCallback(Event);
 }
 
 static void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int Mods)
 {
-    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    const WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
     switch (Action)
     {
         case GLFW_PRESS:
@@ -40,7 +40,7 @@ static void MouseButtonCallback(GLFWwindow* Window, int Button, int Action, int 
 
 static void KeyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods)
 {
-    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    const WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
     switch (Action)
     {
         case GLFW_PRESS:
@@ -66,7 +66,7 @@ static void KeyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, i
 
 static void CharCallback(GLFWwindow* Window, unsigned int Char)
 {
-    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    const WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
     KeyTypedEvent Event(static_cast<KeyCode>(Char));
     WindowData.EventCallback(Event);
 }
@@ -83,7 +83,7 @@ static void WindowSizeCallback(GLFWwindow* Window, int Width, int Height)
 
 static void WindowCloseCallback(GLFWwindow* Window)
 {
-    WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
+    const WindowProps& WindowData = *static_cast<WindowProps*>(glfwGetWindowUserPointer(Window));
     WindowCloseEvent Event;
     WindowData.EventCallback(Event);
 }
