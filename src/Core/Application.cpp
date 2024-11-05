@@ -97,6 +97,7 @@ void Application::Run()
         // Render Scene
         MainScene->SetViewportSize(AppWindow->GetWidth(), AppWindow->GetHeight());
         MainScene->Render();
+        MainScene->RenderGizmos();
         
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
@@ -295,8 +296,9 @@ void Application::RenderImGUI()
         {
             if(ImGui::TreeNode("Camera"))
             {
-                ImGui::SliderFloat("Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f, "%.3f", ImGuiSliderFlags_None);
-
+                ImGui::SliderFloat("Movement Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f, "%.3f", ImGuiSliderFlags_None);
+                ImGui::SliderFloat("Mouse Sensitivity", &MainScene->Camera.MouseSensitivity, 0.0f, 1.f, "%.3f", ImGuiSliderFlags_None);
+                
                 ImGui::TreePop();
                 ImGui::Spacing();
             }
@@ -440,13 +442,10 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
 
 bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
 {
-    MainScene->Camera.ZoomLevel -= InEvent.GetYOffset() * 20;
-    if (MainScene->Camera.ZoomLevel < 1.0f)
-        MainScene->Camera.ZoomLevel = 1.0f;
-    if (MainScene->Camera.ZoomLevel > 45.0f)
-        MainScene->Camera.ZoomLevel = 45.0f;
-    
-    
+    LOG_INFO("yoffset: {0}", InEvent.GetYOffset());
+    float scrollSpeed = 0.1f; // 调整滚动速度
+    float newDistance = MainScene->Camera.GetDistance() - InEvent.GetYOffset() * 0.001;
+    MainScene->Camera.SetDistance(newDistance);
     return true;
 }
 

@@ -3,15 +3,28 @@
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
-Camera::Camera(glm::vec3 InPosition, glm::vec3 InUp, glm::vec3 InTarget, float InFieldOfView, float InNearClip, float InFarClip) :
-    Position(InPosition), Up(InUp), Target(InTarget),
+Camera::Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, glm::vec3 InTarget, float InFieldOfView, float InNearClip, float InFarClip) :
+    Position(InPosition), WorldUp(InWorldUp), Front(glm::normalize(InTarget - Position)),
     FieldOfView(InFieldOfView), NearClip(InNearClip), FarClip(InFarClip)
 {
+    Right = glm::normalize(glm::cross(Front, WorldUp));
+    Up = glm::normalize(glm::cross(Right, Front));
+}
+
+Camera::Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, float InYaw, float InPitch, float InFieldOfView, float InNearClip, float InFarClip) :
+    Position(InPosition), WorldUp(InWorldUp), Yaw(InYaw), Pitch(InPitch),
+    FieldOfView(InFieldOfView), NearClip(InNearClip), FarClip(InFarClip)
+{
+    Front.x = glm::cos(Pitch)*glm::sin(Yaw);
+    Front.y = glm::sin(Pitch);
+    Front.z = glm::cos(Pitch)*glm::cos(Yaw);
+    Right = glm::normalize(glm::cross(Front, WorldUp));
+    Up = glm::normalize(glm::cross(Right, Front));
 }
 
 glm::mat4 Camera::GetViewMatrix()
 {
-    return glm::lookAt(Position, Target, Up);
+    return glm::lookAt(Position, Position + Front, WorldUp);
 }
 
 glm::mat4 Camera::GetProjectionMatrix(float AspectRatio)
@@ -29,50 +42,43 @@ glm::mat4 Camera::GetInvViewProjectionMatrix(float AspectRatio)
     return glm::inverse(GetViewProjectionMatrix(AspectRatio));
 }
 
-// void Camera::ProcessKeyboard(CameraMovement Direction, float DeltaTime)
-// {
-//     float Velocity = MovementSpeed * DeltaTime;
-//     if (Direction == FORWARD)
-//         Position += Front * Velocity;
-//     if(Direction == BACKWARD)
-//         Position -= Front * Velocity;
-//     if (Direction == LEFT)
-//         Position -= Right * Velocity;
-//     if (Direction == RIGHT)
-//         Position += Right * Velocity;
-//     if (Direction == UP)
-//         Position += WorldUp * Velocity;
-//     if (Direction == DOWN)
-//         Position -= WorldUp * Velocity;
-// }
-//
-// void Camera::ProcessMouseMovement(float XOffset, float YOffset, bool ConstrainPitch)
-// {
-//     XOffset *= MouseSensitivity;
-//     YOffset *= MouseSensitivity;
-//
-//     Yaw += XOffset;
-//     Pitch += YOffset;
-//
-//     if(ConstrainPitch)
-//     {
-//         if (Pitch > 89.0f)
-//             Pitch = 89.0f;
-//         if (Pitch < -89.0f)
-//             Pitch = -89.0f;
-//     }
-//
-//     UpdateCameraVectors();
-// }
-//
-// void Camera::UpdateCameraVectors()
-// {
-//     glm::vec3 NewFront;
-//     NewFront.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-//     NewFront.y = sin(glm::radians(Pitch));
-//     NewFront.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-//     
-//     Front = glm::normalize(NewFront);
-//     Right = glm::normalize(glm::cross(Front, WorldUp));
-//     Up = glm::normalize(glm::cross(Right, Front));
-// }
+float Camera::GetDistance() const
+{
+    return glm::distance(Position, Position + Front);
+}
+
+void Camera::SetPositionFromView(const glm::mat4& ViewMatrix)
+{
+    Position = glm::inverse(ViewMatrix)[3];
+    bIsMoving = false;
+}
+
+void Camera::SetTargetDistance(float Distance)
+{
+    TargetDistance = Distance;
+    bIsMoving = true;
+}
+
+void Camera::Tick()
+{
+    if(!bIsMoving)
+    {
+        return;
+    }
+
+    const auto Distance = GetDistance();
+    if(std::abs(Distance - TargetDistance) < 0.01f)
+    {
+        bIsMoving = false;
+        SetDistance(TargetDistance);
+    }
+    else
+    {
+        SetDistance(glm::mix(Distance, TargetDistance, MovementSpeed));
+    }
+}
+
+void Camera::SetDistance(float Distance)
+{
+    Position += Front + glm::normalize(Front) * Distance;
+}

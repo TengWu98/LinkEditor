@@ -9,9 +9,9 @@
 #include "Renderer/Buffers/VertexArray.h"
 
 #include "entt.hpp"
-// #include "ImGuizmo.h"
+#include "imgui.h"
+#include "ImGuizmo.h"
 
-// struct Gizmo;
 class Mesh;
 
 struct Visible
@@ -71,6 +71,15 @@ struct MeshGLData
     // std::unordered_map<entt::entity, MeshBufferMap> NormalIndicators;
 };
 
+struct Gizmo
+{
+    void Begin() const;
+    void Render(Camera& Camera, bool& bIsViewChanged) const;
+    void RenderDebug();
+
+    ImGuizmo::OPERATION ActiveOperation = ImGuizmo::TRANSLATE;
+};
+
 class Scene
 {
 public:
@@ -109,7 +118,7 @@ public:
     std::unique_ptr<Renderer> MainRenderPipeline;
     glm::vec4 BackgroundColor = glm::vec4(0.22f, 0.22f, 0.22f, 1.f);
 
-    // std::unique_ptr<Gizmo> Gizmo;
+    std::unique_ptr<Gizmo> SceneGizmo;
 
     SelectionMode SelectionMode = SelectionMode::Object;
     MeshElementType SelectionMeshElementType = MeshElementType::Face;
