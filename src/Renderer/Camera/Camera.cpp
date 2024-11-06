@@ -9,6 +9,8 @@ Camera::Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, glm::vec3 InTarget, fl
 {
     Right = glm::normalize(glm::cross(Front, WorldUp));
     Up = glm::normalize(glm::cross(Right, Front));
+    Pitch = glm::degrees(glm::asin(Front.y));
+    Yaw = glm::degrees(glm::atan(Front.z, Front.x));
 }
 
 Camera::Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, float InYaw, float InPitch, float InFieldOfView, float InNearClip, float InFarClip) :
@@ -42,7 +44,7 @@ glm::mat4 Camera::GetInvViewProjectionMatrix(float AspectRatio)
     return glm::inverse(GetViewProjectionMatrix(AspectRatio));
 }
 
-float Camera::GetDistance() const
+float Camera::GetCurrentDistance() const
 {
     return glm::distance(Position, Position + Front);
 }
@@ -53,32 +55,32 @@ void Camera::SetPositionFromView(const glm::mat4& ViewMatrix)
     bIsMoving = false;
 }
 
-void Camera::SetTargetDistance(float Distance)
+void Camera::SetTargetDistance(float InTargetDistance)
 {
-    TargetDistance = Distance;
+    TargetDistance = InTargetDistance;
     bIsMoving = true;
 }
 
-void Camera::Tick()
+void Camera::Update()
 {
     if(!bIsMoving)
     {
         return;
     }
 
-    const auto Distance = GetDistance();
-    if(std::abs(Distance - TargetDistance) < 0.01f)
+    const auto CurrentDistance = GetCurrentDistance();
+    if(std::abs(CurrentDistance - TargetDistance) < 0.01f)
     {
         bIsMoving = false;
         SetDistance(TargetDistance);
     }
     else
     {
-        SetDistance(glm::mix(Distance, TargetDistance, MovementSpeed));
+        SetDistance(glm::mix(CurrentDistance, TargetDistance, MovementSpeed));
     }
 }
 
 void Camera::SetDistance(float Distance)
 {
-    Position += Front + glm::normalize(Front) * Distance;
+    Position += Front * (1 - Distance);
 }

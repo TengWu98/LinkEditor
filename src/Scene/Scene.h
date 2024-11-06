@@ -9,10 +9,10 @@
 #include "Renderer/Buffers/VertexArray.h"
 
 #include "entt.hpp"
-#include "imgui.h"
-#include "ImGuizmo.h"
+
 
 class Mesh;
+class Gizmo;
 
 struct Visible
 {
@@ -69,15 +69,6 @@ struct MeshGLData
     std::unordered_map<entt::entity, MeshBufferMap> PrimaryMeshs;
     std::unordered_map<entt::entity, std::shared_ptr<Model>> ModelMatrices;
     // std::unordered_map<entt::entity, MeshBufferMap> NormalIndicators;
-};
-
-struct Gizmo
-{
-    void Begin() const;
-    void Render(Camera& Camera, bool& bIsViewChanged) const;
-    void RenderDebug();
-
-    ImGuizmo::OPERATION ActiveOperation = ImGuizmo::TRANSLATE;
 };
 
 class Scene

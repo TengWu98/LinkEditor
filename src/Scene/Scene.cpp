@@ -2,39 +2,7 @@
 
 #include "Renderer/Buffers/IndexBuffer.h"
 #include "Renderer/Mesh/Mesh.h"
-
-void Gizmo::Begin() const
-{
-    using namespace ImGui;
-    
-    const auto ContentRegion = GetContentRegionAvail();
-    const auto& WindowPos = GetWindowPos();
-    ImGuizmo::BeginFrame();
-    ImGuizmo::SetDrawlist();
-    ImGuizmo::SetOrthographic(false);
-    ImGuizmo::SetRect(WindowPos.x, WindowPos.y + GetTextLineHeightWithSpacing(), ContentRegion.x, ContentRegion.y);
-}
-
-void Gizmo::Render(Camera& Camera, bool& bIsViewChanged) const
-{
-    using namespace ImGui;
-
-    static constexpr float ViewManipulateSize = 128;
-
-    const auto& WindowPos = GetWindowPos();
-    const auto ViewManipulatePos = ImVec2{GetWindowContentRegionMax().x - ViewManipulateSize + WindowPos.x, GetWindowContentRegionMin().y + WindowPos.y};
-    auto CameraView = Camera.GetViewMatrix();
-    const float CameraDistance = Camera.GetDistance();
-    bIsViewChanged = ImGuizmo::ViewManipulate(&CameraView[0][0], CameraDistance, ViewManipulatePos, {ViewManipulateSize, ViewManipulateSize}, 0);
-    if (bIsViewChanged)
-    {
-        Camera.SetPositionFromView(CameraView);
-    }
-}
-
-void Gizmo::RenderDebug()
-{
-}
+#include "Renderer/Gizmo/Gizmo.h"
 
 Scene::Scene() :
     Camera(CreateDefaultCamera()),
@@ -129,6 +97,7 @@ void Scene::Render()
     MainRenderPipeline->SetClearColor(BackgroundColor);
     MainRenderPipeline->Clear();
 
+    Camera.Update();
     UpdateViewProjBuffers();
 
     // Render Meshs
@@ -149,9 +118,8 @@ void Scene::Render()
 
 void Scene::RenderGizmos()
 {
-    // const float mouse_wheel = ImGui::GetIO().MouseWheel;
     // if (mouse_wheel != 0 && ImGui::IsWindowHovered()) Camera.SetTargetDistance(Camera.GetDistance() * (1.f - mouse_wheel / 16.f));
-    // SceneGizmo->Begin();
+    SceneGizmo->Begin();
     //
     // const float AspectRation = float(ViewportWidth) / float(ViewportHeight);
     // if(SelectedEntity != entt::null)

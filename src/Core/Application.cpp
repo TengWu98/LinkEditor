@@ -442,10 +442,8 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
 
 bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
 {
-    LOG_INFO("yoffset: {0}", InEvent.GetYOffset());
-    float scrollSpeed = 0.1f; // 调整滚动速度
-    float newDistance = MainScene->Camera.GetDistance() - InEvent.GetYOffset() * 0.001;
-    MainScene->Camera.SetDistance(newDistance);
+    float NewDistance = MainScene->Camera.GetCurrentDistance() * (1.f - InEvent.GetYOffset() / 16.f);
+    MainScene->Camera.SetDistance(NewDistance);
     return true;
 }
 
@@ -462,9 +460,10 @@ bool Application::OnKeyReleasedEvent(KeyReleasedEvent& InEvent)
 bool Application::OnKyeTypedEvent(KeyEvent& InEvent)
 {
     KeyCode EventKeyCode = InEvent.GetKeyCode();
-
-    if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Left)
+    
+    if(ImGui::IsKeyPressed(ImGuiKey_W) || EventKeyCode == KeyCode::Left)
     {
+        MainScene->Camera.Position += MainScene->Camera.Front * MainScene->Camera.MovementSpeed;
     }
 
     if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Right)

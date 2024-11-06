@@ -22,33 +22,35 @@ public:
     glm::mat4 GetProjectionMatrix(float AspectRatio);
     glm::mat4 GetViewProjectionMatrix(float AspectRatio);
     glm::mat4 GetInvViewProjectionMatrix(float AspectRatio);
-    float GetDistance() const;
+    
+    float GetCurrentDistance() const;
+    void SetTargetDistance(float InTargetDistance);
     void SetPositionFromView(const glm::mat4& ViewMatrix);
-    void SetTargetDistance(float Distance);
+    
     void SetDistance(float Distance);
-    void Tick();
+    void Update();
 
 public:
     // Camera Attributes
-    glm::vec3 Position;
-    glm::vec3 WorldUp;
-    glm::vec3 Up;
-    glm::vec3 Front;
-    glm::vec3 Right;
+    glm::vec3 Position; // position of the camera
+    glm::vec3 WorldUp;  // world up vector
+    glm::vec3 Up;       // up vector
+    glm::vec3 Front;    // front vector
+    glm::vec3 Right;    // right vector
 
     float Yaw;
     float Pitch;
 
-    float FieldOfView;
-    float NearClip;
-    float FarClip;
+    float FieldOfView;   // field of view
+    float NearClip;      // near clip plane
+    float FarClip;       // far clip plane
     
     // Camera Options
-    float MovementSpeed = 10.f;
-    float MouseSensitivity = 0.1f;
-    float ZoomLevel = 45.f;
+    float MovementSpeed = 10.f;     // how fast the camera moves
+    float MouseSensitivity = 0.1f;  // how fast the camera turns
+    float ZoomLevel = 45.f;         // how zoomed in the camera is
 
 private:
-    float TargetDistance;
-    bool bIsMoving = false;
+    float TargetDistance;   // target distance the camera is moving towards
+    bool bIsMoving = false; // whether the camera is moving
 };
