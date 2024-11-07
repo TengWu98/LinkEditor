@@ -12,9 +12,12 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include "glm/ext/quaternion_transform.hpp"
+
 MESH_EDITOR_NAMESPACE_BEGIN
 
 std::shared_ptr<Application> Application::Instance = nullptr;
+static glm::vec2 LastMousePos;
 
 static void ShowDockingDisabledMessage()
 {
@@ -77,7 +80,7 @@ void Application::OnEvent(Event& InEvent)
     Dispatcher.Dispatch<KeyTypedEvent>(MESH_EDITOR_BIND_EVENT_FN(Application::OnKyeTypedEvent));
 }
 
-void Application::Run()
+void Application::Update()
 {
     while (!glfwWindowShouldClose(AppWindow->GetNativeWindow()))
     {
@@ -88,29 +91,38 @@ void Application::Run()
             continue;
         }
 
-        // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        // Calculate Delta Time
+        float CurrentTime = static_cast<float>(glfwGetTime());
+        DeltaTime = CurrentTime - LastFrameTime;
+        LastFrameTime = CurrentTime;
 
-        // Render ImGui
-        RenderImGUI();
-
-        // Render Scene
-        MainScene->SetViewportSize(AppWindow->GetWidth(), AppWindow->GetHeight());
-        MainScene->Render();
-        MainScene->RenderGizmos();
-        
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        
-        // Update and Render additional Platform Windows
-        ImGuiIO& IO = ImGui::GetIO();
-        if (IO.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        // If Window is minimized, skip rendering
+        if(!bIsMinimized)
         {
-            GLFWwindow* BackupCurrentContext = glfwGetCurrentContext();
-            ImGui::UpdatePlatformWindows();
-            ImGui::RenderPlatformWindowsDefault();
-            glfwMakeContextCurrent(BackupCurrentContext);
+            // Start the Dear ImGui frame
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+
+            // Render ImGui
+            RenderImGUI();
+
+            // Render Scene
+            MainScene->SetViewportSize(AppWindow->GetWidth(), AppWindow->GetHeight());
+            MainScene->Render();
+            MainScene->RenderGizmos();
+        
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        
+            // Update and Render additional Platform Windows
+            ImGuiIO& IO = ImGui::GetIO();
+            if (IO.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+            {
+                GLFWwindow* BackupCurrentContext = glfwGetCurrentContext();
+                ImGui::UpdatePlatformWindows();
+                ImGui::RenderPlatformWindowsDefault();
+                glfwMakeContextCurrent(BackupCurrentContext);
+            }
         }
         
         AppWindow->Update();
@@ -153,11 +165,6 @@ void Application::SetupImGui()
 
 void Application::RenderImGUI()
 {
-    const float LeftSide = 250;
-    const float RightSide = 300;
-    // const float TopSide = 250;
-    const float BottomSide = 250;
-    
     static bool bIsFullScreen = true;
 
     // for windows
@@ -439,6 +446,18 @@ bool Application::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& InEvent)
 
 bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
 {
+    if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonRight))
+    {
+        glm::vec2 CurrentMousePos = Input::GetMousePosition(AppWindow->GetNativeWindow());
+        glm::vec2 DeltaPos = CurrentMousePos - LastMousePos;
+        LastMousePos = CurrentMousePos;
+        
+        DeltaPos *= MainScene->Camera.MouseSensitivity;
+
+        MainScene->Camera.Front += - MainScene->Camera.Right * DeltaPos.x * MainScene->Camera.GetCurrentDistance();
+        MainScene->Camera.Front += - MainScene->Camera.Up * DeltaPos.y * MainScene->Camera.GetCurrentDistance();
+    }
+    
     return true;
 }
 
@@ -452,25 +471,24 @@ bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
 bool Application::OnKeyPressedEvent(KeyPressedEvent& InEvent)
 {
     const KeyCode EventKeyCode = InEvent.GetKeyCode();
-
     if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Up)
     {
-        MainScene->Camera.Position += MainScene->Camera.Front * MainScene->Camera.MovementSpeed;
+        MainScene->Camera.Position += MainScene->Camera.Front * MainScene->Camera.MovementSpeed * DeltaTime;
     }
 
     if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Down)
     {
-        MainScene->Camera.Position -= MainScene->Camera.Front * MainScene->Camera.MovementSpeed;
+        MainScene->Camera.Position -= MainScene->Camera.Front * MainScene->Camera.MovementSpeed * DeltaTime;
     }
 
     if(EventKeyCode == KeyCode::A || EventKeyCode == KeyCode::Left)
     {
-        MainScene->Camera.Position -= MainScene->Camera.Right * MainScene->Camera.MovementSpeed;
+        MainScene->Camera.Position -= MainScene->Camera.Right * MainScene->Camera.MovementSpeed * DeltaTime;
     }
 
     if(EventKeyCode == KeyCode::D || EventKeyCode == KeyCode::Right)
     {
-        MainScene->Camera.Position += MainScene->Camera.Right * MainScene->Camera.MovementSpeed;
+        MainScene->Camera.Position += MainScene->Camera.Right * MainScene->Camera.MovementSpeed * DeltaTime;
     }
     
     return true;
@@ -483,28 +501,6 @@ bool Application::OnKeyReleasedEvent(KeyReleasedEvent& InEvent)
 
 bool Application::OnKyeTypedEvent(KeyEvent& InEvent)
 {
-    const KeyCode EventKeyCode = InEvent.GetKeyCode();
-    
-    if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Left)
-    {
-        MainScene->Camera.Position += MainScene->Camera.Front * MainScene->Camera.MovementSpeed;
-    }
-
-    if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Right)
-    {
-        
-    }
-
-    if(EventKeyCode == KeyCode::A || EventKeyCode == KeyCode::Up)
-    {
-        
-    }
-
-    if(EventKeyCode == KeyCode::D || EventKeyCode == KeyCode::Down)
-    {
-        
-    }
-    
     return true;
 }
 

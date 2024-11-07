@@ -37,7 +37,7 @@ public:
 
     void OnEvent(Event& InEvent);
     
-    void Run();
+    void Update();
 
     void SetupImGui();
     void RenderImGUI();
@@ -62,10 +62,12 @@ private:
     std::unique_ptr<Scene> MainScene;
     
     static std::shared_ptr<Application> Instance;
-
-    bool bIsFirstTick = true;
+    
     bool bIsRunning = true;
     bool bIsMinimized = false;
+
+    float DeltaTime = 0.0f;
+    float LastFrameTime = 0.0f;
 
     ImGuiID DockSpaceId;
 };

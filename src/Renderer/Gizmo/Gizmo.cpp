@@ -6,19 +6,33 @@
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
-void Gizmo::Begin() const
+void Gizmo::Begin()
 {
     using namespace ImGui;
+
+    if (ImGui::RadioButton("Translate", ActiveOperation == ImGuizmo::TRANSLATE))
+    {
+        ActiveOperation = ImGuizmo::TRANSLATE;
+    }
+    if (ImGui::RadioButton("Rotate", ActiveOperation == ImGuizmo::ROTATE))
+    {
+        ActiveOperation = ImGuizmo::ROTATE;
+    }
+    if (ImGui::RadioButton("Scale", ActiveOperation == ImGuizmo::SCALE))
+    {
+        ActiveOperation = ImGuizmo::SCALE;
+    }
+    ImGui::End();
     
-    const auto ContentRegion = GetContentRegionAvail();
-    const auto& WindowPos = GetWindowPos();
-    ImGuizmo::BeginFrame();
-    ImGuizmo::SetDrawlist();
-    ImGuizmo::SetOrthographic(false);
-    ImGuizmo::SetRect(WindowPos.x, WindowPos.y + GetTextLineHeightWithSpacing(), ContentRegion.x, ContentRegion.y);
+    // const auto ContentRegion = GetContentRegionAvail();
+    // const auto& WindowPos = GetWindowPos();
+    // ImGuizmo::BeginFrame();
+    // ImGuizmo::SetDrawlist();
+    // ImGuizmo::SetOrthographic(false);
+    // ImGuizmo::SetRect(WindowPos.x, WindowPos.y + GetTextLineHeightWithSpacing(), ContentRegion.x, ContentRegion.y);
 }
 
-void Gizmo::Render(Camera& Camera, bool& bIsViewChanged) const
+void Gizmo::Render(Camera& Camera, bool& bIsViewChanged)
 {
     using namespace ImGui;
 
