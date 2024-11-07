@@ -451,6 +451,28 @@ bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
 
 bool Application::OnKeyPressedEvent(KeyPressedEvent& InEvent)
 {
+    const KeyCode EventKeyCode = InEvent.GetKeyCode();
+
+    if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Up)
+    {
+        MainScene->Camera.Position += MainScene->Camera.Front * MainScene->Camera.MovementSpeed;
+    }
+
+    if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Down)
+    {
+        MainScene->Camera.Position -= MainScene->Camera.Front * MainScene->Camera.MovementSpeed;
+    }
+
+    if(EventKeyCode == KeyCode::A || EventKeyCode == KeyCode::Left)
+    {
+        MainScene->Camera.Position -= MainScene->Camera.Right * MainScene->Camera.MovementSpeed;
+    }
+
+    if(EventKeyCode == KeyCode::D || EventKeyCode == KeyCode::Right)
+    {
+        MainScene->Camera.Position += MainScene->Camera.Right * MainScene->Camera.MovementSpeed;
+    }
+    
     return true;
 }
 
@@ -461,7 +483,7 @@ bool Application::OnKeyReleasedEvent(KeyReleasedEvent& InEvent)
 
 bool Application::OnKyeTypedEvent(KeyEvent& InEvent)
 {
-    KeyCode EventKeyCode = InEvent.GetKeyCode();
+    const KeyCode EventKeyCode = InEvent.GetKeyCode();
     
     if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Left)
     {
