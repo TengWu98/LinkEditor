@@ -10,6 +10,7 @@
 
 #include "entt.hpp"
 
+MESH_EDITOR_NAMESPACE_BEGIN
 
 class Mesh;
 class Gizmo;
@@ -115,10 +116,12 @@ public:
     MeshElementType SelectionMeshElementType = MeshElementType::Face;
     MeshElementIndex SelectedElement;
 
-    std::unique_ptr<MeshGLData> MeshGLData;
+    std::unique_ptr<MeshGLData> SceneMeshGLData;
 
     // buffers
     std::unique_ptr<UniformBuffer> ViewProjBuffer;
     std::unique_ptr<UniformBuffer> ViewProjNearFarBuffer;
     std::unique_ptr<UniformBuffer> LightsBuffer;
 };
+
+MESH_EDITOR_NAMESPACE_END

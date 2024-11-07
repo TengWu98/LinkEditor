@@ -2,6 +2,8 @@
 
 #include "GLFW/glfw3.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 bool Input::IsKeyPressed(GLFWwindow* Window, KeyCode KeyCode)
 {
     if(!Window)
@@ -45,3 +47,5 @@ float Input::GetMouseY(GLFWwindow* Window)
 {
     return GetMousePosition(Window).y;
 }
+
+MESH_EDITOR_NAMESPACE_END

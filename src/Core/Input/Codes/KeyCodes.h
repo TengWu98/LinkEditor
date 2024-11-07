@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 enum KeyCode : uint16_t
 {
 	Space               = 32,
@@ -61,7 +63,7 @@ enum KeyCode : uint16_t
 	World2              = 162, /* non-US #2 */
 
 	/* Function keys */
-	// Escape              = 256,
+	Escape              = 256,
 	Enter               = 257,
 	Tab                 = 258,
 	Backspace           = 259,
@@ -135,3 +137,5 @@ enum KeyCode : uint16_t
 	RightSuper          = 347,
 	Menu                = 348
 };
+
+MESH_EDITOR_NAMESPACE_END

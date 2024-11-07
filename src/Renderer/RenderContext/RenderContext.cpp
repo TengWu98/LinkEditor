@@ -1,5 +1,7 @@
 ﻿#include "RenderContext.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 RenderContext::RenderContext(GLFWwindow* InWindowHandle)
     : WindowHandle(InWindowHandle)
 {
@@ -30,3 +32,5 @@ void RenderContext::SwapBuffers()
 {
     glfwSwapBuffers(WindowHandle);
 }
+
+MESH_EDITOR_NAMESPACE_END

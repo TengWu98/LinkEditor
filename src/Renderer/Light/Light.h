@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class Light
 {
 public:
@@ -12,3 +14,5 @@ protected:
     glm::vec3 Intensity;
     bool bIsEnabled;
 };
+
+MESH_EDITOR_NAMESPACE_END

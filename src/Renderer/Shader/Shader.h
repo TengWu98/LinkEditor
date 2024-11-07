@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class UniformBuffer;
 
 class Shader
@@ -50,3 +52,5 @@ private:
     std::unordered_map<GLenum, std::string> OpenGLSourceCodes;
     std::unordered_map<GLenum, GLuint> OpenGLShaders;
 };
+
+MESH_EDITOR_NAMESPACE_END

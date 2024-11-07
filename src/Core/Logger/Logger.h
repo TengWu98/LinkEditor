@@ -1,7 +1,10 @@
 ﻿#pragma once
 
+#include "pch.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+
+MESH_EDITOR_NAMESPACE_BEGIN
 
 class Log
 {
@@ -17,3 +20,5 @@ private:
 #define LOG_WARN(...)          Log::GetLogger()->warn(__VA_ARGS__)
 #define LOG_ERROR(...)         Log::GetLogger()->error(__VA_ARGS__)
 #define LOG_CRITICAL(...)      Log::GetLogger()->critical(__VA_ARGS__)
+
+MESH_EDITOR_NAMESPACE_END

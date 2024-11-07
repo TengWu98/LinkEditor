@@ -3,6 +3,8 @@
 #include "pch.h"
 #include "Event.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class WindowResizeEvent : public Event
 {
 public:
@@ -60,3 +62,5 @@ public:
     EVENT_CLASS_TYPE(AppRender)
     EVENT_CLASS_CATEGORY(EventCategoryApplication)
 };
+
+MESH_EDITOR_NAMESPACE_END

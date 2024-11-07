@@ -3,6 +3,8 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 std::shared_ptr<spdlog::logger> Log::Logger = nullptr;
 
 std::shared_ptr<spdlog::logger>& Log::GetLogger()
@@ -24,3 +26,5 @@ std::shared_ptr<spdlog::logger>& Log::GetLogger()
     
     return Logger;
 }
+
+MESH_EDITOR_NAMESPACE_END

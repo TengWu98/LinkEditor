@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 enum class FramebufferTextureFormat
 {
     None = 0,
@@ -71,3 +73,5 @@ private:
     std::vector<uint32_t> ColorAttachments;
     uint32_t DepthAttachment = 0;
 };
+
+MESH_EDITOR_NAMESPACE_END

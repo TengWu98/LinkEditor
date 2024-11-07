@@ -1,8 +1,13 @@
 ﻿#include "Window.h"
+
+#include <imgui.h>
+
 #include "Core/Event/Event.h"
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/MouseEvent.h"
 #include "Core/Event/ApplicationEvent.h"
+
+MESH_EDITOR_NAMESPACE_BEGIN
 
 static void CursorPosCallback(GLFWwindow* Window, double XPos, double YPos)
 {
@@ -184,3 +189,5 @@ unsigned int Window::GetHeight() const
 {
     return WindowData.Height;
 }
+
+MESH_EDITOR_NAMESPACE_END

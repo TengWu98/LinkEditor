@@ -7,6 +7,8 @@
 #include "Core/Event/ApplicationEvent.h"
 #include <imgui.h>
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class Renderer;
 class Window;
 class Scene;
@@ -67,3 +69,5 @@ private:
 
     ImGuiID DockSpaceId;
 };
+
+MESH_EDITOR_NAMESPACE_END

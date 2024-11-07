@@ -5,6 +5,8 @@
 #include "Renderer/Buffers/IndexBuffer.h"
 #include "Renderer/Shader/Shader.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 Renderer::Renderer(RenderSpecification InSpecification)
     : Specification(InSpecification)
 {
@@ -106,3 +108,5 @@ void Renderer::Clear()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+
+MESH_EDITOR_NAMESPACE_END

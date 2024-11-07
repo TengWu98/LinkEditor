@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 enum class MeshElementType
 {
     None,
@@ -41,3 +43,5 @@ struct MeshElementIndexHash
         return std::hash<int>{}(static_cast<int>(InMeshElementIndex.ElementType)) ^ (std::hash<int>{}(InMeshElementIndex.Index) << 1);
     }
 };
+
+MESH_EDITOR_NAMESPACE_END

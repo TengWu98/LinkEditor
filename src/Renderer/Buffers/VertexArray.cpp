@@ -2,6 +2,8 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
 {
     switch (type)
@@ -109,10 +111,12 @@ void VertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& InVertexB
     VertexBuffers.push_back(InVertexBuffer); 
 }
 
-void VertexArray::SetIndexBuffer(const std::shared_ptr<::IndexBuffer>& InIndexBuffer)
+void VertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& InIndexBuffer)
 {
     glBindVertexArray(RendererID);
     InIndexBuffer->Bind();
 
-    IndexBuffer = InIndexBuffer;
+    CurIndexBuffer = InIndexBuffer;
 }
+
+MESH_EDITOR_NAMESPACE_END

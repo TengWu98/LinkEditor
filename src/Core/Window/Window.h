@@ -5,8 +5,9 @@
 #include "Renderer/RenderContext/RenderContext.h"
 #include "Core/Event/Event.h"
 
-class Camera;
+MESH_EDITOR_NAMESPACE_BEGIN
 
+class Camera;
 using EventCallbackFn = std::function<void(Event&)>;
 
 struct WindowProps
@@ -47,3 +48,5 @@ private:
     std::shared_ptr<RenderContext> Context;
     WindowProps WindowData;
 };
+
+MESH_EDITOR_NAMESPACE_END

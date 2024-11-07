@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 enum class EventType
 {
     None = 0,
@@ -73,3 +75,5 @@ inline std::ostream& operator<<(std::ostream& os, const Event& InEvent)
 {
     return os << InEvent.ToString();
 }
+
+MESH_EDITOR_NAMESPACE_END

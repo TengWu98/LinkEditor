@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "pch.h"
+MESH_EDITOR_NAMESPACE_BEGIN
 
 enum MouseCode : uint16_t
 {
@@ -18,3 +19,5 @@ enum MouseCode : uint16_t
     ButtonRight            = Button1,
     ButtonMiddle           = Button2
 };
+
+MESH_EDITOR_NAMESPACE_END

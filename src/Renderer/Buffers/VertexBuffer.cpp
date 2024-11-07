@@ -1,5 +1,7 @@
 ﻿#include "VertexBuffer.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 VertexBuffer::VertexBuffer(uint32_t Size)
 {
     glCreateBuffers(1, &RendererID);
@@ -34,3 +36,5 @@ void VertexBuffer::SetData(const void* Data, uint32_t Size)
     glBindBuffer(GL_ARRAY_BUFFER, RendererID);
     glBufferSubData(GL_ARRAY_BUFFER, 0, Size, Data);
 }
+
+MESH_EDITOR_NAMESPACE_END

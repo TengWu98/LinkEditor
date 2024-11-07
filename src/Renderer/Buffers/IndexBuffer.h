@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class IndexBuffer
 {
 public:
@@ -16,3 +18,5 @@ private:
     uint32_t RendererID;
     uint32_t Count;
 };
+
+MESH_EDITOR_NAMESPACE_END

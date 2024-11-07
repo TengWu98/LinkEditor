@@ -12,6 +12,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 std::shared_ptr<Application> Application::Instance = nullptr;
 
 static void ShowDockingDisabledMessage()
@@ -461,7 +463,7 @@ bool Application::OnKyeTypedEvent(KeyEvent& InEvent)
 {
     KeyCode EventKeyCode = InEvent.GetKeyCode();
     
-    if(ImGui::IsKeyPressed(ImGuiKey_W) || EventKeyCode == KeyCode::Left)
+    if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Left)
     {
         MainScene->Camera.Position += MainScene->Camera.Front * MainScene->Camera.MovementSpeed;
     }
@@ -483,3 +485,5 @@ bool Application::OnKyeTypedEvent(KeyEvent& InEvent)
     
     return true;
 }
+
+MESH_EDITOR_NAMESPACE_END

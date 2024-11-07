@@ -1,5 +1,7 @@
 ﻿#include "FrameBuffer.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 static const uint32_t MaxFramebufferSize = 8192;
 
 static bool IsDepthFormat(FramebufferTextureFormat Format)
@@ -94,3 +96,5 @@ uint32_t FrameBuffer::GetColorAttachmentRendererID(uint32_t Index) const
     
     return ColorAttachments[Index];
 }
+
+MESH_EDITOR_NAMESPACE_END

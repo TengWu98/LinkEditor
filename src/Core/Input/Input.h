@@ -6,6 +6,8 @@
 
 struct GLFWwindow;
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class Input
 {
 public:
@@ -15,3 +17,5 @@ public:
     static float GetMouseX(GLFWwindow* Window);
     static float GetMouseY(GLFWwindow* Window);
 };
+
+MESH_EDITOR_NAMESPACE_END

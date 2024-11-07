@@ -3,6 +3,8 @@
 #include "pch.h"
 #include "Event.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class KeyEvent : public Event
 {
 public:
@@ -67,3 +69,5 @@ public:
 
     EVENT_CLASS_TYPE(KeyTyped)
 };
+
+MESH_EDITOR_NAMESPACE_END

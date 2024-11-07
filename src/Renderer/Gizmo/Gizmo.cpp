@@ -4,11 +4,12 @@
 
 #include "Renderer/Camera/Camera.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 void Gizmo::Begin() const
 {
     using namespace ImGui;
-
-    ImGuiContext* Content = ImGui::GetCurrentContext();
+    
     const auto ContentRegion = GetContentRegionAvail();
     const auto& WindowPos = GetWindowPos();
     ImGuizmo::BeginFrame();
@@ -41,3 +42,5 @@ void Gizmo::RenderDebug()
 
     
 }
+
+MESH_EDITOR_NAMESPACE_END

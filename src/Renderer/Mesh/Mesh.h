@@ -8,6 +8,8 @@
 #include "Vertex/Vertex.h"
 #include "MeshElement.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 namespace om {
     using PolyMesh = OpenMesh::PolyMesh_ArrayKernelT<>;
     using VH = OpenMesh::VertexHandle;
@@ -101,3 +103,5 @@ private:
     PolyMesh M;
     std::vector<ElementIndex> HighlightedElements; 
 };
+
+MESH_EDITOR_NAMESPACE_END

@@ -6,6 +6,8 @@
 #include "Renderer/Buffers/FrameBuffer.h"
 #include "Renderer/Buffers/UniformBuffer.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class Camera;
 class Shader;
 class Scene;
@@ -62,3 +64,5 @@ private:
     std::unique_ptr<FrameBuffer> FBO;
     std::unordered_map<ShaderPipelineType, std::shared_ptr<Shader>> ShaderLibrary;
 };
+
+MESH_EDITOR_NAMESPACE_END

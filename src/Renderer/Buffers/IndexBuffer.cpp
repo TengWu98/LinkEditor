@@ -1,5 +1,7 @@
 ﻿#include "IndexBuffer.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 IndexBuffer::IndexBuffer(uint32_t* Indices, uint32_t Count)
     : Count(Count)
 {
@@ -25,3 +27,5 @@ void IndexBuffer::Unbind() const
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+MESH_EDITOR_NAMESPACE_END

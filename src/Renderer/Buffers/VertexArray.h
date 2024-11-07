@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class VertexBuffer;
 class IndexBuffer;
 
@@ -18,11 +20,13 @@ public:
     void SetIndexBuffer(const std::shared_ptr<IndexBuffer>& InIndexBuffer);
 
     std::vector<std::shared_ptr<VertexBuffer>>& GetVertexBuffers() { return VertexBuffers; }
-    const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const { return IndexBuffer; }
+    const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const { return CurIndexBuffer; }
 
 private:
     uint32_t RendererID;
     uint32_t VertexBufferIndex = 0;
     std::vector<std::shared_ptr<VertexBuffer>> VertexBuffers;
-    std::shared_ptr<IndexBuffer> IndexBuffer;
+    std::shared_ptr<IndexBuffer> CurIndexBuffer;
 };
+
+MESH_EDITOR_NAMESPACE_END

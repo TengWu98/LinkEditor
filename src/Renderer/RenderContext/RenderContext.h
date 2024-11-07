@@ -3,6 +3,8 @@
 #include "pch.h"
 #include "GLFW/glfw3.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class RenderContext
 {
 public:
@@ -14,3 +16,5 @@ public:
 private:
     GLFWwindow* WindowHandle;
 };
+
+MESH_EDITOR_NAMESPACE_END

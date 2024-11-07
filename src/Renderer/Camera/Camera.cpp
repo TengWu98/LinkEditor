@@ -3,23 +3,12 @@
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 Camera::Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, glm::vec3 InTarget, float InFieldOfView, float InNearClip, float InFarClip) :
     Position(InPosition), WorldUp(InWorldUp), Front(glm::normalize(InTarget - Position)),
     FieldOfView(InFieldOfView), NearClip(InNearClip), FarClip(InFarClip)
 {
-    Right = glm::normalize(glm::cross(Front, WorldUp));
-    Up = glm::normalize(glm::cross(Right, Front));
-    Pitch = glm::degrees(glm::asin(Front.y));
-    Yaw = glm::degrees(glm::atan(Front.z, Front.x));
-}
-
-Camera::Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, float InYaw, float InPitch, float InFieldOfView, float InNearClip, float InFarClip) :
-    Position(InPosition), WorldUp(InWorldUp), Yaw(InYaw), Pitch(InPitch),
-    FieldOfView(InFieldOfView), NearClip(InNearClip), FarClip(InFarClip)
-{
-    Front.x = glm::cos(Pitch)*glm::sin(Yaw);
-    Front.y = glm::sin(Pitch);
-    Front.z = glm::cos(Pitch)*glm::cos(Yaw);
     Right = glm::normalize(glm::cross(Front, WorldUp));
     Up = glm::normalize(glm::cross(Right, Front));
 }
@@ -84,3 +73,5 @@ void Camera::SetDistance(float Distance)
 {
     Position += Front * (1 - Distance);
 }
+
+MESH_EDITOR_NAMESPACE_END

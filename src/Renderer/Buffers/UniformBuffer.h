@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class UniformBuffer
 {
 public:
@@ -13,3 +15,5 @@ public:
 private:
     uint32_t RendererID;
 };
+
+MESH_EDITOR_NAMESPACE_END

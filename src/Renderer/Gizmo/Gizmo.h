@@ -5,6 +5,8 @@
 #include "imgui.h"
 #include "ImGuizmo.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class Camera;
 
 class Gizmo
@@ -17,3 +19,5 @@ public:
 public:
     ImGuizmo::OPERATION ActiveOperation = ImGuizmo::TRANSLATE;
 };
+
+MESH_EDITOR_NAMESPACE_END

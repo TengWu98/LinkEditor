@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv)
 {
-    auto App = Application::GetInstance();
+    auto App = MeshEditor::Application::GetInstance();
     if(App)
     {
         App->Run();

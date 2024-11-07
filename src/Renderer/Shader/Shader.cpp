@@ -2,6 +2,8 @@
 #include "Renderer/Buffers/UniformBuffer.h"
 #include <glm/gtc/type_ptr.hpp>
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 static GLenum ShaderTypeFromString(const std::string& Type)
 {
     if (Type == "vertex")
@@ -261,3 +263,5 @@ void Shader::CreateProgram()
 
     RendererID = Program;
 }
+
+MESH_EDITOR_NAMESPACE_END

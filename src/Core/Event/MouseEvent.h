@@ -3,6 +3,8 @@
 #include "pch.h"
 #include "Event.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 class MouseMovedEvent : public Event
 {
 public:
@@ -91,3 +93,5 @@ public:
 
 	EVENT_CLASS_TYPE(MouseButtonReleased)
 };
+
+MESH_EDITOR_NAMESPACE_END

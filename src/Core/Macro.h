@@ -24,3 +24,13 @@
 #define BIT(x) (1 << x)
 
 #define MESH_EDITOR_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+
+#ifndef MESH_EDITOR_NAMESPACE_BEGIN
+#define MESH_EDITOR_NAMESPACE_BEGIN \
+namespace  MeshEditor{
+#endif 
+
+#ifndef MESH_EDITOR_NAMESPACE_END
+#define MESH_EDITOR_NAMESPACE_END \
+}
+#endif 

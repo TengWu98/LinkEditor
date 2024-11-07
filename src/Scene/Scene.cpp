@@ -4,10 +4,12 @@
 #include "Renderer/Mesh/Mesh.h"
 #include "Renderer/Gizmo/Gizmo.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 Scene::Scene() :
     Camera(CreateDefaultCamera()),
     Registry(entt::registry()),
-    MeshGLData(std::make_unique<::MeshGLData>())
+    SceneMeshGLData(std::make_unique<MeshGLData>())
 {
     // Initialize Render pipeline
     RenderSpecification Spec;
@@ -39,7 +41,7 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
 
     auto Node = Registry.emplace<SceneNode>(Entity);
     Registry.emplace<std::string>(Entity, InMeshCreateInfo.Name);
-    MeshGLData->ModelMatrices.emplace(Entity, std::make_shared<Model>(InMeshCreateInfo.Transform));
+    SceneMeshGLData->ModelMatrices.emplace(Entity, std::make_shared<Model>(InMeshCreateInfo.Transform));
     
     SetEntityVisible(Entity, true);
     if(!InMeshCreateInfo.bIsVisible)
@@ -64,7 +66,7 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
         MeshBuffers.emplace(ElementType, VertexArrayBuffer);
     }
     
-    MeshGLData->PrimaryMeshs.emplace(Entity, MeshBuffers);
+    SceneMeshGLData->PrimaryMeshs.emplace(Entity, MeshBuffers);
 
     Registry.emplace<Mesh>(Entity, std::move(InMesh));
     
@@ -101,10 +103,10 @@ void Scene::Render()
     UpdateViewProjBuffers();
 
     // Render Meshs
-    for(auto PrimaryMesh : MeshGLData->PrimaryMeshs)
+    for(auto PrimaryMesh : SceneMeshGLData->PrimaryMeshs)
     {
         auto Entity = PrimaryMesh.first;
-        auto ModelStruct = MeshGLData->ModelMatrices.at(Entity);
+        auto ModelStruct = SceneMeshGLData->ModelMatrices.at(Entity);
         auto MeshVertexArrayBuffer = PrimaryMesh.second.at(SelectionMeshElementType);
         
         MainRenderPipeline->UpdateShaderData({
@@ -119,7 +121,7 @@ void Scene::Render()
 void Scene::RenderGizmos()
 {
     // if (mouse_wheel != 0 && ImGui::IsWindowHovered()) Camera.SetTargetDistance(Camera.GetDistance() * (1.f - mouse_wheel / 16.f));
-    SceneGizmo->Begin();
+    // SceneGizmo->Begin();
     //
     // const float AspectRation = float(ViewportWidth) / float(ViewportHeight);
     // if(SelectedEntity != entt::null)
@@ -226,3 +228,5 @@ void Scene::SetEntityVisible(entt::entity Entity, bool bIsVisible)
         // TODO(WT) 补全实现
     }
 }
+
+MESH_EDITOR_NAMESPACE_END

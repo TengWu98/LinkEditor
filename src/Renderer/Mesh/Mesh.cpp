@@ -1,5 +1,7 @@
 ﻿#include "Mesh.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 using namespace om;
 
 Mesh::Mesh(const fs::path& InMeshFilePath)
@@ -219,3 +221,5 @@ std::vector<uint> Mesh::CreateEdgeIndices() const
     
     return Indices;
 }
+
+MESH_EDITOR_NAMESPACE_END

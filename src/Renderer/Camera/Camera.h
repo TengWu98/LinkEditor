@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+MESH_EDITOR_NAMESPACE_BEGIN
+
 enum CameraMovement
 {
     FORWARD,
@@ -16,7 +18,6 @@ class Camera
 {
 public:
     Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, glm::vec3 InTarget, float InFieldOfView, float InNearClip, float InFarClip);
-    Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, float InYaw, float InPitch, float InFieldOfView, float InNearClip, float InFarClip);
 
     glm::mat4 GetViewMatrix();
     glm::mat4 GetProjectionMatrix(float AspectRatio);
@@ -38,9 +39,6 @@ public:
     glm::vec3 Front;    // front vector
     glm::vec3 Right;    // right vector
 
-    float Yaw;
-    float Pitch;
-
     float FieldOfView;   // field of view
     float NearClip;      // near clip plane
     float FarClip;       // far clip plane
@@ -54,3 +52,5 @@ private:
     float TargetDistance;   // target distance the camera is moving towards
     bool bIsMoving = false; // whether the camera is moving
 };
+
+MESH_EDITOR_NAMESPACE_END
