@@ -29,8 +29,10 @@ void Renderer::Init()
     // Frame buffer
     FramebufferSpecification Spec;
     Spec.Attachments = {FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth};
-    FBO = std::make_unique<FrameBuffer>(Spec);
-    FBO->Bind();
+    Spec.Width = Specification.Width;
+    Spec.Height = Specification.Height;
+    Spec.Samples = 0;
+    FBO = std::make_shared<FrameBuffer>(Spec);
 
     // Shader Library
     ShaderLibrary[ShaderPipelineType::Flat] = std::make_shared<Shader>("resources/shaders/Flat.glsl");

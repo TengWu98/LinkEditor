@@ -55,10 +55,12 @@ public:
     void Bind() const;
     void Unbind() const;
 
+    void Invalidate();
+
     void Resize(uint32_t Width, uint32_t Height);
     int ReadPixel(uint32_t AttachmentIndex, int X, int Y);
 
-    void ClearAttendment(uint32_t AttachmentIndex, int Value);
+    void ClearAttachment(uint32_t AttachmentIndex, int Value);
     uint32_t GetColorAttachmentRendererID(uint32_t Index = 0) const;
 
     const FramebufferSpecification& GetSpecification() const { return Specification; }

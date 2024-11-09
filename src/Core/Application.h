@@ -32,7 +32,7 @@ public:
     ~Application();
 
     static std::shared_ptr<Application> GetInstance();
-    Scene& GetMainScene() const;
+    Scene& GetScene() const;
     Window& GetWindow() const;
 
     void OnEvent(Event& InEvent);
@@ -59,7 +59,7 @@ private:
     ApplicationCommandLineArgs CommandLineArgs;
     
     std::unique_ptr<Window> AppWindow;
-    std::unique_ptr<Scene> MainScene;
+    std::unique_ptr<Scene> AppScene;
     
     static std::shared_ptr<Application> Instance;
     
@@ -67,7 +67,6 @@ private:
     bool bIsMinimized = false;
 
     float DeltaTime = 0.0f;
-    float LastFrameTime = 0.0f;
 
     ImGuiID DockSpaceId;
 };

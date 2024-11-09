@@ -102,7 +102,7 @@ public:
 public:
     uint32_t ViewportWidth = 0, ViewportHeight = 0;
     
-    Camera Camera;
+    Camera SceneCamera;
     
     entt::registry Registry;
     entt::entity SelectedEntity = entt::null;

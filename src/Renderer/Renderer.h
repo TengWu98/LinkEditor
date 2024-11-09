@@ -31,6 +31,8 @@ struct ShaderBindingDescriptor
 
 struct RenderSpecification
 {
+    uint32_t Width = 1280;
+    uint32_t Height = 720;
 };
 
 class Renderer
@@ -55,13 +57,15 @@ public:
 
     void Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<Model> ModelMatrix, std::optional<uint32_t> ModelIndex = 0);
 
+    std::shared_ptr<FrameBuffer> GetFrameBuffer() const { return FBO; }
+
 public:
     ShaderPipelineType CurrentShaderPipeline = ShaderPipelineType::Flat;
 
 private:
     RenderSpecification Specification;
     
-    std::unique_ptr<FrameBuffer> FBO;
+    std::shared_ptr<FrameBuffer> FBO;
     std::unordered_map<ShaderPipelineType, std::shared_ptr<Shader>> ShaderLibrary;
 };
 

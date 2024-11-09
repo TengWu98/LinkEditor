@@ -7,7 +7,7 @@
 MESH_EDITOR_NAMESPACE_BEGIN
 
 Scene::Scene() :
-    Camera(CreateDefaultCamera()),
+    SceneCamera(CreateDefaultCamera()),
     Registry(entt::registry()),
     SceneMeshGLData(std::make_unique<MeshGLData>())
 {
@@ -33,6 +33,7 @@ void Scene::SetViewportSize(uint32_t Width, uint32_t Height)
 {
     ViewportWidth = Width;
     ViewportHeight = Height;
+    MainRenderPipeline->GetFrameBuffer()->Resize(Width, Height);
 }
 
 entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
@@ -95,11 +96,11 @@ void Scene::Render()
         return;
     }
     
-    MainRenderPipeline->SetViewport(0, 0, ViewportWidth, ViewportHeight);
+    // MainRenderPipeline->SetViewport(0, 0, ViewportWidth, ViewportHeight);
     MainRenderPipeline->SetClearColor(BackgroundColor);
     MainRenderPipeline->Clear();
 
-    Camera.Update();
+    SceneCamera.Update();
     UpdateViewProjBuffers();
 
     // Render Meshs
@@ -143,10 +144,11 @@ void Scene::RenderGizmos()
 void Scene::UpdateViewProjBuffers()
 {
     const float AspectRatio = ViewportWidth == 0 || ViewportHeight == 0 ? 1.f : static_cast<float>(ViewportWidth) / static_cast<float>(ViewportHeight);
-    const ViewProj ViewProjMat = {Camera.GetViewMatrix(), Camera.GetProjectionMatrix(AspectRatio)};
+    SceneCamera.SetAspectRatio(AspectRatio);
+    const ViewProj ViewProjMat = {SceneCamera.GetViewMatrix(), SceneCamera.GetProjectionMatrix()};
     ViewProjBuffer->SetData(&ViewProjMat, sizeof(ViewProjMat));
 
-    const ViewProjNearFar ViewProjNearFarMat = {Camera.GetViewMatrix(), Camera.GetProjectionMatrix(AspectRatio), Camera.NearClip, Camera.FarClip};
+    const ViewProjNearFar ViewProjNearFarMat = {SceneCamera.GetViewMatrix(), SceneCamera.GetProjectionMatrix(), SceneCamera.NearClip, SceneCamera.FarClip};
     ViewProjNearFarBuffer->SetData(&ViewProjNearFarMat, sizeof(ViewProjNearFarMat));
 }
 
@@ -178,7 +180,7 @@ std::optional<unsigned> Scene::GetModelBufferIndex(entt::entity Entity)
 
 Camera Scene::CreateDefaultCamera() const
 {
-    return {glm::vec3(0, 0, 2), glm::vec3(0, 1, 0), glm::vec3(0, 0, 0), 60, 0.01, 100};
+    return {glm::vec3(0, 0, 2), glm::vec3(0, 1, 0), glm::vec3(0, 0, 0), 0.01, 100};
 }
 
 entt::entity Scene::GetSelectedEntity() const

@@ -4,6 +4,8 @@
 #include "Renderer/Camera/Camera.h"
 #include "Renderer/Mesh/Mesh.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Texture/Texture.h"
+#include "Renderer/Texture/Texture2D/Texture2D.h"
 
 #include <nfd.h>
 
@@ -14,10 +16,28 @@
 
 #include "glm/ext/quaternion_transform.hpp"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <GL/gl.h>
+
+#include "stb_image_write.h"
+
 MESH_EDITOR_NAMESPACE_BEGIN
 
-std::shared_ptr<Application> Application::Instance = nullptr;
+static void SaveFrameBufferToFile(const FrameBuffer& frameBuffer, const std::string& filename)
+{
+    int width = 1280;
+    int height = 720;
+
+    std::vector<uint8_t> buffer(width * height * 4);
+    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
+    
+    stbi_write_png(filename.c_str(), width, height, 4, buffer.data(), width * 4);
+}
+
+static float LastFrameTime;
 static glm::vec2 LastMousePos;
+
+std::shared_ptr<Application> Application::Instance = nullptr;
 
 static void ShowDockingDisabledMessage()
 {
@@ -33,7 +53,7 @@ Application::Application()
 {
     AppWindow = std::make_unique<Window>(WindowProps());
     AppWindow->SetEventCallback(MESH_EDITOR_BIND_EVENT_FN(Application::OnEvent));
-    MainScene = std::make_unique<Scene>();
+    AppScene = std::make_unique<Scene>();
     NFD_Init();
     SetupImGui();
 }
@@ -56,9 +76,9 @@ std::shared_ptr<Application> Application::GetInstance()
     return Instance;
 }
 
-Scene& Application::GetMainScene() const
+Scene& Application::GetScene() const
 {
-    return *MainScene;
+    return *AppScene;
 }
 
 Window& Application::GetWindow() const
@@ -99,19 +119,23 @@ void Application::Update()
         // If Window is minimized, skip rendering
         if(!bIsMinimized)
         {
+            // Render Scene
+            AppScene->SetViewportSize(AppWindow->GetWidth(), AppWindow->GetHeight());
+            
+            AppScene->MainRenderPipeline->GetFrameBuffer()->Bind();
+            AppScene->Render();
+            AppScene->RenderGizmos();
+            AppScene->MainRenderPipeline->GetFrameBuffer()->Unbind();
+
+            // LOG_INFO("Current Color: {0}", AppScene->MainRenderPipeline->GetFrameBuffer()->ReadPixel(0, 1, 1));
+            
             // Start the Dear ImGui frame
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-
+            
             // Render ImGui
             RenderImGUI();
-
-            // Render Scene
-            MainScene->SetViewportSize(AppWindow->GetWidth(), AppWindow->GetHeight());
-            MainScene->Render();
-            MainScene->RenderGizmos();
-        
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
             // Update and Render additional Platform Windows
@@ -157,6 +181,10 @@ void Application::SetupImGui()
         IO.Fonts->AddFontFromFileTTF(MSYHPath, 18.0f,nullptr,
         IO.Fonts->GetGlyphRangesChineseFull());
     }
+    else
+    {
+        LOG_ERROR("Font file not found: {0}", MSYHPath);
+    }
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(AppWindow->GetNativeWindow(), true);
@@ -171,6 +199,9 @@ void Application::RenderImGUI()
     static bool bIsShowControlWindow = true;
     static bool bIsShowViewport = true;
     static bool bIsShowLogWindow = false;
+
+    // for stats
+    static bool bIsShowStats = false;
 
     const ImGuiViewport* Viewport = ImGui::GetMainViewport();
     if(!Viewport)
@@ -235,7 +266,7 @@ void Application::RenderImGUI()
                     
                     MeshCreateInfo MeshCreateInfo;
                     MeshCreateInfo.Name = Path.filename().string();
-                    MainScene->AddMesh(Path, MeshCreateInfo);
+                    AppScene->AddMesh(Path, MeshCreateInfo);
                     
                     NFD_FreePath(NFDPath);
                 }
@@ -295,18 +326,41 @@ void Application::RenderImGUI()
     if(bIsShowControlWindow)
     {
         ImGui::Begin("Control Panel");
-        ImGui::Text("FPS : %.1f", IO.Framerate);
-        if(ImGui::CollapsingHeader("General Setting"))
+        
+        if(bIsShowStats)
         {
-            
+            ImGui::SeparatorText("Stats");
+            ImGui::Text("FPS : %.1f", IO.Framerate);
+        }
+        
+        if(ImGui::CollapsingHeader("General Settings"))
+        {
+            ImGui::Checkbox("Show Stats", &bIsShowStats);
         }
 
-        if(ImGui::CollapsingHeader("Rendering Setting"))
+        if(ImGui::CollapsingHeader("Rendering Settings"))
         {
             if(ImGui::TreeNode("Camera"))
             {
-                ImGui::SliderFloat("Movement Speed", &MainScene->Camera.MovementSpeed, 0.0f, 50.0f, "%.3f", ImGuiSliderFlags_None);
-                ImGui::SliderFloat("Mouse Sensitivity", &MainScene->Camera.MouseSensitivity, 0.0f, 1.f, "%.3f", ImGuiSliderFlags_None);
+                ImGui::SeparatorText("Viewport Movement");
+                ImGui::SliderFloat("Camera Speed", &AppScene->SceneCamera.CameraSpeed, 0.0f, 50.0f, "%.3f", ImGuiSliderFlags_None);
+                ImGui::SliderFloat("Scroll Camera Speed", &AppScene->SceneCamera.MouseScrollCameraSpeed, 1.0f, 8.0f, "%.3f", ImGuiSliderFlags_None);
+                ImGui::SliderFloat("Mouse Sensitivity", &AppScene->SceneCamera.MouseSensitivity, 0.01f, 1.f, "%.3f", ImGuiSliderFlags_None);
+                
+                ImGui::SeparatorText("Camera Settings");
+                ImGui::Combo("Projection Mode", (int*)&AppScene->SceneCamera.ProjectionMode, "Perspective\0Orthographic\0");
+
+                if(AppScene->SceneCamera.ProjectionMode == CameraProjectionMode::Orthographic)
+                {
+                    ImGui::SliderFloat("Ortho Width", &AppScene->SceneCamera.OrthoWidth, 128, 1920, "%.3f", ImGuiSliderFlags_None);
+                }
+                else
+                {
+                    ImGui::SliderFloat("Field Of View", &AppScene->SceneCamera.FieldOfView, 5.0f, 170.0f, "%.3f", ImGuiSliderFlags_None);
+                }
+                
+                ImGui::Text("Aspect Ratio: %.3f", AppScene->SceneCamera.AspectRatio);
+                
                 
                 ImGui::TreePop();
                 ImGui::Spacing();
@@ -315,7 +369,7 @@ void Application::RenderImGUI()
             if(ImGui::TreeNode("Colors"))
             {
                 ImGui::SeparatorText("Background Color");
-                ImGui::ColorEdit4("Background Color", (float*)&MainScene->BackgroundColor, ImGuiColorEditFlags_NoLabel);
+                ImGui::ColorEdit4("Background Color", (float*)&AppScene->BackgroundColor, ImGuiColorEditFlags_NoLabel);
 
                 ImGui::SeparatorText("HighLight Color");
                 ImGui::ColorEdit4("HighLight Color", (float*)&Mesh::HighlightColor, ImGuiColorEditFlags_NoLabel);
@@ -335,8 +389,7 @@ void Application::RenderImGUI()
 
             if(ImGui::TreeNode("Shader"))
             {
-                int CurrentShaderPipelineType = static_cast<int>(MainScene->MainRenderPipeline->CurrentShaderPipeline);
-                ImGui::Combo("Shader Type", (int*)&MainScene->MainRenderPipeline->CurrentShaderPipeline, "Flat\0VertexColor\0");
+                ImGui::Combo("Shader Type", (int*)&AppScene->MainRenderPipeline->CurrentShaderPipeline, "Flat\0VertexColor\0");
                 
                 ImGui::TreePop();
                 ImGui::Spacing();
@@ -347,10 +400,8 @@ void Application::RenderImGUI()
 
         if(ImGui::CollapsingHeader("Selection"))
         {
-            ImGui::Combo("Selection Mode", (int*)&MainScene->SelectionMode, "Object\0Element\0");
-
-            int CurrentMeshElementType = static_cast<int>(MainScene->SelectionMeshElementType);
-            ImGui::Combo("Mesh Element Type", (int*)&MainScene->SelectionMeshElementType, "None\0Face\0Vertex\0Edge\0");
+            ImGui::Combo("Selection Mode", (int*)&AppScene->SelectionMode, "Object\0Element\0");
+            ImGui::Combo("Mesh Element Type", (int*)&AppScene->SelectionMeshElementType, "None\0Face\0Vertex\0Edge\0");
         }
     
         ImGui::End();
@@ -359,11 +410,13 @@ void Application::RenderImGUI()
     // show viewport
     if(bIsShowViewport)
     {
-        // unsigned int Width = AppWindow->GetWidth();
-        // unsigned int Height = AppWindow->GetHeight();
-        //
-        // ImGui::SetNextWindowSize(ImVec2(Width, Height), ImGuiCond_Always);
-        // ImGui::SetNextWindowPos(ImVec2(LeftSide, 0), ImGuiCond_Appearing);
+        float ViewportWidth = static_cast<float>(AppWindow->GetWidth());
+        float ViewportHeight = static_cast<float>(AppWindow->GetHeight());
+
+        
+        
+        // ImGui::SetNextWindowSize(ImVec2(ViewportWidth, ViewportHeight), ImGuiCond_Always);
+        // ImGui::SetNextWindowPos(ImVec2(150, 0), ImGuiCond_Appearing);
         //
         // ImGuiWindowClass ViewportWindowClass;
         // ViewportWindowClass.DockingAllowUnclassed = true;
@@ -371,37 +424,55 @@ void Application::RenderImGUI()
         // ImGui::SetNextWindowClass(&ViewportWindowClass);
         //
         // ImGuiWindowFlags ViewportWindowFlags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
-        //
         // ImGui::Begin("Viewport", nullptr, ViewportWindowFlags);
         ImGui::Begin("Viewport");
-        //
-        // {
-        //     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-        //     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
-        //
-        //     ImVec2 UVMin = ImVec2(0.0f, 1.0f);      // Top-left
-        //     ImVec2 UVMax = ImVec2(1.0f, 0.0f);    // Lower-right
-        //
-        //     auto InitialCursorPos = ImGui::GetCursorPos();
-        //     auto WindowSize = ImGui::GetWindowSize();
-        //     auto CentralizedCursorPos = ImVec2((WindowSize.x - Width) * 0.5f, (WindowSize.y - Height + 20) * 0.5f);
-        //     ImGui::SetCursorPos(CentralizedCursorPos);
-        //
-        //     ImGui::PopStyleVar(2);
-        //
-        //     // ImGui::Image((GLuint *)scene->render_pipeline.postprocess_manager->output_rt->color_buffer, ImVec2(Width, Height), UVMin, UVMax, ImVec4(1,1,1,1), ImVec4(1,1,1,1));
-        //     // ImGui::SetItemUsingMouseWheel();
-        //     // if (ImGui::IsItemHovered())
-        //     // {
-        //     //     scene->window->render_camera->ProcessMouseScroll(0, ImGui::GetIO().MouseWheel);
-        //     // }
-        //     
-        //     // if (ImGui::IsWindowHovered()){
-        //     //     Input::processInputRenderPanel(window->Window, *window->render_camera, deltaTime);
-        //     // }
-        // }
-        
-        ImGui::End();
+        {
+            // ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+            // ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
+            // ImGui::PopStyleVar(2);
+            //
+            // auto InitialCursorPos = ImGui::GetCursorPos();
+            // auto WindowSize = ImGui::GetWindowSize();
+            // auto CentralizedCursorPos = ImVec2((WindowSize.x - ViewportWidth) * 0.5f, (WindowSize.y - ViewportHeight + 20) * 0.5f);
+            // ImGui::SetCursorPos(CentralizedCursorPos);
+    
+            //     // ImGui::SetItemUsingMouseWheel();
+            //     // if (ImGui::IsItemHovered())
+            //     // {
+            //     //     scene->window->render_camera->ProcessMouseScroll(0, ImGui::GetIO().MouseWheel);
+            //     // }
+            //     
+            //     // if (ImGui::IsWindowHovered()){
+            //     //     Input::processInputRenderPanel(window->Window, *window->render_camera, deltaTime);
+            //     // }
+            // }
+
+            
+            uint32_t ColorAttachmentRendererID = AppScene->MainRenderPipeline->GetFrameBuffer()->GetColorAttachmentRendererID();
+            int width = 1280; // 你需要知道纹理的具体宽度
+            int height = 720; // 你需要知道纹理的具体高度
+
+            // 创建一个缓冲区来存储像素数据
+            unsigned char* pixels = new unsigned char[width * height * 4]; // 假设纹理是RGBA格式
+
+            // 绑定纹理
+            glBindTexture(GL_TEXTURE_2D, ColorAttachmentRendererID);
+
+            // 从纹理中读取数据
+            glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+            // 解绑纹理
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            // 使用 stb_image_write 库将数据写入PNG文件
+            stbi_write_png("c:\\Users\\13932\\Desktop\\output.png", width, height, 4, pixels, width * 4);
+
+            // 清理资源
+            delete[] pixels;
+            
+            ImGui::Image(AppScene->MainRenderPipeline->GetFrameBuffer()->GetColorAttachmentRendererID(), ImVec2(ViewportWidth, ViewportHeight), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+            ImGui::End();
+        }
     }
 
     // show log message
@@ -430,7 +501,7 @@ bool Application::OnWindowResize(WindowResizeEvent& InEvent)
     }
 
     bIsMinimized = false;
-    MainScene->SetViewportSize(InEvent.GetWidth(), InEvent.GetHeight());
+    AppScene->SetViewportSize(InEvent.GetWidth(), InEvent.GetHeight());
     return true;
 }
 
@@ -446,16 +517,21 @@ bool Application::OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& InEvent)
 
 bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
 {
+    if(!AppWindow || !AppScene)
+    {
+        return false;
+    }
+    
     if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonRight))
     {
         glm::vec2 CurrentMousePos = Input::GetMousePosition(AppWindow->GetNativeWindow());
         glm::vec2 DeltaPos = CurrentMousePos - LastMousePos;
         LastMousePos = CurrentMousePos;
         
-        DeltaPos *= MainScene->Camera.MouseSensitivity;
+        DeltaPos *= AppScene->SceneCamera.MouseSensitivity;
 
-        MainScene->Camera.Front += - MainScene->Camera.Right * DeltaPos.x * MainScene->Camera.GetCurrentDistance();
-        MainScene->Camera.Front += - MainScene->Camera.Up * DeltaPos.y * MainScene->Camera.GetCurrentDistance();
+        AppScene->SceneCamera.Front += - AppScene->SceneCamera.Right * DeltaPos.x * AppScene->SceneCamera.GetCurrentDistance() * DeltaTime;
+        AppScene->SceneCamera.Front += - AppScene->SceneCamera.Up * DeltaPos.y * AppScene->SceneCamera.GetCurrentDistance() * DeltaTime;
     }
     
     return true;
@@ -463,32 +539,38 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
 
 bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
 {
-    float NewDistance = MainScene->Camera.GetCurrentDistance() * (1.f - InEvent.GetYOffset() / 16.f);
-    MainScene->Camera.SetDistance(NewDistance);
+    // TODO(WT) 有问题
+    float NewDistance = AppScene->SceneCamera.GetCurrentDistance() * (1.f - InEvent.GetYOffset() * AppScene->SceneCamera.MouseScrollCameraSpeed);
+    AppScene->SceneCamera.SetDistance(NewDistance);
     return true;
 }
 
 bool Application::OnKeyPressedEvent(KeyPressedEvent& InEvent)
 {
+    if(!AppScene)
+    {
+        return false;
+    }
+    
     const KeyCode EventKeyCode = InEvent.GetKeyCode();
     if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Up)
     {
-        MainScene->Camera.Position += MainScene->Camera.Front * MainScene->Camera.MovementSpeed * DeltaTime;
+        AppScene->SceneCamera.Position += AppScene->SceneCamera.Front * AppScene->SceneCamera.CameraSpeed * DeltaTime;
     }
 
     if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Down)
     {
-        MainScene->Camera.Position -= MainScene->Camera.Front * MainScene->Camera.MovementSpeed * DeltaTime;
+        AppScene->SceneCamera.Position -= AppScene->SceneCamera.Front * AppScene->SceneCamera.CameraSpeed * DeltaTime;
     }
 
     if(EventKeyCode == KeyCode::A || EventKeyCode == KeyCode::Left)
     {
-        MainScene->Camera.Position -= MainScene->Camera.Right * MainScene->Camera.MovementSpeed * DeltaTime;
+        AppScene->SceneCamera.Position -= AppScene->SceneCamera.Right * AppScene->SceneCamera.CameraSpeed * DeltaTime;
     }
 
     if(EventKeyCode == KeyCode::D || EventKeyCode == KeyCode::Right)
     {
-        MainScene->Camera.Position += MainScene->Camera.Right * MainScene->Camera.MovementSpeed * DeltaTime;
+        AppScene->SceneCamera.Position += AppScene->SceneCamera.Right * AppScene->SceneCamera.CameraSpeed * DeltaTime;
     }
     
     return true;

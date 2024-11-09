@@ -5,10 +5,14 @@
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
-Camera::Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, glm::vec3 InTarget, float InFieldOfView, float InNearClip, float InFarClip) :
+Camera::Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, glm::vec3 InTarget, float InNearClip, float InFarClip) :
     Position(InPosition), WorldUp(InWorldUp), Front(glm::normalize(InTarget - Position)),
-    FieldOfView(InFieldOfView), NearClip(InNearClip), FarClip(InFarClip)
+    NearClip(InNearClip), FarClip(InFarClip)
 {
+    FieldOfView = 90.f;
+
+    OrthoWidth = 1536.0f;
+    
     Right = glm::normalize(glm::cross(Front, WorldUp));
     Up = glm::normalize(glm::cross(Right, Front));
 }
@@ -18,19 +22,24 @@ glm::mat4 Camera::GetViewMatrix()
     return glm::lookAt(Position, Position + Front, WorldUp);
 }
 
-glm::mat4 Camera::GetProjectionMatrix(float AspectRatio)
+glm::mat4 Camera::GetProjectionMatrix()
 {
+    if(ProjectionMode == CameraProjectionMode::Orthographic)
+    {
+        return glm::ortho(-OrthoWidth * AspectRatio, OrthoWidth * AspectRatio, -OrthoWidth, OrthoWidth, NearClip, FarClip);
+    }
+    
     return glm::perspective(glm::radians(FieldOfView), AspectRatio, NearClip, FarClip);
 }
 
-glm::mat4 Camera::GetViewProjectionMatrix(float AspectRatio)
+glm::mat4 Camera::GetViewProjectionMatrix()
 {
-    return GetProjectionMatrix(AspectRatio) * GetViewMatrix();
+    return GetProjectionMatrix() * GetViewMatrix();
 }
 
-glm::mat4 Camera::GetInvViewProjectionMatrix(float AspectRatio)
+glm::mat4 Camera::GetInvViewProjectionMatrix()
 {
-    return glm::inverse(GetViewProjectionMatrix(AspectRatio));
+    return glm::inverse(GetViewProjectionMatrix());
 }
 
 float Camera::GetCurrentDistance() const
@@ -42,6 +51,16 @@ void Camera::SetPositionFromView(const glm::mat4& ViewMatrix)
 {
     Position = glm::inverse(ViewMatrix)[3];
     bIsMoving = false;
+}
+
+void Camera::SetFieldOfView(float InFieldOfView)
+{
+    FieldOfView = InFieldOfView;
+}
+
+void Camera::SetAspectRatio(float InAspectRatio)
+{
+    AspectRatio = InAspectRatio;
 }
 
 void Camera::SetTargetDistance(float InTargetDistance)
@@ -65,7 +84,7 @@ void Camera::Update()
     }
     else
     {
-        SetDistance(glm::mix(CurrentDistance, TargetDistance, MovementSpeed));
+        SetDistance(glm::mix(CurrentDistance, TargetDistance, CameraSpeed));
     }
 }
 
