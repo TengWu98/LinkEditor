@@ -36,6 +36,7 @@ static void SaveFrameBufferToFile(const FrameBuffer& frameBuffer, const std::str
 
 static float LastFrameTime;
 static glm::vec2 LastMousePos;
+static bool bIsViewportHovered = false;
 
 std::shared_ptr<Application> Application::Instance = nullptr;
 
@@ -412,9 +413,6 @@ void Application::RenderImGUI()
     {
         float ViewportWidth = static_cast<float>(AppWindow->GetWidth());
         float ViewportHeight = static_cast<float>(AppWindow->GetHeight());
-
-        
-        
         // ImGui::SetNextWindowSize(ImVec2(ViewportWidth, ViewportHeight), ImGuiCond_Always);
         // ImGui::SetNextWindowPos(ImVec2(150, 0), ImGuiCond_Appearing);
         //
@@ -423,9 +421,8 @@ void Application::RenderImGUI()
         // ViewportWindowClass.DockNodeFlagsOverrideSet |= ImGuiDockNodeFlags_NoCloseButton;
         // ImGui::SetNextWindowClass(&ViewportWindowClass);
         //
-        // ImGuiWindowFlags ViewportWindowFlags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
-        // ImGui::Begin("Viewport", nullptr, ViewportWindowFlags);
-        ImGui::Begin("Viewport");
+        ImGuiWindowFlags ViewportWindowFlags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
+        ImGui::Begin("Viewport", nullptr, ViewportWindowFlags);
         {
             // ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
             // ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
@@ -447,30 +444,18 @@ void Application::RenderImGUI()
             //     // }
             // }
 
-            
+            if(ImGui::IsWindowHovered())
+            {
+                bIsViewportHovered = true;
+            }
+            else
+            {
+                bIsViewportHovered = false;
+            }
+
+            // copy framebuffer to the viewport
             uint32_t ColorAttachmentRendererID = AppScene->MainRenderPipeline->GetFrameBuffer()->GetColorAttachmentRendererID();
-            int width = 1280; // 你需要知道纹理的具体宽度
-            int height = 720; // 你需要知道纹理的具体高度
-
-            // 创建一个缓冲区来存储像素数据
-            unsigned char* pixels = new unsigned char[width * height * 4]; // 假设纹理是RGBA格式
-
-            // 绑定纹理
-            glBindTexture(GL_TEXTURE_2D, ColorAttachmentRendererID);
-
-            // 从纹理中读取数据
-            glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-
-            // 解绑纹理
-            glBindTexture(GL_TEXTURE_2D, 0);
-
-            // 使用 stb_image_write 库将数据写入PNG文件
-            stbi_write_png("c:\\Users\\13932\\Desktop\\output.png", width, height, 4, pixels, width * 4);
-
-            // 清理资源
-            delete[] pixels;
-            
-            ImGui::Image(AppScene->MainRenderPipeline->GetFrameBuffer()->GetColorAttachmentRendererID(), ImVec2(ViewportWidth, ViewportHeight), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+            ImGui::Image(ColorAttachmentRendererID, ImVec2(ViewportWidth, ViewportHeight), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
             ImGui::End();
         }
     }
@@ -539,6 +524,11 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
 
 bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
 {
+    if(!AppScene || !bIsViewportHovered)
+    {
+        return false;
+    }
+    
     // TODO(WT) 有问题
     float NewDistance = AppScene->SceneCamera.GetCurrentDistance() * (1.f - InEvent.GetYOffset() * AppScene->SceneCamera.MouseScrollCameraSpeed);
     AppScene->SceneCamera.SetDistance(NewDistance);
