@@ -388,9 +388,17 @@ void Application::RenderImGUI()
                 ImGui::Spacing();
             }
 
-            if(ImGui::TreeNode("Shader"))
+            if(ImGui::TreeNode("Shaders"))
             {
                 ImGui::Combo("Shader Type", (int*)&AppScene->MainRenderPipeline->CurrentShaderPipeline, "Flat\0VertexColor\0");
+                if(AppScene->MainRenderPipeline->CurrentShaderPipeline == ShaderPipelineType::Flat)
+                {
+                    ImGui::ColorEdit4("Flat Color", (float*)&AppScene->MainRenderPipeline->ShaderData.FlatColor);
+                }
+                else if(AppScene->MainRenderPipeline->CurrentShaderPipeline == ShaderPipelineType::VertexColor)
+                {
+                    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                }
                 
                 ImGui::TreePop();
                 ImGui::Spacing();

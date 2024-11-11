@@ -7,6 +7,7 @@
 
 #include "Vertex/Vertex.h"
 #include "MeshElement.h"
+#include "Renderer/BVH/BVH.h"
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
@@ -101,6 +102,7 @@ public:
 
 private:
     PolyMesh M;
+    std::unique_ptr<BVH> MeshBVH;
     std::vector<ElementIndex> HighlightedElements; 
 };
 

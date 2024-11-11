@@ -29,6 +29,12 @@ struct ShaderBindingDescriptor
     std::optional<glm::mat4> MatrixData = std::nullopt;
 };
 
+struct ShaderBindingData
+{
+    // for flat shader
+    glm::vec4 FlatColor = {1.0f, 1.0f, 1.0f, 1.0f};
+};
+
 struct RenderSpecification
 {
     uint32_t Width = 1280;
@@ -61,6 +67,7 @@ public:
 
 public:
     ShaderPipelineType CurrentShaderPipeline = ShaderPipelineType::Flat;
+    ShaderBindingData ShaderData;
 
 private:
     RenderSpecification Specification;

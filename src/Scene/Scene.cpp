@@ -112,6 +112,7 @@ void Scene::Render()
         
         MainRenderPipeline->UpdateShaderData({
             ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
+            ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_Color", std::nullopt, MainRenderPipeline->ShaderData.FlatColor, std::nullopt},
             ShaderBindingDescriptor{ShaderPipelineType::VertexColor, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform}
         });
         
