@@ -13,7 +13,7 @@ Scene::Scene() :
 {
     // Initialize Render pipeline
     RenderSpecification Spec;
-    MainRenderPipeline = std::make_unique<Renderer>(Spec);
+    SceneRenderer = std::make_unique<Renderer>(Spec);
 
     // Initialize ViewProj buffers
     ViewProjBuffer = std::make_unique<UniformBuffer>(sizeof(ViewProj), 0);
@@ -33,7 +33,7 @@ void Scene::SetViewportSize(uint32_t Width, uint32_t Height)
 {
     ViewportWidth = Width;
     ViewportHeight = Height;
-    MainRenderPipeline->GetFrameBuffer()->Resize(Width, Height);
+    SceneRenderer->GetFrameBuffer()->Resize(Width, Height);
 }
 
 entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
@@ -96,9 +96,9 @@ void Scene::Render()
         return;
     }
     
-    // MainRenderPipeline->SetViewport(0, 0, ViewportWidth, ViewportHeight);
-    MainRenderPipeline->SetClearColor(BackgroundColor);
-    MainRenderPipeline->Clear();
+    // SceneRenderer->SetViewport(0, 0, ViewportWidth, ViewportHeight);
+    SceneRenderer->SetClearColor(BackgroundColor);
+    SceneRenderer->Clear();
 
     SceneCamera.Update();
     UpdateViewProjBuffers();
@@ -110,13 +110,17 @@ void Scene::Render()
         auto ModelStruct = SceneMeshGLData->ModelMatrices.at(Entity);
         auto MeshVertexArrayBuffer = PrimaryMesh.second.at(SelectionMeshElementType);
         
-        MainRenderPipeline->UpdateShaderData({
+        SceneRenderer->UpdateShaderData({
             ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
-            ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_Color", std::nullopt, MainRenderPipeline->ShaderData.FlatColor, std::nullopt},
-            ShaderBindingDescriptor{ShaderPipelineType::VertexColor, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform}
+            ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_Color", std::nullopt, SceneRenderer->ShaderData.FlatColor, std::nullopt},
+            ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
+            ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_Near", SceneRenderer->ShaderData.NearPlane, std::nullopt, std::nullopt},
+            ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_Far", SceneRenderer->ShaderData.FarPlane, std::nullopt, std::nullopt},
+            ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
+            ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_Shininess", SceneRenderer->ShaderData.Shininess, std::nullopt, std::nullopt},
         });
         
-        MainRenderPipeline->Render(MeshVertexArrayBuffer, ModelStruct);
+        SceneRenderer->Render(MeshVertexArrayBuffer, ModelStruct);
     }
 }
 

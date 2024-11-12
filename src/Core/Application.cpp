@@ -17,8 +17,6 @@
 #include "glm/ext/quaternion_transform.hpp"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <GL/gl.h>
-
 #include "stb_image_write.h"
 
 MESH_EDITOR_NAMESPACE_BEGIN
@@ -123,12 +121,12 @@ void Application::Update()
             // Render Scene
             AppScene->SetViewportSize(AppWindow->GetWidth(), AppWindow->GetHeight());
             
-            AppScene->MainRenderPipeline->GetFrameBuffer()->Bind();
+            AppScene->SceneRenderer->GetFrameBuffer()->Bind();
             AppScene->Render();
             AppScene->RenderGizmos();
-            AppScene->MainRenderPipeline->GetFrameBuffer()->Unbind();
+            AppScene->SceneRenderer->GetFrameBuffer()->Unbind();
 
-            // LOG_INFO("Current Color: {0}", AppScene->MainRenderPipeline->GetFrameBuffer()->ReadPixel(0, 1, 1));
+            // LOG_INFO("Current Color: {0}", AppScene->SceneRenderer->GetFrameBuffer()->ReadPixel(0, 1, 1));
             
             // Start the Dear ImGui frame
             ImGui_ImplOpenGL3_NewFrame();
@@ -254,7 +252,7 @@ void Application::RenderImGUI()
     {
         if(ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Load Mesh"))
+            if (ImGui::MenuItem("Import Mesh"))
             {
                 static const std::vector<nfdfilteritem_t> Filters {
                         {"Mesh object", "obj,off,ply,stl,om"}
@@ -390,21 +388,32 @@ void Application::RenderImGUI()
 
             if(ImGui::TreeNode("Shaders"))
             {
-                ImGui::Combo("Shader Type", (int*)&AppScene->MainRenderPipeline->CurrentShaderPipeline, "Flat\0VertexColor\0");
-                if(AppScene->MainRenderPipeline->CurrentShaderPipeline == ShaderPipelineType::Flat)
+                ImGui::Combo("Shader Type", (int*)&AppScene->SceneRenderer->CurrentShaderPipeline, "Flat\0Depth\0Phong\0");
+                if(AppScene->SceneRenderer->CurrentShaderPipeline == ShaderPipelineType::Flat)
                 {
-                    ImGui::ColorEdit4("Flat Color", (float*)&AppScene->MainRenderPipeline->ShaderData.FlatColor);
+                    ImGui::ColorEdit4("Flat Color", (float*)&AppScene->SceneRenderer->ShaderData.FlatColor);
                 }
-                else if(AppScene->MainRenderPipeline->CurrentShaderPipeline == ShaderPipelineType::VertexColor)
+                else if(AppScene->SceneRenderer->CurrentShaderPipeline == ShaderPipelineType::Depth)
                 {
-                    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                    ImGui::SliderFloat("ZMin", &AppScene->SceneRenderer->ShaderData.NearPlane, 0.1f, 10.0f, "%.3f", ImGuiSliderFlags_None);
+                    ImGui::SliderFloat("ZMax", &AppScene->SceneRenderer->ShaderData.FarPlane, 10.0f, 100.0f, "%.3f", ImGuiSliderFlags_None);
+                }
+                else if(AppScene->SceneRenderer->CurrentShaderPipeline == ShaderPipelineType::Phong)
+                {
+                    ImGui::SliderFloat("Shininess", &AppScene->SceneRenderer->ShaderData.Shininess, 0.0f, 256.0f, "%.3f", ImGuiSliderFlags_None);
                 }
                 
                 ImGui::TreePop();
                 ImGui::Spacing();
             }
-            
-            ImGui::SeparatorText("Render Mode");
+
+            if(ImGui::TreeNode("Render Mode"))
+            {
+                ImGui::Combo("Render Mode", (int*)&AppScene->SceneRenderer->Mode, "None\0Faces\0Vertices\0Edges\0");
+                
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
         }
 
         if(ImGui::CollapsingHeader("Selection"))
@@ -462,7 +471,7 @@ void Application::RenderImGUI()
             }
 
             // copy framebuffer to the viewport
-            uint32_t ColorAttachmentRendererID = AppScene->MainRenderPipeline->GetFrameBuffer()->GetColorAttachmentRendererID();
+            uint32_t ColorAttachmentRendererID = AppScene->SceneRenderer->GetFrameBuffer()->GetColorAttachmentRendererID();
             ImGui::Image(ColorAttachmentRendererID, ImVec2(ViewportWidth, ViewportHeight), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
             ImGui::End();
         }
@@ -515,17 +524,17 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
         return false;
     }
     
-    if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonRight))
-    {
-        glm::vec2 CurrentMousePos = Input::GetMousePosition(AppWindow->GetNativeWindow());
-        glm::vec2 DeltaPos = CurrentMousePos - LastMousePos;
-        LastMousePos = CurrentMousePos;
-        
-        DeltaPos *= AppScene->SceneCamera.MouseSensitivity;
-
-        AppScene->SceneCamera.Front += - AppScene->SceneCamera.Right * DeltaPos.x * AppScene->SceneCamera.GetCurrentDistance() * DeltaTime;
-        AppScene->SceneCamera.Front += - AppScene->SceneCamera.Up * DeltaPos.y * AppScene->SceneCamera.GetCurrentDistance() * DeltaTime;
-    }
+    // if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonRight))
+    // {
+    //     glm::vec2 CurrentMousePos = Input::GetMousePosition(AppWindow->GetNativeWindow());
+    //     glm::vec2 DeltaPos = CurrentMousePos - LastMousePos;
+    //     LastMousePos = CurrentMousePos;
+    //     
+    //     DeltaPos *= AppScene->SceneCamera.MouseSensitivity;
+    //
+    //     AppScene->SceneCamera.Front += - AppScene->SceneCamera.Right * DeltaPos.x * AppScene->SceneCamera.GetCurrentDistance() * DeltaTime;
+    //     AppScene->SceneCamera.Front += - AppScene->SceneCamera.Up * DeltaPos.y * AppScene->SceneCamera.GetCurrentDistance() * DeltaTime;
+    // }
     
     return true;
 }
@@ -538,7 +547,9 @@ bool Application::OnMouseScrolledEvent(MouseScrolledEvent& InEvent)
     }
     
     // TODO(WT) 有问题
-    float NewDistance = AppScene->SceneCamera.GetCurrentDistance() * (1.f - InEvent.GetYOffset() * AppScene->SceneCamera.MouseScrollCameraSpeed);
+    // float NewDistance = AppScene->SceneCamera.GetCurrentDistance() * (1.f - InEvent.GetYOffset() * AppScene->SceneCamera.MouseScrollCameraSpeed);
+    // AppScene->SceneCamera.SetDistance(NewDistance);
+    float NewDistance = AppScene->SceneCamera.GetCurrentDistance() - InEvent.GetYOffset() * AppScene->SceneCamera.MouseScrollCameraSpeed;
     AppScene->SceneCamera.SetDistance(NewDistance);
     return true;
 }
@@ -550,26 +561,26 @@ bool Application::OnKeyPressedEvent(KeyPressedEvent& InEvent)
         return false;
     }
     
-    const KeyCode EventKeyCode = InEvent.GetKeyCode();
-    if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Up)
-    {
-        AppScene->SceneCamera.Position += AppScene->SceneCamera.Front * AppScene->SceneCamera.CameraSpeed * DeltaTime;
-    }
-
-    if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Down)
-    {
-        AppScene->SceneCamera.Position -= AppScene->SceneCamera.Front * AppScene->SceneCamera.CameraSpeed * DeltaTime;
-    }
-
-    if(EventKeyCode == KeyCode::A || EventKeyCode == KeyCode::Left)
-    {
-        AppScene->SceneCamera.Position -= AppScene->SceneCamera.Right * AppScene->SceneCamera.CameraSpeed * DeltaTime;
-    }
-
-    if(EventKeyCode == KeyCode::D || EventKeyCode == KeyCode::Right)
-    {
-        AppScene->SceneCamera.Position += AppScene->SceneCamera.Right * AppScene->SceneCamera.CameraSpeed * DeltaTime;
-    }
+    // const KeyCode EventKeyCode = InEvent.GetKeyCode();
+    // if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Up)
+    // {
+    //     AppScene->SceneCamera.Position += AppScene->SceneCamera.Front * AppScene->SceneCamera.CameraSpeed * DeltaTime;
+    // }
+    //
+    // if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Down)
+    // {
+    //     AppScene->SceneCamera.Position -= AppScene->SceneCamera.Front * AppScene->SceneCamera.CameraSpeed * DeltaTime;
+    // }
+    //
+    // if(EventKeyCode == KeyCode::A || EventKeyCode == KeyCode::Left)
+    // {
+    //     AppScene->SceneCamera.Position -= AppScene->SceneCamera.Right * AppScene->SceneCamera.CameraSpeed * DeltaTime;
+    // }
+    //
+    // if(EventKeyCode == KeyCode::D || EventKeyCode == KeyCode::Right)
+    // {
+    //     AppScene->SceneCamera.Position += AppScene->SceneCamera.Right * AppScene->SceneCamera.CameraSpeed * DeltaTime;
+    // }
     
     return true;
 }

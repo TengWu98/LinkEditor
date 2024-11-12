@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "pch.h"
+
 #include "Renderer/Camera/Camera.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Mesh/MeshElement.h"
@@ -107,7 +108,9 @@ public:
     entt::registry Registry;
     entt::entity SelectedEntity = entt::null;
 
-    std::unique_ptr<Renderer> MainRenderPipeline;
+    std::unique_ptr<Renderer> SceneRenderer;
+    RenderMode SceneRenderMode = RenderMode::Faces;
+    
     glm::vec4 BackgroundColor = glm::vec4(0.22f, 0.22f, 0.22f, 1.f);
 
     std::unique_ptr<Gizmo> SceneGizmo;

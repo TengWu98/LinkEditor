@@ -15,9 +15,18 @@ class VertexArray;
 class Window;
 class Model;
 
+enum class RenderMode
+{
+    None,
+    Faces,
+    Vertices,
+    Edges,
+};
+
 enum class ShaderPipelineType {
     Flat,
-    VertexColor,
+    Depth,
+    Phong,
 };
 
 struct ShaderBindingDescriptor
@@ -33,6 +42,13 @@ struct ShaderBindingData
 {
     // for flat shader
     glm::vec4 FlatColor = {1.0f, 1.0f, 1.0f, 1.0f};
+
+    // for depth
+    float NearPlane = 0.1f;
+    float FarPlane = 100.0f;
+
+    // for phong
+    float Shininess = 32.0f;
 };
 
 struct RenderSpecification
@@ -68,10 +84,10 @@ public:
 public:
     ShaderPipelineType CurrentShaderPipeline = ShaderPipelineType::Flat;
     ShaderBindingData ShaderData;
+    RenderMode Mode = RenderMode::Faces;
 
 private:
     RenderSpecification Specification;
-    
     std::shared_ptr<FrameBuffer> FBO;
     std::unordered_map<ShaderPipelineType, std::shared_ptr<Shader>> ShaderLibrary;
 };

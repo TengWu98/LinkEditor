@@ -36,7 +36,8 @@ void Renderer::Init()
 
     // Shader Library
     ShaderLibrary[ShaderPipelineType::Flat] = std::make_shared<Shader>("resources/shaders/Flat.glsl");
-    ShaderLibrary[ShaderPipelineType::VertexColor] = std::make_shared<Shader>("resources/shaders/VertexColor.glsl");
+    ShaderLibrary[ShaderPipelineType::Depth] = std::make_shared<Shader>("resources/shaders/Depth.glsl");
+    ShaderLibrary[ShaderPipelineType::Phong] = std::make_shared<Shader>("resources/shaders/Phong.glsl");
 }
 
 void Renderer::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)
@@ -90,14 +91,37 @@ void Renderer::Render(const std::shared_ptr<VertexArray>& VertexArray, const std
 void Renderer::DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount)
 {
     VertexArray->Bind();
-    glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr);
+    switch(Mode)
+    {
+    case RenderMode::Faces:
+        glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr);
+        break;
+    case RenderMode::Vertices:
+        glDrawElements(GL_POINTS, IndexCount, GL_UNSIGNED_INT, nullptr);
+        break;
+    case RenderMode::Edges:
+        glLineWidth(0);
+        glDrawElements(GL_LINES, IndexCount, GL_UNSIGNED_INT, nullptr);
+        break;            
+    }
 }
 
 void Renderer::DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount,
     uint32_t InstanceCount)
 {
     VertexArray->Bind();
-    glDrawElementsInstanced(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
+    switch(Mode)
+    {
+    case RenderMode::Faces:
+        glDrawElementsInstanced(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
+        break;
+    case RenderMode::Vertices:
+        glDrawElementsInstanced(GL_POINTS, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
+        break;
+    case RenderMode::Edges:
+        glDrawElementsInstanced(GL_LINES, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
+        break;
+    }
 }
 
 void Renderer::DrawLines(const std::shared_ptr<VertexArray>& VertexArray, uint32_t VertexCount)
