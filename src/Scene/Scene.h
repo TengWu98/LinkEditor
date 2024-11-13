@@ -8,6 +8,8 @@
 #include "Renderer/Buffers/VertexBuffer.h"
 #include "Renderer/Buffers/UniformBuffer.h"
 #include "Renderer/Buffers/VertexArray.h"
+#include "Renderer/Light/Light.h"
+#include "Renderer/Light/DirectionalLight/DirectionalLight.h"
 
 #include "entt.hpp"
 
@@ -73,6 +75,13 @@ struct MeshGLData
     // std::unordered_map<entt::entity, MeshBufferMap> NormalIndicators;
 };
 
+struct LightInfo
+{
+    glm::vec4 ViewColorAndAmbient;
+    glm::vec4 DirectionalColorAndIntensity;
+    glm::vec3 Direction;
+};
+
 class Scene
 {
 public:
@@ -87,39 +96,36 @@ public:
     entt::entity AddMesh(const fs::path& MeshFilePath, MeshCreateInfo InMeshCreateInfo = {});
     entt::entity GetSelectedEntity() const;
     entt::entity GetParentEntity(entt::entity Entity) const;
-
-    void SetEntityVisible(entt::entity Entity, bool bIsVisible);
     
     void Render();
     void RenderGizmos();
-
-    Camera CreateDefaultCamera() const;
     VertexBufferLayout CreateDefaultVertexLayout();
 
+    Camera CreateDefaultCamera() const;
+    
+    void SetEntityVisible(entt::entity Entity, bool bIsVisible);
     std::optional<unsigned int> GetModelBufferIndex(entt::entity Entity);
-
     void UpdateViewProjBuffers();
 
 public:
     uint32_t ViewportWidth = 0, ViewportHeight = 0;
+    glm::vec4 BackgroundColor = glm::vec4(0.22f, 0.22f, 0.22f, 1.f);
     
     Camera SceneCamera;
+
+    DirectionalLight DirLight;
     
     entt::registry Registry;
     entt::entity SelectedEntity = entt::null;
 
     std::unique_ptr<Renderer> SceneRenderer;
     RenderMode SceneRenderMode = RenderMode::Faces;
-    
-    glm::vec4 BackgroundColor = glm::vec4(0.22f, 0.22f, 0.22f, 1.f);
-
     std::unique_ptr<Gizmo> SceneGizmo;
-
+    std::unique_ptr<MeshGLData> SceneMeshGLData;
+    
     SelectionMode SelectionMode = SelectionMode::Object;
     MeshElementType SelectionMeshElementType = MeshElementType::Face;
     MeshElementIndex SelectedElement;
-
-    std::unique_ptr<MeshGLData> SceneMeshGLData;
 
     // buffers
     std::unique_ptr<UniformBuffer> ViewProjBuffer;

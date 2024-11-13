@@ -21,6 +21,8 @@ Scene::Scene() :
     UpdateViewProjBuffers();
     
     // TODO(WT) Lights buffer
+    DirLight = DirectionalLight(0.15f, glm::vec3(-1, -1, -1), glm::vec3{1, 1, 1});
+    LightsBuffer = std::make_unique<UniformBuffer>(sizeof(LightInfo), 2);
 
     SceneGizmo = std::make_unique<Gizmo>();
 }

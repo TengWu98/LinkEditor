@@ -2,7 +2,7 @@
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
-Light::Light(const glm::vec3 InIntensity)
+Light::Light(const float InIntensity)
     : Intensity(InIntensity)
 {
 }

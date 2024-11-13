@@ -99,7 +99,7 @@ void Renderer::DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray, uint
     case RenderMode::Vertices:
         glDrawElements(GL_POINTS, IndexCount, GL_UNSIGNED_INT, nullptr);
         break;
-    case RenderMode::Edges:
+    case RenderMode::Edges: // TODO(WT) 这里有问题
         glLineWidth(0);
         glDrawElements(GL_LINES, IndexCount, GL_UNSIGNED_INT, nullptr);
         break;            
