@@ -13,6 +13,20 @@ enum class MeshElementType
 };
 
 inline const std::vector AllMeshElementTypes{MeshElementType::Vertex, MeshElementType::Edge, MeshElementType::Face};
+inline std::string MeshElementTypeToString(MeshElementType InElementType)
+{
+    switch (InElementType)
+    {
+    case MeshElementType::Vertex:
+        return "Vertex";
+    case MeshElementType::Edge:
+        return "Edge";
+    case MeshElementType::Face:
+        return "Face";
+    default:
+        return "None";
+    }
+}
 
 struct MeshElementIndex
 {

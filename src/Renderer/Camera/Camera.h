@@ -4,6 +4,8 @@
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
+struct Ray;
+
 enum CameraProjectionMode
 {
     Perspective,
@@ -39,6 +41,8 @@ public:
     
     void SetDistance(float Distance);
     void Update();
+
+    Ray ClipPosToWorldRay(const glm::vec2& ClipPos);
 
 public:
     CameraProjectionMode ProjectionMode = CameraProjectionMode::Perspective;

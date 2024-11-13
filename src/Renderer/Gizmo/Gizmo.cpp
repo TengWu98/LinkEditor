@@ -9,7 +9,7 @@ MESH_EDITOR_NAMESPACE_BEGIN
 void Gizmo::Begin()
 {
     using namespace ImGui;
-
+    
     if (ImGui::RadioButton("Translate", ActiveOperation == ImGuizmo::TRANSLATE))
     {
         ActiveOperation = ImGuizmo::TRANSLATE;
@@ -32,7 +32,7 @@ void Gizmo::Begin()
     // ImGuizmo::SetRect(WindowPos.x, WindowPos.y + GetTextLineHeightWithSpacing(), ContentRegion.x, ContentRegion.y);
 }
 
-void Gizmo::Render(Camera& Camera, bool& bIsViewChanged)
+void Gizmo::Render(Camera& Camera, glm::mat4& ModelMatrix, float AspectRation, bool& bIsViewChanged, bool& bIsModelChanged)
 {
     using namespace ImGui;
 
@@ -53,6 +53,11 @@ void Gizmo::RenderDebug()
 {
     using namespace ImGui;
     using namespace ImGuizmo;
+
+    if(bIsShowModelGizmo)
+    {
+        return;
+    }
 
     
 }

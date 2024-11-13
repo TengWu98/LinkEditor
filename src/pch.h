@@ -22,6 +22,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <format>
+
 // namespace
 namespace fs = std::filesystem;
 
@@ -45,3 +47,6 @@ namespace fs = std::filesystem;
 
 // OpenGL
 #include <glad/glad.h>
+
+// Math
+#include "Core/Math/Math.h"

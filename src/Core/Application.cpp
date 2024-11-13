@@ -6,6 +6,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Texture/Texture.h"
 #include "Renderer/Texture/Texture2D/Texture2D.h"
+#include "Renderer/Ray/Ray.h"
 
 #include <nfd.h>
 
@@ -419,7 +420,18 @@ void Application::RenderImGUI()
         if(ImGui::CollapsingHeader("Selection"))
         {
             ImGui::Combo("Selection Mode", (int*)&AppScene->SelectionMode, "Object\0Element\0");
-            ImGui::Combo("Mesh Element Type", (int*)&AppScene->SelectionMeshElementType, "None\0Face\0Vertex\0Edge\0");
+            if(AppScene->SelectionMode == SelectionMode::Element)
+            {
+                ImGui::Combo("Mesh Element Type", (int*)&AppScene->SelectionMeshElementType, "None\0Face\0Vertex\0Edge\0");
+                ImGui::Text("Selected %s: %s", MeshElementTypeToString(AppScene->SelectionMeshElementType).c_str(), AppScene->SelectedElement.IsValid() ? std::to_string(AppScene->SelectedElement.Idx()).c_str() : "None");
+            }
+            else if(AppScene->SelectionMode == SelectionMode::Object)
+            {
+                if(AppScene->SelectedEntity != entt::null)
+                {
+                    ImGui::Text("Selected Object: %s", AppScene->GetEntityName(AppScene->SelectedEntity));
+                }
+            }
         }
     
         ImGui::End();
@@ -430,40 +442,31 @@ void Application::RenderImGUI()
     {
         float ViewportWidth = static_cast<float>(AppWindow->GetWidth());
         float ViewportHeight = static_cast<float>(AppWindow->GetHeight());
-        // ImGui::SetNextWindowSize(ImVec2(ViewportWidth, ViewportHeight), ImGuiCond_Always);
-        // ImGui::SetNextWindowPos(ImVec2(150, 0), ImGuiCond_Appearing);
-        //
-        // ImGuiWindowClass ViewportWindowClass;
-        // ViewportWindowClass.DockingAllowUnclassed = true;
-        // ViewportWindowClass.DockNodeFlagsOverrideSet |= ImGuiDockNodeFlags_NoCloseButton;
-        // ImGui::SetNextWindowClass(&ViewportWindowClass);
-        //
-        ImGuiWindowFlags ViewportWindowFlags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
+        ImGuiWindowFlags ViewportWindowFlags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse;
         ImGui::Begin("Viewport", nullptr, ViewportWindowFlags);
         {
-            // ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-            // ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
-            // ImGui::PopStyleVar(2);
-            //
-            // auto InitialCursorPos = ImGui::GetCursorPos();
-            // auto WindowSize = ImGui::GetWindowSize();
-            // auto CentralizedCursorPos = ImVec2((WindowSize.x - ViewportWidth) * 0.5f, (WindowSize.y - ViewportHeight + 20) * 0.5f);
-            // ImGui::SetCursorPos(CentralizedCursorPos);
-    
-            //     // ImGui::SetItemUsingMouseWheel();
-            //     // if (ImGui::IsItemHovered())
-            //     // {
-            //     //     scene->window->render_camera->ProcessMouseScroll(0, ImGui::GetIO().MouseWheel);
-            //     // }
-            //     
-            //     // if (ImGui::IsWindowHovered()){
-            //     //     Input::processInputRenderPanel(window->Window, *window->render_camera, deltaTime);
-            //     // }
-            // }
+            auto WindowSize = ImGui::GetWindowSize();
+            auto CentralizedCursorPos = ImVec2((WindowSize.x - ViewportWidth) * 0.5f, (WindowSize.y - ViewportHeight) * 0.5f);
+            ImGui::SetCursorPos(CentralizedCursorPos);
 
             if(ImGui::IsWindowHovered())
             {
                 bIsViewportHovered = true;
+                if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonLeft))
+                {
+                    const glm::vec2 MousePos = ToGlm(ImGui::GetMousePos()) - ToGlm(ImGui::GetCursorScreenPos()) / ToGlm(WindowSize);
+                    const glm::vec2 MousePosNDC = glm::vec2(2 + MousePos.x - 1, 1 - 2 * MousePos.y);
+                    Ray MouseRay = AppScene->SceneCamera.ClipPosToWorldRay(MousePosNDC);
+
+                    const auto PreviousSelectedElementType = AppScene->SelectionMeshElementType;
+                    AppScene->SelectedElement = MeshElementIndex(PreviousSelectedElementType, -1);
+                    const auto& SelectedMesh = AppScene->GetSelectedMesh();
+                }
+
+                if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), ButtonRight))
+                {
+                    
+                }
             }
             else
             {
@@ -509,6 +512,18 @@ bool Application::OnWindowResize(WindowResizeEvent& InEvent)
 
 bool Application::OnMouseButtonPressedEvent(MouseButtonPressedEvent& InEvent)
 {
+    if(!bIsViewportHovered || !AppWindow || !AppWindow->GetNativeWindow())
+    {
+        return false;
+    }
+
+    // if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonLeft))
+    // {
+    //     const glm::vec2 MousePos = ToGlm(ImGui::GetMousePos()) - ToGlm(ImGui::GetCursorScreenPos()) / ToGlm(ImGui::GetContentRegionAvail());
+    //     const glm::vec2 MousePosNDC = glm::vec2(2 + MousePos.x - 1, 1- 2 * MousePos.y);
+    //     
+    // }
+    
     return true;
 }
 
@@ -523,18 +538,6 @@ bool Application::OnMouseMovedEvent(MouseMovedEvent& InEvent)
     {
         return false;
     }
-    
-    // if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonRight))
-    // {
-    //     glm::vec2 CurrentMousePos = Input::GetMousePosition(AppWindow->GetNativeWindow());
-    //     glm::vec2 DeltaPos = CurrentMousePos - LastMousePos;
-    //     LastMousePos = CurrentMousePos;
-    //     
-    //     DeltaPos *= AppScene->SceneCamera.MouseSensitivity;
-    //
-    //     AppScene->SceneCamera.Front += - AppScene->SceneCamera.Right * DeltaPos.x * AppScene->SceneCamera.GetCurrentDistance() * DeltaTime;
-    //     AppScene->SceneCamera.Front += - AppScene->SceneCamera.Up * DeltaPos.y * AppScene->SceneCamera.GetCurrentDistance() * DeltaTime;
-    // }
     
     return true;
 }
@@ -560,27 +563,6 @@ bool Application::OnKeyPressedEvent(KeyPressedEvent& InEvent)
     {
         return false;
     }
-    
-    // const KeyCode EventKeyCode = InEvent.GetKeyCode();
-    // if(EventKeyCode == KeyCode::W || EventKeyCode == KeyCode::Up)
-    // {
-    //     AppScene->SceneCamera.Position += AppScene->SceneCamera.Front * AppScene->SceneCamera.CameraSpeed * DeltaTime;
-    // }
-    //
-    // if(EventKeyCode == KeyCode::S || EventKeyCode == KeyCode::Down)
-    // {
-    //     AppScene->SceneCamera.Position -= AppScene->SceneCamera.Front * AppScene->SceneCamera.CameraSpeed * DeltaTime;
-    // }
-    //
-    // if(EventKeyCode == KeyCode::A || EventKeyCode == KeyCode::Left)
-    // {
-    //     AppScene->SceneCamera.Position -= AppScene->SceneCamera.Right * AppScene->SceneCamera.CameraSpeed * DeltaTime;
-    // }
-    //
-    // if(EventKeyCode == KeyCode::D || EventKeyCode == KeyCode::Right)
-    // {
-    //     AppScene->SceneCamera.Position += AppScene->SceneCamera.Right * AppScene->SceneCamera.CameraSpeed * DeltaTime;
-    // }
     
     return true;
 }

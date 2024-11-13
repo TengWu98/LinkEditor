@@ -8,7 +8,6 @@
 #include "Renderer/Buffers/VertexBuffer.h"
 #include "Renderer/Buffers/UniformBuffer.h"
 #include "Renderer/Buffers/VertexArray.h"
-#include "Renderer/Light/Light.h"
 #include "Renderer/Light/DirectionalLight/DirectionalLight.h"
 
 #include "entt.hpp"
@@ -94,8 +93,10 @@ public:
 
     entt::entity AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo = {});
     entt::entity AddMesh(const fs::path& MeshFilePath, MeshCreateInfo InMeshCreateInfo = {});
+    const Mesh& GetSelectedMesh() const;
     entt::entity GetSelectedEntity() const;
     entt::entity GetParentEntity(entt::entity Entity) const;
+    std::string GetEntityName(entt::entity Entity) const;
     
     void Render();
     void RenderGizmos();

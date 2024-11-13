@@ -27,6 +27,11 @@ layout(location = 0) in vec4 VertexPosition;
 layout(location = 1) in vec3 VertexNormal;
 
 uniform float u_Shininess;
+layout(binding = 2) uniform LightsUBO {
+    vec4 ViewColorAndAmbient;
+    vec4 DirectionalColorAndIntensity;
+    vec3 Direction;
+} Lights;
 
 layout(location = 0) out vec4 Color;
 
@@ -40,7 +45,7 @@ void main()
     vec4 MaterialDiffuse = vec4(1.0);
     vec4 MaterialSpecular = vec4(1.0);
 
-    vec4 Ambient = MaterialAmbient * gl_LightSource[0].ambient;
+    vec4 Ambient = MaterialAmbient * Lights.ViewColorAndAmbient.w;
     vec4 KD = MaterialDiffuse * gl_LightSource[0].diffuse;
     vec4 KS = MaterialSpecular * gl_LightSource[0].specular;
 

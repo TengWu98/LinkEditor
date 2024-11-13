@@ -1,4 +1,5 @@
 ﻿#include "Camera.h"
+#include "Renderer/Ray/Ray.h"
 
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
@@ -86,6 +87,19 @@ void Camera::Update()
     {
         SetDistance(glm::mix(CurrentDistance, TargetDistance, CameraSpeed));
     }
+}
+
+Ray Camera::ClipPosToWorldRay(const glm::vec2& ClipPos)
+{
+    const auto InverseViewProjection = glm::inverse(GetViewProjectionMatrix());
+
+    glm::vec4 NearPoint = InverseViewProjection * glm::vec4(ClipPos.x, ClipPos.y, -1.0f, 1.0f);
+    NearPoint /= NearPoint.w;
+
+    glm::vec4 FarPoint = InverseViewProjection * glm::vec4(ClipPos.x, ClipPos.y, 1.0f, 1.0f);
+    FarPoint /= FarPoint.w;
+
+    return Ray(glm::vec3(NearPoint), glm::normalize(glm::vec3(FarPoint - NearPoint)));
 }
 
 void Camera::SetDistance(float Distance)

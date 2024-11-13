@@ -1,13 +1,20 @@
 ﻿#include "Scene.h"
-
 #include "Renderer/Buffers/IndexBuffer.h"
 #include "Renderer/Mesh/Mesh.h"
 #include "Renderer/Gizmo/Gizmo.h"
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
+std::string IdString(entt::entity Entity)
+{
+    std::ostringstream oss;
+    oss << std::hex << std::setw(8) << std::setfill('0') << static_cast<uint32_t>(Entity);
+    return "0x" + oss.str();
+}
+
 Scene::Scene() :
     SceneCamera(CreateDefaultCamera()),
+    DirLight(DirectionalLight(0.15f, glm::vec3(-1, -1, -1), glm::vec3{1, 1, 1})),
     Registry(entt::registry()),
     SceneMeshGLData(std::make_unique<MeshGLData>())
 {
@@ -21,7 +28,6 @@ Scene::Scene() :
     UpdateViewProjBuffers();
     
     // TODO(WT) Lights buffer
-    DirLight = DirectionalLight(0.15f, glm::vec3(-1, -1, -1), glm::vec3{1, 1, 1});
     LightsBuffer = std::make_unique<UniformBuffer>(sizeof(LightInfo), 2);
 
     SceneGizmo = std::make_unique<Gizmo>();
@@ -91,6 +97,11 @@ entt::entity Scene::AddMesh(const fs::path& MeshFilePath, MeshCreateInfo InMeshC
     return AddMesh(Mesh(MeshFilePath), std::move(InMeshCreateInfo));
 }
 
+const Mesh& Scene::GetSelectedMesh() const
+{
+    return Registry.get<Mesh>(SelectedEntity);
+}
+
 void Scene::Render()
 {
     if(ViewportWidth == 0 || ViewportHeight == 0)
@@ -128,9 +139,8 @@ void Scene::Render()
 
 void Scene::RenderGizmos()
 {
-    // if (mouse_wheel != 0 && ImGui::IsWindowHovered()) Camera.SetTargetDistance(Camera.GetDistance() * (1.f - mouse_wheel / 16.f));
     // SceneGizmo->Begin();
-    //
+    
     // const float AspectRation = float(ViewportWidth) / float(ViewportHeight);
     // if(SelectedEntity != entt::null)
     // {
@@ -204,6 +214,24 @@ entt::entity Scene::GetParentEntity(entt::entity Entity) const
 
     const auto& Node = Registry.get<SceneNode>(Entity);
     return Node.Parent == entt::null ? Entity : GetParentEntity(Node.Parent);
+}
+
+std::string Scene::GetEntityName(entt::entity Entity) const
+{
+    if(Entity == entt::null)
+    {
+        return "NULL";
+    }
+
+    if(const auto *Name = Registry.try_get<std::string>(Entity))
+    {
+        if(!Name->empty())
+        {
+            return *Name;
+        }
+    }
+
+    return IdString(Entity);
 }
 
 void Scene::SetEntityVisible(entt::entity Entity, bool bIsVisible)

@@ -7,7 +7,8 @@
 
 #include "Vertex/Vertex.h"
 #include "MeshElement.h"
-// #include "Renderer/BVH/BVH.h"
+#include "Renderer/AccelerationStructures/BoundingBox/BoundingBox.h"
+#include "Renderer/AccelerationStructures/BVH/BVH.h"
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
@@ -20,19 +21,14 @@ namespace om {
     using Point = OpenMesh::Vec3f;
 }; // namespace om
 
-inline glm::vec3 ToGlm(const OpenMesh::Vec3f& Vertex) { return {Vertex[0], Vertex[1], Vertex[2]}; }
-inline glm::vec4 ToGlm(const OpenMesh::Vec3uc& Color)
-{
-    const auto cc = OpenMesh::color_cast<OpenMesh::Vec3f>(Color);
-    return {cc[0], cc[1], cc[2], 1};
-}
-
 inline om::Point ToOpenMesh(glm::vec3 Vertex) { return {Vertex.x, Vertex.y, Vertex.z}; }
 inline OpenMesh::Vec3uc ToOpenMesh(glm::vec4 Color)
 {
     const auto cc = OpenMesh::color_cast<OpenMesh::Vec3uc>(OpenMesh::Vec3f{Color.r, Color.g, Color.b});
     return {cc[0], cc[1], cc[2]};
 }
+
+struct Ray;
 
 class Mesh
 {
@@ -91,6 +87,18 @@ public:
     std::vector<uint> CreateTriangulatedFaceIndices() const; // Triangle fan for each face.
     std::vector<uint> CreateEdgeIndices() const;
 
+    BoundingBox ComputeBbox() const;
+    std::vector<BoundingBox> CreateFaceBoundingBoxes() const;
+
+    std::optional<float> Intersect(const Ray& LocalRay) const;
+    bool RayIntersects(const Ray& LocalRay) const;
+    bool RayIntersectsFace(const Ray &, FH, float *distance_out = nullptr, glm::vec3 *intersect_point_out = nullptr) const;
+
+    VH FindNearestVertex(glm::vec3 WorldPoint) const;
+    VH FindNearestVertex(const Ray& LocalRay) const;
+    EH FindNearestEdge(const Ray& WorldRay) const;
+    FH FindNearestIntersectingFace(const Ray& LocalRay, glm::vec3 *NearestIntersectPointOut = nullptr) const;
+
 public:
     inline static glm::vec4 FaceColor = glm::vec4{0.7, 0.7, 0.7, 1};
     inline static glm::vec4 VertexColor = glm::vec4{1, 1, 1, 1};
@@ -102,7 +110,8 @@ public:
 
 private:
     PolyMesh M;
-    // std::unique_ptr<BVH> MeshBVH;
+    BoundingBox MeshBBox;
+    std::shared_ptr<BVH> MeshBVH;
     std::vector<ElementIndex> HighlightedElements; 
 };
 
