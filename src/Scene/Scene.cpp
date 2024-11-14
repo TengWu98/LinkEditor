@@ -49,6 +49,7 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     const auto Entity = Registry.create();
 
     auto Node = Registry.emplace<SceneNode>(Entity);
+    Registry.emplace<Model>(Entity, InMeshCreateInfo.Transform);
     Registry.emplace<std::string>(Entity, InMeshCreateInfo.Name);
     SceneMeshGLData->ModelMatrices.emplace(Entity, std::make_shared<Model>(InMeshCreateInfo.Transform));
     
@@ -81,7 +82,7 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     
     if(InMeshCreateInfo.bIsSelect)
     {
-        
+        SelectEntity(Entity);
     }
 
     if(InMeshCreateInfo.bIsSubmit)
@@ -124,11 +125,16 @@ void Scene::Render()
         auto MeshVertexArrayBuffer = PrimaryMesh.second.at(SelectionMeshElementType);
         
         SceneRenderer->UpdateShaderData({
+            // Flat Shader
             ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
             ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_Color", std::nullopt, SceneRenderer->ShaderData.FlatColor, std::nullopt},
+
+            // Depth Shader
             ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
             ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_Near", SceneRenderer->ShaderData.NearPlane, std::nullopt, std::nullopt},
             ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_Far", SceneRenderer->ShaderData.FarPlane, std::nullopt, std::nullopt},
+
+            // Phong Shader
             ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
             ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_Shininess", SceneRenderer->ShaderData.Shininess, std::nullopt, std::nullopt},
         });
@@ -264,6 +270,11 @@ void Scene::SetEntityVisible(entt::entity Entity, bool bIsVisible)
         const auto OldModelIndex = *GetModelBufferIndex(Entity);
         // TODO(WT) 补全实现
     }
+}
+
+void Scene::SelectEntity(entt::entity InEntity)
+{
+    SelectedEntity = InEntity;
 }
 
 MESH_EDITOR_NAMESPACE_END

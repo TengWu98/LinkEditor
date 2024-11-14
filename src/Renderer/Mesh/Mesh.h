@@ -41,7 +41,8 @@ public:
     using Point = om::Point;
     
     // Adds OpenMesh handle comparison/conversion to `MeshElementIndex`.
-    struct ElementIndex : MeshElementIndex {
+    struct ElementIndex : MeshElementIndex
+    {
         using MeshElementIndex::MeshElementIndex;
         ElementIndex(const MeshElementIndex &other) : MeshElementIndex(other) {}
         ElementIndex(VH vh) : MeshElementIndex(MeshElementType::Vertex, vh.idx()) {}

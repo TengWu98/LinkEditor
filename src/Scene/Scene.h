@@ -97,16 +97,16 @@ public:
     entt::entity GetSelectedEntity() const;
     entt::entity GetParentEntity(entt::entity Entity) const;
     std::string GetEntityName(entt::entity Entity) const;
+    void SetEntityVisible(entt::entity Entity, bool bIsVisible);
+    void SelectEntity(entt::entity InEntity);
     
     void Render();
     void RenderGizmos();
     VertexBufferLayout CreateDefaultVertexLayout();
-
-    Camera CreateDefaultCamera() const;
-    
-    void SetEntityVisible(entt::entity Entity, bool bIsVisible);
     std::optional<unsigned int> GetModelBufferIndex(entt::entity Entity);
     void UpdateViewProjBuffers();
+
+    Camera CreateDefaultCamera() const;
 
 public:
     uint32_t ViewportWidth = 0, ViewportHeight = 0;

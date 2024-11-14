@@ -2,10 +2,10 @@
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
-BVH::BVH(std::vector<BoundingBox> &leaf_boxes) : LeafBoxes(leaf_boxes) {
+BVH::BVH(std::vector<BoundingBox>& leaf_boxes) : LeafBoxes(leaf_boxes) {
     std::vector<uint> indices(LeafBoxes.size());
     std::iota(indices.begin(), indices.end(), 0);
-    Build(std::move(indices));
+    Build(indices);
 }
 
 uint BVH::Build(std::vector<uint>& indices) {
@@ -37,11 +37,12 @@ uint BVH::Build(std::vector<uint>& indices) {
 
 std::vector<BoundingBox> BVH::CreateInternalBoxes() const {
     std::vector<BoundingBox> internal_boxes;
-    std::copy_if(Nodes.begin(), Nodes.end(), std::back_inserter(internal_boxes),
-                 [](const auto &node) { return node.IsInternal(); });
-
-    std::transform(internal_boxes.begin(), internal_boxes.end(), internal_boxes.begin(),
-                   [](const auto &node) { return node.Internal->Box; });
+    
+    for (const auto& node : Nodes) {
+        if (node.IsInternal()) {
+            internal_boxes.push_back(node.Internal->Box);
+        }
+    }
 
     return internal_boxes;
 }
@@ -54,12 +55,23 @@ std::optional<uint> BVH::Intersect(const Ray &ray, const std::function<bool(uint
 }
 
 std::optional<uint> BVH::IntersectNode(uint node_index, const Ray &ray, const std::function<bool(uint)> &callback) const {
-    const auto &node = Nodes[node_index];
-    if (node.IsLeaf()) return LeafBoxes[*node.BoxIndex].Intersect(ray) && callback(*node.BoxIndex) ? node.BoxIndex : std::nullopt;
+    const auto& node = Nodes[node_index];
+    if (node.IsLeaf())
+    {
+        return LeafBoxes[*node.BoxIndex].Intersect(ray) && callback(*node.BoxIndex) ? node.BoxIndex : std::nullopt;
+    }
 
     // Internal node.
-    if (!node.Internal->Box.Intersect(ray)) return std::nullopt;
-    if (auto left_hit = IntersectNode(node.Internal->Left, ray, callback)) return left_hit;
+    if (!node.Internal->Box.Intersect(ray))
+    {
+        return std::nullopt;
+    }
+    
+    if (auto left_hit = IntersectNode(node.Internal->Left, ray, callback))
+    {
+        return left_hit;
+    }
+    
     return IntersectNode(node.Internal->Right, ray, callback);
 }
 

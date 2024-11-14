@@ -22,17 +22,6 @@
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
-static void SaveFrameBufferToFile(const FrameBuffer& frameBuffer, const std::string& filename)
-{
-    int width = 1280;
-    int height = 720;
-
-    std::vector<uint8_t> buffer(width * height * 4);
-    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
-    
-    stbi_write_png(filename.c_str(), width, height, 4, buffer.data(), width * 4);
-}
-
 static float LastFrameTime;
 static glm::vec2 LastMousePos;
 static bool bIsViewportHovered = false;
@@ -429,7 +418,7 @@ void Application::RenderImGUI()
             {
                 if(AppScene->SelectedEntity != entt::null)
                 {
-                    ImGui::Text("Selected Object: %s", AppScene->GetEntityName(AppScene->SelectedEntity));
+                    ImGui::Text("Selected Object: %s", AppScene->GetEntityName(AppScene->SelectedEntity).c_str());
                 }
             }
         }
@@ -442,6 +431,8 @@ void Application::RenderImGUI()
     {
         float ViewportWidth = static_cast<float>(AppWindow->GetWidth());
         float ViewportHeight = static_cast<float>(AppWindow->GetHeight());
+        LOG_INFO("Pos: {0}, {1}", ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y);
+        
         ImGuiWindowFlags ViewportWindowFlags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse;
         ImGui::Begin("Viewport", nullptr, ViewportWindowFlags);
         {
@@ -454,13 +445,41 @@ void Application::RenderImGUI()
                 bIsViewportHovered = true;
                 if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonLeft))
                 {
-                    const glm::vec2 MousePos = ToGlm(ImGui::GetMousePos()) - ToGlm(ImGui::GetCursorScreenPos()) / ToGlm(WindowSize);
-                    const glm::vec2 MousePosNDC = glm::vec2(2 + MousePos.x - 1, 1 - 2 * MousePos.y);
+                    const glm::vec2 MousePos = ToGlm(ImGui::GetMousePos()) - ToGlm(ImGui::GetCursorScreenPos()) / glm::vec2(ViewportWidth, ViewportHeight);
+                    const glm::vec2 MousePosNDC = glm::normalize(glm::vec2(2 + MousePos.x - 1, 1 - 2 * MousePos.y));
+                    // LOG_INFO("Pos: {0}, {1}", ImGui::GetMousePos().x, ImGui::GetMousePos().y);
                     Ray MouseRay = AppScene->SceneCamera.ClipPosToWorldRay(MousePosNDC);
+                    
+                    if(AppScene->SelectedEntity != entt::null && AppScene->SelectionMode == SelectionMode::Element
+                        && AppScene->SelectionMeshElementType != MeshElementType::None) // Select Mesh Element
+                    {
+                        const auto PreviousSelectedElementType = AppScene->SelectionMeshElementType;
+                        AppScene->SelectedElement = MeshElementIndex(PreviousSelectedElementType, -1);
+                        const auto& SelectedMesh = AppScene->GetSelectedMesh();
+                        if(AppScene->SelectionMeshElementType == MeshElementType::Face)
+                        {
+                            AppScene->SelectedElement = Mesh::ElementIndex{SelectedMesh.FindNearestIntersectingFace(MouseRay)};
+                        }
+                        else if(AppScene->SelectionMeshElementType == MeshElementType::Vertex)
+                        {
+                            AppScene->SelectedElement = Mesh::ElementIndex{SelectedMesh.FindNearestVertex(MouseRay)};
+                        }
+                        else if(AppScene->SelectionMeshElementType == MeshElementType::Edge)
+                        {
+                            AppScene->SelectedElement = Mesh::ElementIndex{SelectedMesh.FindNearestEdge(MouseRay)};
+                        }
+                    }
+                    else if(AppScene->SelectionMode == SelectionMode::Object) // Select Mesh Object
+                    {
+                        static std::multimap<float, entt::entity> HoveredEntitiesByDistance;
+                        HoveredEntitiesByDistance.clear();
 
-                    const auto PreviousSelectedElementType = AppScene->SelectionMeshElementType;
-                    AppScene->SelectedElement = MeshElementIndex(PreviousSelectedElementType, -1);
-                    const auto& SelectedMesh = AppScene->GetSelectedMesh();
+                        // AppScene->Registry.view<Mesh>().each(
+                        //     [AppScene, &MouseRay])(entt::entity Entity, const auto& ModelMatrix)
+                        // {
+                        //     
+                        // }
+                    }
                 }
 
                 if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), ButtonRight))

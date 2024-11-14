@@ -1,5 +1,7 @@
 ﻿#include "Mesh.h"
 #include "Renderer/Ray/Ray.h"
+#include "Renderer/AccelerationStructures/BoundingBox/BoundingBox.h"
+#include "Renderer/AccelerationStructures/BVH/BVH.h"
 
 MESH_EDITOR_NAMESPACE_BEGIN
 
