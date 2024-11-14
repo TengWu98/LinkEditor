@@ -89,14 +89,14 @@ void Camera::Update()
     }
 }
 
-Ray Camera::ClipPosToWorldRay(const glm::vec2& ClipPos)
+Ray Camera::ClipPosToWorldRay(const glm::vec2& NDCPos)
 {
     const auto InverseViewProjection = glm::inverse(GetViewProjectionMatrix());
 
-    glm::vec4 NearPoint = InverseViewProjection * glm::vec4(ClipPos.x, ClipPos.y, -1.0f, 1.0f);
+    // Perspective divide.
+    glm::vec4 NearPoint = InverseViewProjection * glm::vec4(NDCPos.x, NDCPos.y, -1.0f, 1.0f);
     NearPoint /= NearPoint.w;
-
-    glm::vec4 FarPoint = InverseViewProjection * glm::vec4(ClipPos.x, ClipPos.y, 1.0f, 1.0f);
+    glm::vec4 FarPoint = InverseViewProjection * glm::vec4(NDCPos.x, NDCPos.y, 1.0f, 1.0f);
     FarPoint /= FarPoint.w;
 
     return Ray(glm::vec3(NearPoint), glm::normalize(glm::vec3(FarPoint - NearPoint)));
