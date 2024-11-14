@@ -446,7 +446,7 @@ void Application::RenderImGUI()
                 if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonLeft))
                 {
                     const glm::vec2 MousePos = ToGlm(ImGui::GetMousePos()) - ToGlm(ImGui::GetCursorScreenPos()) / glm::vec2(ViewportWidth, ViewportHeight);
-                    const glm::vec2 MousePosNDC = glm::normalize(glm::vec2(2 + MousePos.x - 1, 1 - 2 * MousePos.y));
+                    const glm::vec2 MousePosNDC = glm::vec2(2 + MousePos.x - 1, 1 - 2 * MousePos.y);
                     // LOG_INFO("Pos: {0}, {1}", ImGui::GetMousePos().x, ImGui::GetMousePos().y);
                     Ray MouseRay = AppScene->SceneCamera.ClipPosToWorldRay(MousePosNDC);
                     
