@@ -14,7 +14,6 @@ std::string IdString(entt::entity Entity)
 
 Scene::Scene() :
     SceneCamera(CreateDefaultCamera()),
-    DirLight(DirectionalLight(0.15f, glm::vec3(-1, -1, -1), glm::vec3{1, 1, 1})),
     Registry(entt::registry()),
     SceneMeshGLData(std::make_unique<MeshGLData>())
 {
@@ -28,8 +27,10 @@ Scene::Scene() :
     UpdateViewProjBuffers();
     
     // TODO(WT) Lights buffer
-    LightsBuffer = std::make_unique<UniformBuffer>(sizeof(LightInfo), 2);
-
+    Lights.emplace_back(std::make_shared<DirectionalLight>());
+    LightsBuffer = std::make_unique<UniformBuffer>(sizeof(LightShaderParameters), 2);
+    UpdateLightsBuffer();
+    
     SceneGizmo = std::make_unique<Gizmo>();
 }
 
@@ -116,6 +117,8 @@ void Scene::Render()
 
     SceneCamera.Update();
     UpdateViewProjBuffers();
+    
+    UpdateLightsBuffer();
 
     // Render Meshs
     for(auto PrimaryMesh : SceneMeshGLData->PrimaryMeshs)
@@ -125,18 +128,16 @@ void Scene::Render()
         auto MeshVertexArrayBuffer = PrimaryMesh.second.at(SelectionMeshElementType);
         
         SceneRenderer->UpdateShaderData({
-            // Flat Shader
-            ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
-            ShaderBindingDescriptor{ShaderPipelineType::Flat, "u_Color", std::nullopt, SceneRenderer->ShaderData.FlatColor, std::nullopt},
+            // Phong Shader
+            ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
+            ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_DiffuseColor", std::nullopt, SceneRenderer->ShaderData.Phong_Diffuse, std::nullopt},
+            ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_SpecularColor", std::nullopt, SceneRenderer->ShaderData.Phong_Specular, std::nullopt},
+            ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_Gloss", SceneRenderer->ShaderData.Phong_Gloss, std::nullopt, std::nullopt},
 
             // Depth Shader
             ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
-            ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_Near", SceneRenderer->ShaderData.NearPlane, std::nullopt, std::nullopt},
-            ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_Far", SceneRenderer->ShaderData.FarPlane, std::nullopt, std::nullopt},
-
-            // Phong Shader
-            ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_ModelMatrix", std::nullopt, std::nullopt, ModelStruct->Transform},
-            ShaderBindingDescriptor{ShaderPipelineType::Phong, "u_Shininess", SceneRenderer->ShaderData.Shininess, std::nullopt, std::nullopt},
+            ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_Near", SceneRenderer->ShaderData.Depth_NearPlane, std::nullopt, std::nullopt},
+            ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_Far", SceneRenderer->ShaderData.Depth_FarPlane, std::nullopt, std::nullopt},
         });
         
         SceneRenderer->Render(MeshVertexArrayBuffer, ModelStruct);
@@ -173,6 +174,15 @@ void Scene::UpdateViewProjBuffers()
 
     const ViewProjNearFar ViewProjNearFarMat = {SceneCamera.GetViewMatrix(), SceneCamera.GetProjectionMatrix(), SceneCamera.NearClip, SceneCamera.FarClip};
     ViewProjNearFarBuffer->SetData(&ViewProjNearFarMat, sizeof(ViewProjNearFarMat));
+}
+
+void Scene::UpdateLightsBuffer()
+{
+    LightShaderParameters LightShaderData;
+    auto DirLight = std::static_pointer_cast<DirectionalLight>(Lights[0]);
+    LightShaderData.LightColorAndAmbient = glm::vec4(glm::vec3(DirLight->LightColor), DirLight->AmbientIntensity);
+    LightShaderData.LightDirAndIntensity = glm::vec4(DirLight->Direction, DirLight->Intensity);
+    LightsBuffer->SetData(&LightShaderData, sizeof(LightShaderData));
 }
 
 VertexBufferLayout Scene::CreateDefaultVertexLayout()

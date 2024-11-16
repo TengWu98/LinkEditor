@@ -10,7 +10,7 @@ Camera::Camera(glm::vec3 InPosition, glm::vec3 InWorldUp, glm::vec3 InTarget, fl
     Position(InPosition), WorldUp(InWorldUp), Front(glm::normalize(InTarget - Position)),
     NearClip(InNearClip), FarClip(InFarClip)
 {
-    FieldOfView = 90.f;
+    FieldOfView = 60.f;
 
     OrthoWidth = 1536.0f;
     

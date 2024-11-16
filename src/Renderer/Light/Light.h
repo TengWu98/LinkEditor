@@ -7,12 +7,16 @@ MESH_EDITOR_NAMESPACE_BEGIN
 class Light
 {
 public:
-    Light(const float InIntensity);
+    Light();
     ~Light();
+
+    void SetIntensity(const float InIntensity);
+    void SetLightColor(const glm::vec3& InColor);
     
-protected:
-    float Intensity;
+public:
     bool bIsEnabled;
+    float Intensity;
+    glm::vec3 LightColor;
 };
 
 MESH_EDITOR_NAMESPACE_END

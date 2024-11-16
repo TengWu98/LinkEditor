@@ -182,16 +182,6 @@ void Application::SetupImGui()
 
 void Application::RenderImGUI()
 {
-    static bool bIsFullScreen = true;
-
-    // for windows
-    static bool bIsShowControlWindow = true;
-    static bool bIsShowViewport = true;
-    static bool bIsShowLogWindow = false;
-
-    // for stats
-    static bool bIsShowStats = false;
-
     const ImGuiViewport* Viewport = ImGui::GetMainViewport();
     if(!Viewport)
     {
@@ -200,7 +190,8 @@ void Application::RenderImGUI()
 
     static ImGuiDockNodeFlags DockSpaceFlags = ImGuiDockNodeFlags_None;
     ImGuiWindowFlags WindowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus;
-    
+
+    static bool bIsFullScreen = true;
     if(bIsFullScreen)
     {
         ImGui::SetNextWindowPos(Viewport->WorkPos);
@@ -238,6 +229,10 @@ void Application::RenderImGUI()
     }
     
     // top menu bar
+    static bool bIsShowControlWindow = true;
+    static bool bIsShowViewport = true;
+    static bool bIsShowLogWindow = false;
+    
     if (ImGui::BeginMenuBar())
     {
         if(ImGui::BeginMenu("File"))
@@ -262,8 +257,23 @@ void Application::RenderImGUI()
                 else if (Result != NFD_CANCEL) {
                     LOG_ERROR("Error loading mesh file: {0}", NFD_GetError());
                 }
-                
-                // TODO(WT) 添加导入、保存标签文件的处理
+            }
+
+            if(ImGui::MenuItem("Export Mesh"))
+            {
+                // TODO(WT)
+            }
+
+            if(ImGui::MenuItem("Export Mesh As..."))
+            {
+                // TODO(WT)
+            }
+
+            ImGui::Separator();
+
+            if(ImGui::MenuItem("Recent Files"))
+            {
+                // TODO(WT)
             }
             
             ImGui::EndMenu();
@@ -309,9 +319,14 @@ void Application::RenderImGUI()
     
     ImGui::End();
 
-    // ImGui::ShowDemoWindow();
-
     // show control window
+    static bool bIsShowStats = false;
+    static bool bIsShowSelectedMeshInfo = true;
+    static bool bIsShowFace = true;
+    static bool bIsShowPoints = false;
+    static bool bIsShowWireframe = false;
+    static bool bIsShowNormal = false;
+    static bool bIsShowBoundingBox = false;
     if(bIsShowControlWindow)
     {
         ImGui::Begin("Control Panel");
@@ -329,6 +344,47 @@ void Application::RenderImGUI()
 
         if(ImGui::CollapsingHeader("Rendering Settings"))
         {
+            if(ImGui::TreeNode("Render Mode"))
+            {
+                ImGui::Checkbox("Show Face", &bIsShowFace);
+                if(bIsShowFace)
+                {
+                    AppScene->SceneRenderer->Mode |= RenderMode::Face;
+                }
+                else
+                {
+                    AppScene->SceneRenderer->Mode &= ~RenderMode::Face;
+                }
+                
+                ImGui::Checkbox("Show Points", &bIsShowPoints);
+                if(bIsShowPoints)
+                {
+                    AppScene->SceneRenderer->Mode |= RenderMode::Points;
+                    ImGui::SliderFloat("Point Size", &AppScene->SceneRenderer->PointSize, 1.0f, 10.0f, "%.3f", ImGuiSliderFlags_None);
+                }
+                else
+                {
+                    AppScene->SceneRenderer->Mode &= ~RenderMode::Points;
+                }
+                
+                ImGui::Checkbox("Show Wireframe", &bIsShowWireframe);
+                if(bIsShowWireframe)
+                {
+                    AppScene->SceneRenderer->Mode |= RenderMode::Wireframe;
+                    ImGui::SliderFloat("Line Width", &AppScene->SceneRenderer->LineWidth, 1.0f, 10.0f, "%.3f", ImGuiSliderFlags_None);
+                }
+                else
+                {
+                    AppScene->SceneRenderer->Mode &= ~RenderMode::Wireframe;
+                }
+                
+                ImGui::Checkbox("Show Normal", &bIsShowNormal);
+                ImGui::Checkbox("Show Bounding Box", &bIsShowBoundingBox);
+                
+                ImGui::TreePop();
+                ImGui::Spacing();
+            }
+            
             if(ImGui::TreeNode("Camera"))
             {
                 ImGui::SeparatorText("Viewport Movement");
@@ -376,30 +432,35 @@ void Application::RenderImGUI()
                 ImGui::Spacing();
             }
 
-            if(ImGui::TreeNode("Shaders"))
+            if(ImGui::TreeNode("Lights"))
             {
-                ImGui::Combo("Shader Type", (int*)&AppScene->SceneRenderer->CurrentShaderPipeline, "Flat\0Depth\0Phong\0");
-                if(AppScene->SceneRenderer->CurrentShaderPipeline == ShaderPipelineType::Flat)
+                if(!AppScene->Lights.empty())
                 {
-                    ImGui::ColorEdit4("Flat Color", (float*)&AppScene->SceneRenderer->ShaderData.FlatColor);
-                }
-                else if(AppScene->SceneRenderer->CurrentShaderPipeline == ShaderPipelineType::Depth)
-                {
-                    ImGui::SliderFloat("ZMin", &AppScene->SceneRenderer->ShaderData.NearPlane, 0.1f, 10.0f, "%.3f", ImGuiSliderFlags_None);
-                    ImGui::SliderFloat("ZMax", &AppScene->SceneRenderer->ShaderData.FarPlane, 10.0f, 100.0f, "%.3f", ImGuiSliderFlags_None);
-                }
-                else if(AppScene->SceneRenderer->CurrentShaderPipeline == ShaderPipelineType::Phong)
-                {
-                    ImGui::SliderFloat("Shininess", &AppScene->SceneRenderer->ShaderData.Shininess, 0.0f, 256.0f, "%.3f", ImGuiSliderFlags_None);
+                    auto DirLight = std::static_pointer_cast<DirectionalLight>(AppScene->Lights[0]);
+                    ImGui::SliderFloat("Ambient", &DirLight->AmbientIntensity, 0.0f, 1.f, "%.3f", ImGuiSliderFlags_None);
+                    ImGui::SliderFloat("Intensity", &DirLight->Intensity, 0.0f, 150.0f, "%.3f", ImGuiSliderFlags_None);
+                    ImGui::ColorEdit3("Light Color", (float*)&DirLight->LightColor);
+                    ImGui::SliderFloat3("Light Direction", (float*)&DirLight->Direction, -1.0f, 1.0f, "%.3f", ImGuiSliderFlags_None);
                 }
                 
                 ImGui::TreePop();
                 ImGui::Spacing();
             }
 
-            if(ImGui::TreeNode("Render Mode"))
+            if(ImGui::TreeNode("Shaders"))
             {
-                ImGui::Combo("Render Mode", (int*)&AppScene->SceneRenderer->Mode, "None\0Faces\0Vertices\0Edges\0");
+                ImGui::Combo("Shader Type", (int*)&AppScene->SceneRenderer->CurrentShaderPipeline, "Phong\0Depth\0");
+                if(AppScene->SceneRenderer->CurrentShaderPipeline == ShaderPipelineType::Depth)
+                {
+                    ImGui::SliderFloat("ZMin", &AppScene->SceneRenderer->ShaderData.Depth_NearPlane, 0.1f, 10.0f, "%.3f", ImGuiSliderFlags_None);
+                    ImGui::SliderFloat("ZMax", &AppScene->SceneRenderer->ShaderData.Depth_FarPlane, 10.0f, 100.0f, "%.3f", ImGuiSliderFlags_None);
+                }
+                else if(AppScene->SceneRenderer->CurrentShaderPipeline == ShaderPipelineType::Phong)
+                {
+                    ImGui::ColorEdit4("Phong Diffuse", (float*)&AppScene->SceneRenderer->ShaderData.Phong_Diffuse);
+                    ImGui::ColorEdit4("Phong Specular", (float*)&AppScene->SceneRenderer->ShaderData.Phong_Specular);
+                    ImGui::SliderFloat("Gloss", &AppScene->SceneRenderer->ShaderData.Phong_Gloss, 1.0f, 256.0f, "%.3f", ImGuiSliderFlags_None);
+                }
                 
                 ImGui::TreePop();
                 ImGui::Spacing();
@@ -408,6 +469,20 @@ void Application::RenderImGUI()
 
         if(ImGui::CollapsingHeader("Selection"))
         {
+            ImGui::Checkbox("Show Selected Mesh Info", &bIsShowSelectedMeshInfo);
+            if(bIsShowSelectedMeshInfo)
+            {
+                if(AppScene->SelectedEntity != entt::null)
+                {
+                    const auto& SelectedMesh = AppScene->GetSelectedMesh();
+                    
+                    ImGui::Text("Selected Object: %s", AppScene->GetEntityName(AppScene->SelectedEntity).c_str());
+                    ImGui::Text("Faces Num: %d", SelectedMesh.GetFaceCount());
+                    ImGui::Text("Vertices Num: %d", SelectedMesh.GetVertexCount());
+                    ImGui::Text("Edges Num: %d", SelectedMesh.GetEdgeCount());
+                }
+            }
+            
             ImGui::Combo("Selection Mode", (int*)&AppScene->SelectionMode, "Object\0Element\0");
             if(AppScene->SelectionMode == SelectionMode::Element)
             {
@@ -416,10 +491,7 @@ void Application::RenderImGUI()
             }
             else if(AppScene->SelectionMode == SelectionMode::Object)
             {
-                if(AppScene->SelectedEntity != entt::null)
-                {
-                    ImGui::Text("Selected Object: %s", AppScene->GetEntityName(AppScene->SelectedEntity).c_str());
-                }
+                
             }
         }
     
@@ -429,25 +501,18 @@ void Application::RenderImGUI()
     // show viewport
     if(bIsShowViewport)
     {
-        float ViewportWidth = static_cast<float>(AppWindow->GetWidth());
-        float ViewportHeight = static_cast<float>(AppWindow->GetHeight());
-        LOG_INFO("Pos: {0}, {1}", ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y);
-        
         ImGuiWindowFlags ViewportWindowFlags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoCollapse;
         ImGui::Begin("Viewport", nullptr, ViewportWindowFlags);
         {
             auto WindowSize = ImGui::GetWindowSize();
-            auto CentralizedCursorPos = ImVec2((WindowSize.x - ViewportWidth) * 0.5f, (WindowSize.y - ViewportHeight) * 0.5f);
-            ImGui::SetCursorPos(CentralizedCursorPos);
 
             if(ImGui::IsWindowHovered())
             {
                 bIsViewportHovered = true;
                 if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), MouseCode::ButtonLeft))
                 {
-                    const glm::vec2 MousePos = ToGlm(ImGui::GetMousePos()) - ToGlm(ImGui::GetCursorScreenPos()) / glm::vec2(ViewportWidth, ViewportHeight);
-                    const glm::vec2 MousePosNDC = glm::vec2(2 + MousePos.x - 1, 1 - 2 * MousePos.y);
-                    // LOG_INFO("Pos: {0}, {1}", ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+                    const glm::vec2 MousePos = (ToGlm(ImGui::GetMousePos()) - ToGlm(ImGui::GetCursorScreenPos())) / ToGlm(WindowSize);
+                    const glm::vec2 MousePosNDC = glm::vec2(2 * MousePos.x - 1, 1 - 2 * MousePos.y);
                     Ray MouseRay = AppScene->SceneCamera.ClipPosToWorldRay(MousePosNDC);
                     
                     if(AppScene->SelectedEntity != entt::null && AppScene->SelectionMode == SelectionMode::Element
@@ -494,7 +559,7 @@ void Application::RenderImGUI()
 
             // copy framebuffer to the viewport
             uint32_t ColorAttachmentRendererID = AppScene->SceneRenderer->GetFrameBuffer()->GetColorAttachmentRendererID();
-            ImGui::Image(ColorAttachmentRendererID, ImVec2(ViewportWidth, ViewportHeight), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+            ImGui::Image(ColorAttachmentRendererID, WindowSize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
             ImGui::End();
         }
     }

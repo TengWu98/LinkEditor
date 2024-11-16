@@ -10,61 +10,52 @@ layout(binding = 0) uniform ViewProjectionUBO {
     mat4 ProjMatrix;
 } ViewProj;
 
-layout(location = 0) out vec4 VertexPosition;
-layout(location = 1) out vec3 VertexNormal;
+layout(location = 0) out vec4 WorldPosition;
+layout(location = 1) out vec3 WorldNormal;
 
 void main()
 {
-    VertexPosition = ViewProj.ProjMatrix * ViewProj.ViewMatrix * u_ModelMatrix * vec4(a_Position, 1.0);
-    VertexNormal = normalize(gl_NormalMatrix * a_WorldNormal);
-    gl_Position = VertexPosition;
+    WorldPosition = ViewProj.ProjMatrix * ViewProj.ViewMatrix * u_ModelMatrix * vec4(a_Position, 1.0);
+    WorldNormal = normalize(mat3(u_ModelMatrix) * a_WorldNormal);
+    gl_Position = WorldPosition;
 }
 
 #type fragment
 #version 450
 
-layout(location = 0) in vec4 VertexPosition;
-layout(location = 1) in vec3 VertexNormal;
+layout(location = 0) in vec4 WorldPosition;
+layout(location = 1) in vec3 WorldNormal;
 
-uniform float u_Shininess;
-layout(binding = 2) uniform LightsUBO {
-    vec4 ViewColorAndAmbient;
-    vec4 DirectionalColorAndIntensity;
-    vec3 Direction;
-} Lights;
+uniform vec4 u_DiffuseColor;
+uniform vec4 u_SpecularColor;
+uniform float u_Gloss;
+layout(binding = 2) uniform LightShaderDataUBO {
+    vec4 LightColorAndAmbient;
+    vec4 LightDirAndIntensity;
+} LightShaderData;
 
 layout(location = 0) out vec4 Color;
 
 void main()
 {
-    vec3 Normal = normalize(VertexNormal);
-    vec4 Diffuse = vec4(0.0);
-    vec4 Specular = vec4(0.0);
+    vec3 Normal = normalize(WorldNormal);
+    vec3 LightDir = normalize(LightShaderData.LightDirAndIntensity.xyz);
+    float NDotL = max(0.0, dot(LightDir, Normal));
 
-    vec4 MaterialAmbient = vec4(1.0);
-    vec4 MaterialDiffuse = vec4(1.0);
-    vec4 MaterialSpecular = vec4(1.0);
+    // Ambient
+    vec3 MaterialAmbient = vec3(1.0);
+    vec3 Ambient = MaterialAmbient * LightShaderData.LightColorAndAmbient.w;
 
-    vec4 Ambient = MaterialAmbient * Lights.ViewColorAndAmbient.w;
-    vec4 KD = MaterialDiffuse * gl_LightSource[0].diffuse;
-    vec4 KS = MaterialSpecular * gl_LightSource[0].specular;
+    // Diffuse
+    vec3 Diffuse = LightShaderData.LightColorAndAmbient.rgb * u_DiffuseColor.rgb * NDotL;
+    
+    // Specular
+    vec3 ReflectDir = normalize(reflect(-LightDir, Normal));
+    vec3 ViewDir = normalize(-WorldPosition.xyz);
+    float RDotV = max(0, dot(ReflectDir, ViewDir));
+    vec3 Specular = LightShaderData.LightColorAndAmbient.rgb * u_SpecularColor.rgb * pow(RDotV, u_Gloss);
 
-    vec3 LightDir = normalize(vec3(gl_LightSource[0].position.xyz - VertexPosition.xyz));
-    float NDotL = max(dot(Normal, LightDir), 0.0);
-
-    if (NDotL > 0.0)
-    {
-        Diffuse = KD * NDotL;
-    }
-
-    vec3 RVector = normalize(2.0 * Normal * NDotL - LightDir);
-    vec3 VVector = normalize(-VertexPosition.xyz);
-    float RDotV = max(dot(RVector, VVector), 0.0);
-
-    if (RDotV > 0.0)
-    {
-        Specular = KS * pow(RDotV, u_Shininess);
-    }
-
-    Color = Ambient + Diffuse + Specular;
+    // Final color
+    vec3 FinalColor = Ambient + Diffuse + Specular;
+    Color = vec4(FinalColor, 1.0);
 }

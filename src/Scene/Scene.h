@@ -74,11 +74,10 @@ struct MeshGLData
     // std::unordered_map<entt::entity, MeshBufferMap> NormalIndicators;
 };
 
-struct LightInfo
+struct LightShaderParameters
 {
-    glm::vec4 ViewColorAndAmbient;
-    glm::vec4 DirectionalColorAndIntensity;
-    glm::vec3 Direction;
+    glm::vec4 LightColorAndAmbient;
+    glm::vec4 LightDirAndIntensity;
 };
 
 class Scene
@@ -105,6 +104,7 @@ public:
     VertexBufferLayout CreateDefaultVertexLayout();
     std::optional<unsigned int> GetModelBufferIndex(entt::entity Entity);
     void UpdateViewProjBuffers();
+    void UpdateLightsBuffer();
 
     Camera CreateDefaultCamera() const;
 
@@ -113,14 +113,14 @@ public:
     glm::vec4 BackgroundColor = glm::vec4(0.22f, 0.22f, 0.22f, 1.f);
     
     Camera SceneCamera;
-
-    DirectionalLight DirLight;
+    
+    std::vector<std::shared_ptr<Light>> Lights;
     
     entt::registry Registry;
     entt::entity SelectedEntity = entt::null;
 
     std::unique_ptr<Renderer> SceneRenderer;
-    RenderMode SceneRenderMode = RenderMode::Faces;
+    RenderMode SceneRenderMode = RenderMode::Face;
     std::unique_ptr<Gizmo> SceneGizmo;
     std::unique_ptr<MeshGLData> SceneMeshGLData;
     

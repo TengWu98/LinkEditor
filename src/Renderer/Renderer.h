@@ -15,18 +15,56 @@ class VertexArray;
 class Window;
 class Model;
 
-enum class RenderMode
+enum class RenderMode : uint8_t
 {
     None,
-    Faces,
-    Vertices,
-    Edges,
+    Face = 1 << 0,
+    Points = 1 << 1,
+    Wireframe = 1 << 2,
 };
 
+constexpr RenderMode operator|(RenderMode A, RenderMode B)
+{
+    return static_cast<RenderMode>(static_cast<uint8_t>(A) | static_cast<uint8_t>(B));
+}
+
+constexpr RenderMode operator&(RenderMode A, RenderMode B)
+{
+    return static_cast<RenderMode>(static_cast<uint8_t>(A) & static_cast<uint8_t>(B));
+}
+
+constexpr RenderMode operator^(RenderMode A, RenderMode B)
+{
+    return static_cast<RenderMode>(static_cast<uint8_t>(A) ^ static_cast<uint8_t>(B));
+}
+
+constexpr RenderMode operator~(RenderMode A)
+{
+    return static_cast<RenderMode>(~static_cast<uint8_t>(A));
+}
+
+constexpr RenderMode& operator|=(RenderMode& A, RenderMode B)
+{
+    A = A | B;
+    return A;
+}
+
+constexpr RenderMode& operator&=(RenderMode& A, RenderMode B)
+{
+    A = A & B;
+    return A;
+}
+
+constexpr RenderMode& operator^=(RenderMode& A, RenderMode B)
+{
+    A = A ^ B;
+    return A;
+}
+
 enum class ShaderPipelineType {
-    Flat,
-    Depth,
     Phong,
+    Depth,
+    EnvMap,
 };
 
 struct ShaderBindingDescriptor
@@ -40,15 +78,14 @@ struct ShaderBindingDescriptor
 
 struct ShaderBindingData
 {
-    // for flat shader
-    glm::vec4 FlatColor = {1.0f, 1.0f, 1.0f, 1.0f};
+    // for phong
+    glm::vec4 Phong_Diffuse = {1.f, 1.f, 1.f, 1.f};
+    glm::vec4 Phong_Specular = {1.f, 1.f, 1.f, 1.f};
+    float Phong_Gloss = 5.f;
 
     // for depth
-    float NearPlane = 0.1f;
-    float FarPlane = 100.0f;
-
-    // for phong
-    float Shininess = 32.0f;
+    float Depth_NearPlane = 0.1f;
+    float Depth_FarPlane = 100.0f;
 };
 
 struct RenderSpecification
@@ -70,21 +107,19 @@ public:
     void SetClearColor(const glm::vec4& Color);
     void Clear();
     
-    void DrawLines(const std::shared_ptr<VertexArray>& VertexArray, uint32_t VertexCount);
-    void SetLineWidth(float Width);
-    void DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount = 0);
-    void DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount = 0, uint32_t InstanceCount = 0);
-    
     void UpdateShaderData(std::vector<ShaderBindingDescriptor>&& Descriptors);
-
+    void DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount = 0, uint32_t InstanceCount = 0);
     void Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<Model> ModelMatrix, std::optional<uint32_t> ModelIndex = 0);
 
     std::shared_ptr<FrameBuffer> GetFrameBuffer() const { return FBO; }
 
 public:
-    ShaderPipelineType CurrentShaderPipeline = ShaderPipelineType::Flat;
+    ShaderPipelineType CurrentShaderPipeline = ShaderPipelineType::Phong;
     ShaderBindingData ShaderData;
-    RenderMode Mode = RenderMode::Faces;
+    RenderMode Mode = RenderMode::Face;
+
+    float PointSize = 1.0f;
+    float LineWidth = 1.0f;
 
 private:
     RenderSpecification Specification;

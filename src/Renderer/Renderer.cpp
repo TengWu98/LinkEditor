@@ -35,9 +35,9 @@ void Renderer::Init()
     FBO = std::make_shared<FrameBuffer>(Spec);
 
     // Shader Library
-    ShaderLibrary[ShaderPipelineType::Flat] = std::make_shared<Shader>("resources/shaders/Flat.glsl");
-    ShaderLibrary[ShaderPipelineType::Depth] = std::make_shared<Shader>("resources/shaders/Depth.glsl");
     ShaderLibrary[ShaderPipelineType::Phong] = std::make_shared<Shader>("resources/shaders/Phong.glsl");
+    ShaderLibrary[ShaderPipelineType::Depth] = std::make_shared<Shader>("resources/shaders/Depth.glsl");
+    ShaderLibrary[ShaderPipelineType::EnvMap] = std::make_shared<Shader>("resources/shaders/EnvMap.glsl");
 }
 
 void Renderer::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)
@@ -48,11 +48,6 @@ void Renderer::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Heig
 void Renderer::SetClearColor(const glm::vec4& Color)
 {
     glClearColor(Color.r, Color.g, Color.b, Color.a);
-}
-
-void Renderer::SetLineWidth(float Width)
-{
-    glLineWidth(Width);
 }
 
 void Renderer::UpdateShaderData(std::vector<ShaderBindingDescriptor>&& Descriptors)
@@ -88,46 +83,29 @@ void Renderer::Render(const std::shared_ptr<VertexArray>& VertexArray, const std
     DrawIndexInstanced(VertexArray, IndexCount, InstanceCount);
 }
 
-void Renderer::DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount)
-{
-    VertexArray->Bind();
-    switch(Mode)
-    {
-    case RenderMode::Faces:
-        glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr);
-        break;
-    case RenderMode::Vertices:
-        glDrawElements(GL_POINTS, IndexCount, GL_UNSIGNED_INT, nullptr);
-        break;
-    case RenderMode::Edges: // TODO(WT) 这里有问题
-        glLineWidth(0);
-        glDrawElements(GL_LINES, IndexCount, GL_UNSIGNED_INT, nullptr);
-        break;            
-    }
-}
-
 void Renderer::DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount,
     uint32_t InstanceCount)
 {
     VertexArray->Bind();
-    switch(Mode)
-    {
-    case RenderMode::Faces:
-        glDrawElementsInstanced(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
-        break;
-    case RenderMode::Vertices:
-        glDrawElementsInstanced(GL_POINTS, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
-        break;
-    case RenderMode::Edges:
-        glDrawElementsInstanced(GL_LINES, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
-        break;
-    }
-}
 
-void Renderer::DrawLines(const std::shared_ptr<VertexArray>& VertexArray, uint32_t VertexCount)
-{
-    VertexArray->Bind();
-    glDrawArrays(GL_LINES, 0, VertexCount);
+    if(static_cast<uint>(Mode & RenderMode::Face) != 0)
+    {
+        glDrawElementsInstanced(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
+    }
+
+    if(static_cast<uint>(Mode & RenderMode::Points) != 0)
+    {
+        glPointSize(PointSize);
+        glDrawElementsInstanced(GL_POINTS, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
+    }
+
+    if(static_cast<uint>(Mode & RenderMode::Wireframe) != 0)
+    {
+        glLineWidth(LineWidth);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDrawElementsInstanced(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, nullptr, InstanceCount);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 }
 
 void Renderer::Clear()
