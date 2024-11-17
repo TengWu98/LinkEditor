@@ -100,6 +100,11 @@ public:
     EH FindNearestEdge(const Ray& WorldRay) const;
     FH FindNearestIntersectingFace(const Ray& LocalRay, glm::vec3 *NearestIntersectPointOut = nullptr) const;
 
+    bool VertexBelongsToFace(VH VertexHandle, FH FaceHandle) const;
+    bool VertexBelongsToEdge(VH VertexHandle, EH EdgeHandle) const;
+    bool VertexBelongsToFaceEdge(VH VertexHandle, FH FaceHandle, EH EdgeHandle) const;
+    bool EdgeBelongsToFace(EH EdgeHandle, FH FaceHandle) const;
+
 public:
     inline static glm::vec4 FaceColor = glm::vec4{0.7, 0.7, 0.7, 1};
     inline static glm::vec4 VertexColor = glm::vec4{1, 1, 1, 1};

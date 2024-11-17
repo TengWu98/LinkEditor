@@ -169,6 +169,26 @@ void Scene::UpdateLightsBuffer()
     LightsBuffer->SetData(&LightShaderData, sizeof(LightShaderData));
 }
 
+void Scene::UpdateRenderBuffers(entt::entity InEntity, MeshElementIndex HighLightElement)
+{
+    if(InEntity == entt::null)
+    {
+        return;
+    }
+
+    const auto& SelectedMesh = Registry.get<Mesh>(InEntity);
+    auto& MeshBuffers = SceneMeshGLData->PrimaryMeshs.at(InEntity);
+    const Mesh::ElementIndex HighLight{HighLightElement};
+    for(auto ElementType : AllMeshElementTypes)
+    {
+        auto VertexArrayBuffer = MeshBuffers.at(ElementType);
+        std::vector<Vertex3D> Vertices = SelectedMesh.CreateVertices(ElementType, HighLight);
+
+        auto VertexBufferObject = VertexArrayBuffer->GetVertexBuffers()[0];
+        VertexBufferObject->SetData(Vertices.data(), Vertices.size() * sizeof(Vertex3D));
+    }
+}
+
 VertexBufferLayout Scene::CreateDefaultVertexLayout()
 {
     return {

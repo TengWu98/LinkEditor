@@ -140,7 +140,11 @@ std::vector<Vertex3D> Mesh::CreateVertices(MeshElementType RenderElementType, co
         
         for(const auto& VertexHandle : Handle.VHs)
         {
-            const bool bIsHighLight = false;
+            const bool bIsHighLight = AllHighlights.find(VertexHandle) != AllHighlights.end()
+                || AllHighlights.find(Parent) != AllHighlights.end()
+                || (RenderElementType == MeshElementType::Face && VertexBelongsToFaceEdge(VertexHandle, Parent, Highlight))
+                || (RenderElementType == MeshElementType::Vertex && (VertexBelongsToFace(Parent, Highlight) || VertexBelongsToEdge(Parent, Highlight)))
+                || (RenderElementType == MeshElementType::Edge && EdgeBelongsToFace(Parent, Highlight));
 
             glm::vec4 Color;
             if(bIsHighLight)
@@ -159,7 +163,6 @@ std::vector<Vertex3D> Mesh::CreateVertices(MeshElementType RenderElementType, co
                 }
                 else
                 {
-                    // ToGlm(M.color(FH(Parent)));
                     Color = FaceColor;
                 }
             }
@@ -319,6 +322,46 @@ FH Mesh::FindNearestIntersectingFace(const Ray &local_ray, glm::vec3 *nearest_in
         return false; // We want the nearest face, not just any intersecting face.
     });
     return nearest_face;
+}
+
+bool Mesh::VertexBelongsToFace(VH VertexHandle, FH FaceHandle) const
+{
+    return VertexHandle.is_valid()
+        && FaceHandle.is_valid()
+        && std::any_of(M.fv_range(FaceHandle).begin(), M.fv_range(FaceHandle).end(), [&](const VH& vh_o)
+        {
+            return vh_o == VertexHandle;
+        });
+}
+
+bool Mesh::VertexBelongsToEdge(VH VertexHandle, EH EdgeHandle) const
+{
+    return VertexHandle.is_valid()
+        && EdgeHandle.is_valid()
+        && std::any_of(M.voh_range(VertexHandle).begin(), M.voh_range(VertexHandle).end(), [&](const auto& heh)
+        {
+            return M.edge_handle(heh) == EdgeHandle;
+        });
+}
+
+bool Mesh::VertexBelongsToFaceEdge(VH VertexHandle, FH FaceHandle, EH EdgeHandle) const
+{
+    return FaceHandle.is_valid()
+        && EdgeHandle.is_valid()
+        && std::any_of(M.voh_range(VertexHandle).begin(), M.voh_range(VertexHandle).end(), [&](const auto &heh)
+        {
+           return M.edge_handle(heh) == EdgeHandle && (M.face_handle(heh) == FaceHandle || M.face_handle(M.opposite_halfedge_handle(heh)) == FaceHandle);
+        });
+}
+
+bool Mesh::EdgeBelongsToFace(EH EdgeHandle, FH FaceHandle) const
+{
+    return EdgeHandle.is_valid()
+        && FaceHandle.is_valid()
+        && std::any_of(M.fh_range(FaceHandle).begin(), M.fh_range(FaceHandle).end(), [&](const auto &heh)
+        {
+            return M.edge_handle(heh) == EdgeHandle;
+        });
 }
 
 std::optional<float> Mesh::Intersect(const Ray &local_ray) const {

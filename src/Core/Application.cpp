@@ -7,6 +7,7 @@
 #include "Renderer/Texture/Texture.h"
 #include "Renderer/Texture/Texture2D/Texture2D.h"
 #include "Renderer/Ray/Ray.h"
+#include "MeshSegmentation/MeshSegementation.h"
 
 #include <nfd.h>
 
@@ -231,6 +232,7 @@ void Application::RenderImGUI()
     static bool bIsShowControlWindow = true;
     static bool bIsShowViewport = true;
     static bool bIsShowLogWindow = false;
+    static bool bIsShowSceneHierarchy = false;
     
     if (ImGui::BeginMenuBar())
     {
@@ -281,33 +283,70 @@ void Application::RenderImGUI()
         if(ImGui::BeginMenu("Options"))
         {
             ImGui::MenuItem("Fullscreen", nullptr, &bIsFullScreen);
-            ImGui::EndMenu();
-        }
-    
-        if(ImGui::BeginMenu("Themes"))
-        {
-            if(ImGui::MenuItem("Dark"))
+
+            if(ImGui::BeginMenu("Themes"))
             {
-                ImGui::StyleColorsDark();
-            }
+                if(ImGui::MenuItem("Dark"))
+                {
+                    ImGui::StyleColorsDark();
+                }
     
-            if(ImGui::MenuItem("Light"))
-            {
-                ImGui::StyleColorsLight();
-            }
+                if(ImGui::MenuItem("Light"))
+                {
+                    ImGui::StyleColorsLight();
+                }
     
-            if(ImGui::MenuItem("Classic"))
-            {
-                ImGui::StyleColorsClassic();
-            }
+                if(ImGui::MenuItem("Classic"))
+                {
+                    ImGui::StyleColorsClassic();
+                }
     
+                ImGui::EndMenu();
+            }
+            
             ImGui::EndMenu();
         }
 
+        if(ImGui::BeginMenu("Algorithms"))
+        {
+            if(ImGui::BeginMenu("Mesh Segmentation"))
+            {
+                if(ImGui::MenuItem("Load Seg File"))
+                {
+                    static const std::vector<nfdfilteritem_t> Filters {
+                            {"Mesh Seg Labels", "seg"}
+                    };
+                    nfdchar_t *NFDPath;
+                    nfdresult_t Result = NFD_OpenDialog(&NFDPath, Filters.data(), Filters.size(), "");
+                    if (Result == NFD_OKAY)
+                    {
+                        const auto Path = fs::path(NFDPath);
+                        MeshSegmentationManager::CurrentSegmentationInfo.SegLabels = MeshSegmentationManager::LoadSegLabels(Path.string());
+                    
+                        NFD_FreePath(NFDPath);
+                    }
+                    else if (Result != NFD_CANCEL) {
+                        LOG_ERROR("Error loading label file: {0}", NFD_GetError());
+                    }
+                }
+
+                if(ImGui::MenuItem("Save Seg File"))
+                {
+                    
+                }
+
+
+                ImGui::EndMenu();
+            }
+            
+            ImGui::EndMenu();
+        }
+        
         if(ImGui::BeginMenu("Windows"))
         {
             ImGui::Checkbox("Control Panel", &bIsShowControlWindow);
             ImGui::Checkbox("Viewport", &bIsShowViewport);
+            ImGui::Checkbox("Scene Hierarchy", &bIsShowSceneHierarchy);
             ImGui::Checkbox("Log", &bIsShowLogWindow);
     
             ImGui::EndMenu();
@@ -513,6 +552,11 @@ void Application::RenderImGUI()
                 }
             }
         }
+
+        if(ImGui::CollapsingHeader("Mesh Segmentation"))
+        {
+            
+        }
     
         ImGui::End();
     }
@@ -524,7 +568,6 @@ void Application::RenderImGUI()
         ImGui::Begin("Viewport", nullptr, ViewportWindowFlags);
         {
             auto WindowSize = ImGui::GetWindowSize();
-            auto WindowPos = ImGui::GetWindowPos();
 
             if(ImGui::IsWindowHovered())
             {
@@ -538,9 +581,9 @@ void Application::RenderImGUI()
                     if(AppScene->SelectedEntity != entt::null && AppScene->SelectionMode == SelectionMode::Element
                         && AppScene->SelectionMeshElementType != MeshElementType::None) // Select Mesh Element
                     {
-                        const auto PreviousSelectedElementType = AppScene->SelectionMeshElementType;
-                        AppScene->SelectedElement = MeshElementIndex(PreviousSelectedElementType, -1);
+                        const auto PreviousSelectedElement = AppScene->SelectedElement;
                         const auto& SelectedMesh = AppScene->GetSelectedMesh();
+                        
                         if(AppScene->SelectionMeshElementType == MeshElementType::Face)
                         {
                             AppScene->SelectedElement = Mesh::ElementIndex{SelectedMesh.FindNearestIntersectingFace(MouseRay)};
@@ -553,6 +596,11 @@ void Application::RenderImGUI()
                         {
                             AppScene->SelectedElement = Mesh::ElementIndex{SelectedMesh.FindNearestEdge(MouseRay)};
                         }
+
+                        // if(AppScene->SelectedElement.Idx() != PreviousSelectedElement.Idx())
+                        // {
+                        //     AppScene->UpdateRenderBuffers(AppScene->GetParentEntity(AppScene->GetSelectedEntity()), AppScene->SelectedElement);
+                        // }
                     }
                     else if(AppScene->SelectionMode == SelectionMode::Object) // Select Mesh Object
                     {
@@ -580,6 +628,14 @@ void Application::RenderImGUI()
     if(bIsShowLogWindow)
     {
         ImGui::Begin("Log");
+    
+        ImGui::End();
+    }
+
+    // show scene hierarchy
+    if(bIsShowSceneHierarchy)
+    {
+        ImGui::Begin("Scene Hierarchy");
     
         ImGui::End();
     }

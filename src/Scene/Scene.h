@@ -107,6 +107,7 @@ public:
     std::optional<unsigned int> GetModelBufferIndex(entt::entity Entity);
     void UpdateViewProjBuffers();
     void UpdateLightsBuffer();
+    void UpdateRenderBuffers(entt::entity InEntity, MeshElementIndex HighLightElement);
 
     Camera CreateDefaultCamera() const;
 

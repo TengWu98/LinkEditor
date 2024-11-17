@@ -66,7 +66,7 @@ project "MeshEditor"
         "%{IncludeDir.ImGuizmo}/ImGuizmo.h",
 		"%{IncludeDir.ImGuizmo}/ImGuizmo.cpp",
 
-        "resources/shaders/**.glsl"
+        "resources/Common/Shaders/**.glsl"
     }
 
     includedirs
@@ -82,6 +82,7 @@ project "MeshEditor"
         "%{IncludeDir.nfd}",
         "%{IncludeDir.spdlog}",
         "%{IncludeDir.Glad}",
+        "%{IncludeDir.Eigen}",
     }
 
     links

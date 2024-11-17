@@ -35,9 +35,9 @@ void Renderer::Init()
     FBO = std::make_shared<FrameBuffer>(Spec);
 
     // Shader Library
-    ShaderLibrary[ShaderPipelineType::Phong] = std::make_shared<Shader>("resources/shaders/Phong.glsl");
-    ShaderLibrary[ShaderPipelineType::Depth] = std::make_shared<Shader>("resources/shaders/Depth.glsl");
-    ShaderLibrary[ShaderPipelineType::EnvMap] = std::make_shared<Shader>("resources/shaders/EnvMap.glsl");
+    ShaderLibrary[ShaderPipelineType::Phong] = std::make_shared<Shader>("resources/Common/Shaders/Phong.glsl");
+    ShaderLibrary[ShaderPipelineType::Depth] = std::make_shared<Shader>("resources/Common/Shaders/Depth.glsl");
+    ShaderLibrary[ShaderPipelineType::EnvMap] = std::make_shared<Shader>("resources/Common/Shaders/EnvMap.glsl");
 }
 
 void Renderer::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)

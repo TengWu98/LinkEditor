@@ -33,8 +33,9 @@ namespace fs = std::filesystem;
 #include <glm/vec4.hpp>
 #include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
-// #include <glm/gtc/matrix_transform.hpp>
-// #include <glm/gtx/quaternion.hpp>
+
+// Eigen
+#include "Eigen/Core"
 
 // Common Macros
 #include "Core/Macro.h"
