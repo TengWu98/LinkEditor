@@ -109,7 +109,7 @@ public:
     
     void UpdateShaderData(std::vector<ShaderBindingDescriptor>&& Descriptors);
     void DrawIndexInstanced(const std::shared_ptr<VertexArray>& VertexArray, uint32_t IndexCount = 0, uint32_t InstanceCount = 0);
-    void Render(const std::shared_ptr<VertexArray>& VertexArray, const std::shared_ptr<Model> ModelMatrix, std::optional<uint32_t> ModelIndex = 0);
+    void Render(const std::shared_ptr<VertexArray>& VertexArray, std::optional<uint32_t> ModelIndex = 0);
 
     std::shared_ptr<FrameBuffer> GetFrameBuffer() const { return FBO; }
 

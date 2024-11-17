@@ -22,12 +22,13 @@ struct Visible
 };
 
 struct Model {
+    Model() {}
     Model(const glm::mat4& InTransform)
         : Transform{InTransform}, InvTransform{glm::transpose(glm::inverse(Transform))} {}
 
+    void UpdateInvTransform() { InvTransform = glm::transpose(glm::inverse(Transform)); }
+
     glm::mat4 Transform = glm::mat4(1);
-    // `InvTransform` is the _transpose_ of the inverse of `Transform`.
-    // Since this rarely changes, we precompute it and send it to the shader.
     glm::mat4 InvTransform = glm::mat4(1);
 };
 
@@ -98,9 +99,10 @@ public:
     std::string GetEntityName(entt::entity Entity) const;
     void SetEntityVisible(entt::entity Entity, bool bIsVisible);
     void SelectEntity(entt::entity InEntity);
+    glm::mat4 GetModelMatrix(entt::entity Entity) const;
+    void SetModelMatrix(entt::entity Entity, const glm::mat4& InModelMatrix);
     
     void Render();
-    void RenderGizmos();
     VertexBufferLayout CreateDefaultVertexLayout();
     std::optional<unsigned int> GetModelBufferIndex(entt::entity Entity);
     void UpdateViewProjBuffers();

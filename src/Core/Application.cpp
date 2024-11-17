@@ -19,10 +19,10 @@
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
+#include "Renderer/Gizmo/Gizmo.h"
 
 MESH_EDITOR_NAMESPACE_BEGIN
-
-static float LastFrameTime;
+    static float LastFrameTime;
 static glm::vec2 LastMousePos;
 static bool bIsViewportHovered = false;
 
@@ -113,7 +113,6 @@ void Application::Update()
             
             AppScene->SceneRenderer->GetFrameBuffer()->Bind();
             AppScene->Render();
-            AppScene->RenderGizmos();
             AppScene->SceneRenderer->GetFrameBuffer()->Unbind();
 
             // LOG_INFO("Current Color: {0}", AppScene->SceneRenderer->GetFrameBuffer()->ReadPixel(0, 1, 1));
@@ -327,6 +326,7 @@ void Application::RenderImGUI()
     static bool bIsShowWireframe = false;
     static bool bIsShowNormal = false;
     static bool bIsShowBoundingBox = false;
+    static bool bIsShowBVH = false;
     if(bIsShowControlWindow)
     {
         ImGui::Begin("Control Panel");
@@ -337,14 +337,14 @@ void Application::RenderImGUI()
             ImGui::Text("FPS : %.1f", IO.Framerate);
         }
         
-        if(ImGui::CollapsingHeader("General Settings"))
+        if(ImGui::CollapsingHeader("General"))
         {
             ImGui::Checkbox("Show Stats", &bIsShowStats);
         }
 
-        if(ImGui::CollapsingHeader("Rendering Settings"))
+        if(ImGui::CollapsingHeader("Rendering"))
         {
-            if(ImGui::TreeNode("Render Mode"))
+            if(ImGui::TreeNode("Render Settings"))
             {
                 ImGui::Checkbox("Show Face", &bIsShowFace);
                 if(bIsShowFace)
@@ -380,6 +380,7 @@ void Application::RenderImGUI()
                 
                 ImGui::Checkbox("Show Normal", &bIsShowNormal);
                 ImGui::Checkbox("Show Bounding Box", &bIsShowBoundingBox);
+                ImGui::Checkbox("Show BVH", &bIsShowBVH);
                 
                 ImGui::TreePop();
                 ImGui::Spacing();
@@ -466,20 +467,24 @@ void Application::RenderImGUI()
                 ImGui::Spacing();
             }
         }
-
+        
         if(ImGui::CollapsingHeader("Selection"))
         {
-            ImGui::Checkbox("Show Selected Mesh Info", &bIsShowSelectedMeshInfo);
-            if(bIsShowSelectedMeshInfo)
+            if(AppScene->SelectedEntity != entt::null)
             {
-                if(AppScene->SelectedEntity != entt::null)
+                if(ImGui::TreeNode("Transform"))
                 {
-                    const auto& SelectedMesh = AppScene->GetSelectedMesh();
-                    
-                    ImGui::Text("Selected Object: %s", AppScene->GetEntityName(AppScene->SelectedEntity).c_str());
-                    ImGui::Text("Faces Num: %d", SelectedMesh.GetFaceCount());
-                    ImGui::Text("Vertices Num: %d", SelectedMesh.GetVertexCount());
-                    ImGui::Text("Edges Num: %d", SelectedMesh.GetEdgeCount());
+                    const auto ModelMatrix = AppScene->GetModelMatrix(AppScene->SelectedEntity);
+                    glm::vec3 Position, Rotation, Scale;
+                    DecomposeTransform(ModelMatrix, Position, Rotation, Scale);
+                    ImGui::DragFloat3("Position", &Position[0], 0.01f);
+                    ImGui::DragFloat3("Rotation", &Rotation[0], 1, -90, 90, "%.0f");
+                    ImGui::DragFloat3("Scale", &Scale[0], 0.01f, 0.01f, 10);
+
+                    AppScene->SetModelMatrix(AppScene->SelectedEntity, ComposeTransform(Position, Rotation, Scale));
+                
+                    ImGui::TreePop();
+                    ImGui::Spacing();
                 }
             }
             
@@ -493,6 +498,20 @@ void Application::RenderImGUI()
             {
                 
             }
+
+            ImGui::Checkbox("Show Selected Mesh Info", &bIsShowSelectedMeshInfo);
+            if(bIsShowSelectedMeshInfo)
+            {
+                if(AppScene->SelectedEntity != entt::null)
+                {
+                    const auto& SelectedMesh = AppScene->GetSelectedMesh();
+                    
+                    ImGui::Text("Selected Object: %s", AppScene->GetEntityName(AppScene->SelectedEntity).c_str());
+                    ImGui::Text("Faces Num: %d", SelectedMesh.GetFaceCount());
+                    ImGui::Text("Vertices Num: %d", SelectedMesh.GetVertexCount());
+                    ImGui::Text("Edges Num: %d", SelectedMesh.GetEdgeCount());
+                }
+            }
         }
     
         ImGui::End();
@@ -505,6 +524,7 @@ void Application::RenderImGUI()
         ImGui::Begin("Viewport", nullptr, ViewportWindowFlags);
         {
             auto WindowSize = ImGui::GetWindowSize();
+            auto WindowPos = ImGui::GetWindowPos();
 
             if(ImGui::IsWindowHovered())
             {
@@ -539,17 +559,8 @@ void Application::RenderImGUI()
                         static std::multimap<float, entt::entity> HoveredEntitiesByDistance;
                         HoveredEntitiesByDistance.clear();
 
-                        // AppScene->Registry.view<Mesh>().each(
-                        //     [AppScene, &MouseRay])(entt::entity Entity, const auto& ModelMatrix)
-                        // {
-                        //     
-                        // }
+                        // TODO(WT)
                     }
-                }
-
-                if(Input::IsMouseButtonPressed(AppWindow->GetNativeWindow(), ButtonRight))
-                {
-                    
                 }
             }
             else
@@ -560,6 +571,7 @@ void Application::RenderImGUI()
             // copy framebuffer to the viewport
             uint32_t ColorAttachmentRendererID = AppScene->SceneRenderer->GetFrameBuffer()->GetColorAttachmentRendererID();
             ImGui::Image(ColorAttachmentRendererID, WindowSize, ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+            
             ImGui::End();
         }
     }

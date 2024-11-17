@@ -32,6 +32,7 @@ Scene::Scene() :
     UpdateLightsBuffer();
     
     SceneGizmo = std::make_unique<Gizmo>();
+    SceneGizmo->Init();
 }
 
 Scene::~Scene()
@@ -111,14 +112,18 @@ void Scene::Render()
         return;
     }
     
-    // SceneRenderer->SetViewport(0, 0, ViewportWidth, ViewportHeight);
+    // Clear
     SceneRenderer->SetClearColor(BackgroundColor);
     SceneRenderer->Clear();
-
+    
+    // Update Camera
     SceneCamera.Update();
     UpdateViewProjBuffers();
-    
+
+    // Update Lights
     UpdateLightsBuffer();
+
+    // Render Gizmos
 
     // Render Meshs
     for(auto PrimaryMesh : SceneMeshGLData->PrimaryMeshs)
@@ -140,29 +145,8 @@ void Scene::Render()
             ShaderBindingDescriptor{ShaderPipelineType::Depth, "u_Far", SceneRenderer->ShaderData.Depth_FarPlane, std::nullopt, std::nullopt},
         });
         
-        SceneRenderer->Render(MeshVertexArrayBuffer, ModelStruct);
+        SceneRenderer->Render(MeshVertexArrayBuffer);
     }
-}
-
-void Scene::RenderGizmos()
-{
-    // SceneGizmo->Begin();
-    
-    // const float AspectRation = float(ViewportWidth) / float(ViewportHeight);
-    // if(SelectedEntity != entt::null)
-    // {
-    //     
-    // }
-    // else
-    // {
-    //     bool bIsViewChanged = false;
-    //     SceneGizmo->Render(Camera, bIsViewChanged);
-    //     Camera.Tick();
-    //     if(bIsViewChanged)
-    //     {
-    //         UpdateViewProjBuffers();
-    //     }
-    // }
 }
 
 void Scene::UpdateViewProjBuffers()
@@ -285,6 +269,28 @@ void Scene::SetEntityVisible(entt::entity Entity, bool bIsVisible)
 void Scene::SelectEntity(entt::entity InEntity)
 {
     SelectedEntity = InEntity;
+}
+
+glm::mat4 Scene::GetModelMatrix(entt::entity InEntity) const
+{
+    if(InEntity == entt::null)
+    {
+        return glm::mat4(1);
+    }
+    
+    return Registry.get<Model>(InEntity).Transform;
+}
+
+void Scene::SetModelMatrix(entt::entity InEntity, const glm::mat4& InModelMatrix)
+{
+    if(InEntity == entt::null)
+    {
+        return;
+    }
+    
+    Registry.replace<Model>(InEntity, InModelMatrix);
+    SceneMeshGLData->ModelMatrices.at(InEntity)->Transform = InModelMatrix;
+    SceneMeshGLData->ModelMatrices.at(InEntity)->UpdateInvTransform();
 }
 
 MESH_EDITOR_NAMESPACE_END
