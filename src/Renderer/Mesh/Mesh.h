@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <OpenMesh/Core/IO/MeshIO.hh>
 #include <OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh>
+#include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
 
 #include "Vertex/Vertex.h"
 #include "MeshElement.h"
@@ -83,6 +84,8 @@ public:
 
     std::vector<Vertex3D> CreateVertices(MeshElementType RenderElementType, const ElementIndex& Highlight = {}) const;
     std::vector<uint> CreateIndices(MeshElementType RenderElementType) const;
+
+    void SetTextureCoordinates(const std::vector<glm::vec2>& InTexCoords);
 
     std::vector<uint> CreateTriangleIndices() const; // Triangulated face indices.
     std::vector<uint> CreateTriangulatedFaceIndices() const; // Triangle fan for each face.

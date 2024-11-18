@@ -32,6 +32,7 @@ Eigen::VectorXi MeshSegmentationManager::LoadSegLabels(const std::string& InSegF
         SegLabels[i] = Labels[i];
     }
 
+    CurrentSegmentationInfo.SegLabelsFilePath = InSegFilePath;
     CurrentSegmentationInfo.SegLabels = SegLabels;
 
     return SegLabels;

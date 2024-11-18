@@ -366,6 +366,7 @@ void Application::RenderImGUI()
     static bool bIsShowNormal = false;
     static bool bIsShowBoundingBox = false;
     static bool bIsShowBVH = false;
+    static bool bIsShowSegmentation = false;
     if(bIsShowControlWindow)
     {
         ImGui::Begin("Control Panel");
@@ -555,7 +556,12 @@ void Application::RenderImGUI()
 
         if(ImGui::CollapsingHeader("Mesh Segmentation"))
         {
-            
+            ImGui::Text("Current SegLabels: %s", MeshSegmentationManager::CurrentSegmentationInfo.SegLabelsFilePath.empty() ? "None" : MeshSegmentationManager::CurrentSegmentationInfo.SegLabelsFilePath.c_str());
+            ImGui::Checkbox("Show Segmentation", &bIsShowSegmentation);
+            if(bIsShowSegmentation)
+            {
+                
+            }
         }
     
         ImGui::End();

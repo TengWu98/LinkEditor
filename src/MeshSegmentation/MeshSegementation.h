@@ -7,7 +7,8 @@ MESH_EDITOR_NAMESPACE_BEGIN
 struct MeshSegmentationInfo
 {
     MeshSegmentationInfo() {}
-    
+
+    std::string SegLabelsFilePath;
     Eigen::VectorXi SegLabels;
 };
 

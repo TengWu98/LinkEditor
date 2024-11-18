@@ -195,6 +195,7 @@ VertexBufferLayout Scene::CreateDefaultVertexLayout()
         {ShaderDataType::Float3, "a_Position"},
         {ShaderDataType::Float3, "a_WorldNormal"},
         {ShaderDataType::Float4, "a_Color"},
+        {ShaderDataType::Float2, "a_TexCoord"},
     };
 }
 

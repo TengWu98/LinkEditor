@@ -24,6 +24,8 @@ Mesh::Mesh(const fs::path& InMeshFilePath)
     M.request_vertex_normals();
     M.request_face_normals();
     M.request_face_colors();
+    M.request_vertex_texcoords2D();
+
     SetFaceColor(FaceColor);
     M.update_normals();
 
@@ -182,6 +184,21 @@ std::vector<uint> Mesh::CreateIndices(MeshElementType RenderElementType) const
     case MeshElementType::Vertex: return CreateTriangleIndices();
     case MeshElementType::Edge: return CreateEdgeIndices();
     case MeshElementType::None: return {};
+    }
+}
+
+void Mesh::SetTextureCoordinates(const std::vector<glm::vec2>& InTexCoords)
+{
+    if (InTexCoords.size() != M.n_vertices())
+    {
+        throw std::runtime_error("Texture coordinates count does not match vertex count");
+    }
+
+    size_t i = 0;
+    for (auto VertexHandle : M.vertices())
+    {
+        M.set_texcoord2D(VertexHandle, OpenMesh::Vec2f(InTexCoords[i].x, InTexCoords[i].y));
+        ++i;
     }
 }
 

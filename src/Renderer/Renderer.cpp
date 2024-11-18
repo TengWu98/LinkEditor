@@ -38,6 +38,7 @@ void Renderer::Init()
     ShaderLibrary[ShaderPipelineType::Phong] = std::make_shared<Shader>("resources/Common/Shaders/Phong.glsl");
     ShaderLibrary[ShaderPipelineType::Depth] = std::make_shared<Shader>("resources/Common/Shaders/Depth.glsl");
     ShaderLibrary[ShaderPipelineType::EnvMap] = std::make_shared<Shader>("resources/Common/Shaders/EnvMap.glsl");
+    ShaderLibrary[ShaderPipelineType::SamplerTexture2D] = std::make_shared<Shader>("resources/Common/Shaders/SamplerTexture2D.glsl");
 }
 
 void Renderer::SetViewport(uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height)

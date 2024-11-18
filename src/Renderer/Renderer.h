@@ -65,6 +65,7 @@ enum class ShaderPipelineType {
     Phong,
     Depth,
     EnvMap,
+    SamplerTexture2D,
 };
 
 struct ShaderBindingDescriptor
