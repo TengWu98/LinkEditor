@@ -6,12 +6,72 @@
 #include <OpenMesh/Core/Mesh/PolyMesh_ArrayKernelT.hh>
 #include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
 
-#include "Vertex/Vertex.h"
-#include "MeshElement.h"
 #include "Renderer/AccelerationStructures/BoundingBox/BoundingBox.h"
 #include "Renderer/AccelerationStructures/BVH/BVH.h"
 
 MESH_EDITOR_NAMESPACE_BEGIN
+
+struct MeshVertex
+{
+    glm::vec3 Position;
+    glm::vec4 Color;
+    glm::vec3 Normal;
+    glm::vec2 TexCoord;
+};
+
+enum class MeshElementType
+{
+    None,
+    Face,   // Vertices are duplicated for each face. Each vertex uses the face normal.
+    Vertex, // Vertices are not duplicated. Each vertex uses the vertex normal.
+    Edge,   // Vertices are duplicated. Each vertex uses the vertex normal.
+};
+
+inline const std::vector AllMeshElementTypes{MeshElementType::Vertex, MeshElementType::Edge, MeshElementType::Face};
+inline std::string MeshElementTypeToString(MeshElementType InElementType)
+{
+    switch (InElementType)
+    {
+    case MeshElementType::Vertex:
+        return "Vertex";
+    case MeshElementType::Edge:
+        return "Edge";
+    case MeshElementType::Face:
+        return "Face";
+    default:
+        return "None";
+    }
+}
+
+struct MeshElementIndex
+{
+public:
+    MeshElementIndex() : ElementType(MeshElementType::None), Index(-1) {}
+    MeshElementIndex(MeshElementType ElementType, int Index) : ElementType(ElementType), Index(Index) {}
+
+    auto operator <(const MeshElementIndex &Other) const
+    {
+        if (ElementType != Other.ElementType) {
+            return ElementType < Other.ElementType;
+        }
+        return Index < Other.Index;
+    }
+
+    bool IsValid() const { return Index >= 0; }
+    int Idx() const { return Index; }
+
+public:
+    MeshElementType ElementType;
+    int Index;
+};
+
+struct MeshElementIndexHash
+{
+    size_t operator()(const MeshElementIndex& InMeshElementIndex) const
+    {
+        return std::hash<int>{}(static_cast<int>(InMeshElementIndex.ElementType)) ^ (std::hash<int>{}(InMeshElementIndex.Index) << 1);
+    }
+};
 
 namespace om {
     using PolyMesh = OpenMesh::PolyMesh_ArrayKernelT<>;
@@ -82,7 +142,7 @@ public:
         for (const auto& FH : M.faces()) SetFaceColor(FH, Color);
     }
 
-    std::vector<Vertex3D> CreateVertices(MeshElementType RenderElementType, const ElementIndex& Highlight = {}) const;
+    std::vector<MeshVertex> CreateVertices(MeshElementType RenderElementType, const ElementIndex& Highlight = {}) const;
     std::vector<uint> CreateIndices(MeshElementType RenderElementType) const;
 
     void SetTextureCoordinates(const std::vector<glm::vec2>& InTexCoords);

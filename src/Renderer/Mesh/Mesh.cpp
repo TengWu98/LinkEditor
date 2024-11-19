@@ -93,7 +93,7 @@ struct VerticesHandle {
     std::vector<Mesh::VH> VHs;
 };
 
-std::vector<Vertex3D> Mesh::CreateVertices(MeshElementType RenderElementType, const ElementIndex& Highlight) const
+std::vector<MeshVertex> Mesh::CreateVertices(MeshElementType RenderElementType, const ElementIndex& Highlight) const
 {
     std::vector<VerticesHandle> Handles;
     
@@ -134,7 +134,7 @@ std::vector<Vertex3D> Mesh::CreateVertices(MeshElementType RenderElementType, co
     AllHighlights.insert(HighlightedElements.begin(), HighlightedElements.end());
     AllHighlights.emplace(Highlight);
 
-    std::vector<Vertex3D> Vertices;
+    std::vector<MeshVertex> Vertices;
     for (const auto& Handle : Handles)
     {
         const auto& Parent = Handle.Parent;
@@ -169,7 +169,7 @@ std::vector<Vertex3D> Mesh::CreateVertices(MeshElementType RenderElementType, co
                 }
             }
             
-            Vertex3D CurrentVertex = {GetPosition(VertexHandle), Normal, Color};
+            MeshVertex CurrentVertex = {GetPosition(VertexHandle), Color, Normal};
             Vertices.emplace_back(CurrentVertex);
         }
     }

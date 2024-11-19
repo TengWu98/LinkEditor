@@ -65,12 +65,12 @@ entt::entity Scene::AddMesh(Mesh&& InMesh, MeshCreateInfo InMeshCreateInfo)
     for (auto ElementType : AllMeshElementTypes)
     {
         auto VertexArrayBuffer = std::make_shared<VertexArray>();
-        std::vector<Vertex3D> Vertices = InMesh.CreateVertices(ElementType);
+        std::vector<MeshVertex> Vertices = InMesh.CreateVertices(ElementType);
         std::vector<uint> Indices = InMesh.CreateIndices(ElementType);
 
-        auto VertexBufferObject = std::make_shared<VertexBuffer>(Vertices.size() * sizeof(Vertex3D));
+        auto VertexBufferObject = std::make_shared<VertexBuffer>(Vertices.size() * sizeof(MeshVertex));
         VertexBufferObject->SetLayout(CreateDefaultVertexLayout());
-        VertexBufferObject->SetData(Vertices.data(), Vertices.size() * sizeof(Vertex3D));
+        VertexBufferObject->SetData(Vertices.data(), Vertices.size() * sizeof(MeshVertex));
         VertexArrayBuffer->AddVertexBuffer(VertexBufferObject);
 
         auto IndexBufferObject = std::make_shared<IndexBuffer>(Indices.data(), Indices.size());
@@ -182,10 +182,10 @@ void Scene::UpdateRenderBuffers(entt::entity InEntity, MeshElementIndex HighLigh
     for(auto ElementType : AllMeshElementTypes)
     {
         auto VertexArrayBuffer = MeshBuffers.at(ElementType);
-        std::vector<Vertex3D> Vertices = SelectedMesh.CreateVertices(ElementType, HighLight);
+        std::vector<MeshVertex> Vertices = SelectedMesh.CreateVertices(ElementType, HighLight);
 
         auto VertexBufferObject = VertexArrayBuffer->GetVertexBuffers()[0];
-        VertexBufferObject->SetData(Vertices.data(), Vertices.size() * sizeof(Vertex3D));
+        VertexBufferObject->SetData(Vertices.data(), Vertices.size() * sizeof(MeshVertex));
     }
 }
 
@@ -193,8 +193,8 @@ VertexBufferLayout Scene::CreateDefaultVertexLayout()
 {
     return {
         {ShaderDataType::Float3, "a_Position"},
-        {ShaderDataType::Float3, "a_WorldNormal"},
         {ShaderDataType::Float4, "a_Color"},
+        {ShaderDataType::Float3, "a_WorldNormal"},
         {ShaderDataType::Float2, "a_TexCoord"},
     };
 }

@@ -25,7 +25,12 @@ workspace "MeshEditor"
         architecture "x64"
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-    resourcesdir = "%{wks.location}/resources"
+
+    -- Asset
+    assetdir = "%{wks.location}/Asset"
+
+    -- Shader
+    shaderdir = "%{wks.location}/Shader"
 
     group "Dependencies"
         include "lib/ImGui"
@@ -66,7 +71,7 @@ project "MeshEditor"
         "%{IncludeDir.ImGuizmo}/ImGuizmo.h",
 		"%{IncludeDir.ImGuizmo}/ImGuizmo.cpp",
 
-        "resources/Common/Shaders/**.glsl"
+        "Shader/GLSL/**.glsl"
     }
 
     includedirs
@@ -121,7 +126,8 @@ project "MeshEditor"
 
         postbuildcommands
         {
-            '{COPYDIR} "%{resourcesdir}" "%{wks.location}/binaries/%{outputdir}/%{prj.name}/resources"',       
+            '{COPYDIR} "%{shaderdir}" "%{wks.location}/binaries/%{outputdir}/%{prj.name}/Shader"',
+            '{COPYDIR} "%{assetdir}" "%{wks.location}/binaries/%{outputdir}/%{prj.name}/Asset"',
         }
 
         runtime "Debug"
@@ -141,7 +147,8 @@ project "MeshEditor"
 
         postbuildcommands
         {
-            '{COPYDIR} "%{resourcesdir}" "%{wks.location}/binaries/%{outputdir}/%{prj.name}/resources"',
+            '{COPYDIR} "%{shaderdir}" "%{wks.location}/binaries/%{outputdir}/%{prj.name}/Shader"',
+            '{COPYDIR} "%{assetdir}" "%{wks.location}/binaries/%{outputdir}/%{prj.name}/Asset"',
             '{COPYDIR} "%{wks.location}/binaries/%{outputdir}/%{prj.name}" "%{wks.location}/MeshEditorRelease"'
         }
 
